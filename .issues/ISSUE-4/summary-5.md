@@ -5,7 +5,7 @@
 **Prompt/Ask:** Revert the component-owned label-slot experiment and move the demo back to conventional external `<label>` markup.
 
 ## Completed
-- Removed the `label` slot support and related internal ARIA labeling logic from `boxes-combo-box`.
+- Removed the `label` slot support and related internal ARIA labeling logic from `boxes-combobox`.
 - Removed the internal label-click focus behavior added for the slot-based label experiment.
 - Updated the `boxes-web` demo back to external `<label>` wrappers for both fields.
 - Restored the dependent-field demo logic to hide/show the external wrapper for the second field while preserving the live `FormData` JSON output.
@@ -18,7 +18,7 @@
 - This was a follow-up revert within the existing `ISSUE-4` baseline implementation scope.
 
 ## Files Changed
-- `libs/boxes/src/combo-box/combo-box.ts` - Removed the label-slot API and restored external-label-only behavior.
+- `libs/boxes/src/combobox/combobox.ts` - Removed the label-slot API and restored external-label-only behavior.
 - `app/boxes-web/index.html` - Replaced standalone components with external `<label>` wrappers again.
 - `app/boxes-web/src/main.ts` - Restored dependent-field visibility management around the external wrapper.
 - `.issues/ISSUE-4/summary-5.md` - Recorded this revert session.

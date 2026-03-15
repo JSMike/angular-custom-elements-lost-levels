@@ -1,44 +1,44 @@
 import { html, LitElement, unsafeCSS } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { customElement, property, query, state } from 'lit/decorators.js';
-import hostStyles from './select-multiple.scss?inline';
+import hostStyles from './multi-select.scss?inline';
 
-export const SelectMultiple = 'boxes-select-multiple';
+export const MultiSelect = 'boxes-multi-select';
 
-export type SelectMultipleOption = {
+export type MultiSelectOption = {
   disabled: boolean;
   label: string;
   selected: boolean;
   value: string;
 };
 
-export type SelectMultipleValue = string[];
+export type MultiSelectValue = string[];
 
-export type SelectMultipleSerializedState = string;
+export type MultiSelectSerializedState = string;
 
-@customElement(SelectMultiple)
-export class SelectMultipleEl extends LitElement {
+@customElement(MultiSelect)
+export class MultiSelectEl extends LitElement {
   static override styles = unsafeCSS(hostStyles);
   static override shadowRootOptions = {
     ...LitElement.shadowRootOptions,
     delegatesFocus: true,
   };
   static formAssociated = true;
-  private static _selectMultipleId = 0;
+  private static _multiSelectId = 0;
 
   @property({ type: Boolean, reflect: true }) public disabled = false;
   @property({ type: Boolean, reflect: true }) public fullwidth = false;
   @property({ reflect: true }) public name = '';
   @property({ type: Boolean, reflect: true }) public required = false;
 
-  @state() private accessor _activeIndex = -1;
-  @state() private accessor _options: SelectMultipleOption[] = [];
+  @state() private _activeIndex = -1;
+  @state() private _options: MultiSelectOption[] = [];
 
-  @query('.select-multiple-list') private _listboxEl!: HTMLDivElement;
+  @query('.multi-select-list') private _listboxEl!: HTMLDivElement;
 
-  private readonly _baseId = `${SelectMultiple}-${(SelectMultipleEl._selectMultipleId += 1)}`;
+  private readonly _baseId = `${MultiSelect}-${(MultiSelectEl._multiSelectId += 1)}`;
   private readonly _internals: ElementInternals;
-  private _defaultSelectedValues: SelectMultipleValue = [];
+  private _defaultSelectedValues: MultiSelectValue = [];
   private _formDisabled = false;
 
   public constructor() {
@@ -54,13 +54,13 @@ export class SelectMultipleEl extends LitElement {
     return this._internals.labels;
   }
 
-  public get selectedValues(): SelectMultipleValue {
+  public get selectedValues(): MultiSelectValue {
     return this._options
       .filter((option) => option.selected)
       .map((option) => option.value);
   }
 
-  public set selectedValues(nextValues: SelectMultipleValue) {
+  public set selectedValues(nextValues: MultiSelectValue) {
     this._selectValues(nextValues, false);
   }
 
@@ -150,10 +150,10 @@ export class SelectMultipleEl extends LitElement {
       this._activeIndex >= 0 ? this._getOptionId(this._activeIndex) : undefined;
 
     return html`
-      <div class="select-multiple">
+      <div class="multi-select">
         <div
           id="${this._getListboxId()}"
-          class="select-multiple-list"
+          class="multi-select-list"
           role="listbox"
           tabindex="-1"
           aria-activedescendant="${ifDefined(activeDescendant)}"
@@ -172,7 +172,7 @@ export class SelectMultipleEl extends LitElement {
             return html`
               <div
                 id="${this._getOptionId(index)}"
-                class="select-multiple-option ${isActive
+                class="multi-select-option ${isActive
                   ? 'option-current'
                   : ''}"
                 data-index="${index}"
@@ -182,7 +182,7 @@ export class SelectMultipleEl extends LitElement {
               >
                 <span>${option.label}</span>
                 <span
-                  class="select-multiple-check"
+                  class="multi-select-check"
                   aria-hidden="true"
                 ></span>
               </div>
@@ -194,7 +194,7 @@ export class SelectMultipleEl extends LitElement {
     `;
   }
 
-  private _buildSubmissionValue(selectedValues: SelectMultipleValue) {
+  private _buildSubmissionValue(selectedValues: MultiSelectValue) {
     if (this.name === '' || selectedValues.length === 0) {
       return null;
     }
@@ -209,8 +209,8 @@ export class SelectMultipleEl extends LitElement {
   }
 
   private _deserializeState(
-    state: SelectMultipleSerializedState,
-  ): SelectMultipleValue {
+    state: MultiSelectSerializedState,
+  ): MultiSelectValue {
     if (state === '') {
       return [];
     }
@@ -382,7 +382,7 @@ export class SelectMultipleEl extends LitElement {
   }
 
   private _selectValues(
-    nextValues: SelectMultipleValue,
+    nextValues: MultiSelectValue,
     emitEvents: boolean,
   ) {
     const normalizedValues = this._normalizeSelectedValues(nextValues);
@@ -413,7 +413,7 @@ export class SelectMultipleEl extends LitElement {
 
   private _normalizeSelectedValues(
     nextValues: readonly string[],
-  ): SelectMultipleValue {
+  ): MultiSelectValue {
     const uniqueValues = new Set(nextValues);
 
     return this._options

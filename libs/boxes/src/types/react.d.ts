@@ -10,8 +10,8 @@ type BaseReactProps<Element extends HTMLElement> = DetailedHTMLProps<
 type ComponentElementMap = {
   'boxes-calendar-picker': import('../calendar-picker').CalendarPickerEl;
   'boxes-checkbox': import('../checkbox').CheckboxEl;
-  'boxes-combo-box': import('../combo-box').ComboBoxEl;
-  'boxes-select-multiple': import('../select-multiple').SelectMultipleEl;
+  'boxes-combobox': import('../combobox').ComboboxEl;
+  'boxes-multi-select': import('../multi-select').MultiSelectEl;
 };
 
 type ComponentPropertyMap = {
@@ -30,20 +30,20 @@ type ComponentPropertyMap = {
     'required': import('../checkbox').CheckboxEl['required'];
     'value': import('../checkbox').CheckboxEl['value'];
   };
-  'boxes-combo-box': {
-    'disabled': import('../combo-box').ComboBoxEl['disabled'];
-    'fullwidth': import('../combo-box').ComboBoxEl['fullwidth'];
-    'name': import('../combo-box').ComboBoxEl['name'];
-    'required': import('../combo-box').ComboBoxEl['required'];
-    'value': import('../combo-box').ComboBoxEl['value'];
+  'boxes-combobox': {
+    'disabled': import('../combobox').ComboboxEl['disabled'];
+    'fullwidth': import('../combobox').ComboboxEl['fullwidth'];
+    'name': import('../combobox').ComboboxEl['name'];
+    'required': import('../combobox').ComboboxEl['required'];
+    'value': import('../combobox').ComboboxEl['value'];
   };
-  'boxes-select-multiple': {
-    'disabled': import('../select-multiple').SelectMultipleEl['disabled'];
-    'fullwidth': import('../select-multiple').SelectMultipleEl['fullwidth'];
-    'name': import('../select-multiple').SelectMultipleEl['name'];
-    'required': import('../select-multiple').SelectMultipleEl['required'];
-    'selectedValues': import('../select-multiple').SelectMultipleEl['selectedValues'];
-    'value': import('../select-multiple').SelectMultipleEl['value'];
+  'boxes-multi-select': {
+    'disabled': import('../multi-select').MultiSelectEl['disabled'];
+    'fullwidth': import('../multi-select').MultiSelectEl['fullwidth'];
+    'name': import('../multi-select').MultiSelectEl['name'];
+    'required': import('../multi-select').MultiSelectEl['required'];
+    'selectedValues': import('../multi-select').MultiSelectEl['selectedValues'];
+    'value': import('../multi-select').MultiSelectEl['value'];
   };
 };
 
@@ -58,13 +58,13 @@ type ComponentEventMap = {
     'oninput'?: (event: Event) => void;
     'onInput'?: (event: Event) => void;
   };
-  'boxes-combo-box': {
+  'boxes-combobox': {
     'onchange'?: (event: Event) => void;
     'onChange'?: (event: Event) => void;
     'oninput'?: (event: Event) => void;
     'onInput'?: (event: Event) => void;
   };
-  'boxes-select-multiple': {
+  'boxes-multi-select': {
     'onchange'?: (event: Event) => void;
     'onChange'?: (event: Event) => void;
     'oninput'?: (event: Event) => void;
@@ -85,8 +85,8 @@ declare module 'react/jsx-runtime' {
     interface IntrinsicElements {
       'boxes-calendar-picker': ComponentProps<'boxes-calendar-picker'>;
       'boxes-checkbox': ComponentProps<'boxes-checkbox'>;
-      'boxes-combo-box': ComponentProps<'boxes-combo-box'>;
-      'boxes-select-multiple': ComponentProps<'boxes-select-multiple'>;
+      'boxes-combobox': ComponentProps<'boxes-combobox'>;
+      'boxes-multi-select': ComponentProps<'boxes-multi-select'>;
     }
   }
 }

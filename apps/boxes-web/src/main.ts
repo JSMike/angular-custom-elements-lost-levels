@@ -1,6 +1,6 @@
-import '@/boxes/combo-box';
+import '@/boxes/combobox';
 import '@/boxes/checkbox';
-import '@/boxes/select-multiple';
+import '@/boxes/multi-select';
 import '@/boxes/calendar-picker';
 
 type FormDataEntryJson = string | string[];

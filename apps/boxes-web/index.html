@@ -10,9 +10,9 @@
     <link rel="stylesheet" href="/src/styles.scss" />
     <style>
       body:has(
-        boxes-combo-box:not(:defined),
+        boxes-combobox:not(:defined),
         boxes-checkbox:not(:defined),
-        boxes-select-multiple:not(:defined),
+        boxes-multi-select:not(:defined),
         boxes-calendar-picker:not(:defined)
       ) {
         display: none;
@@ -23,27 +23,29 @@
     <main class="demo-stack">
       <section class="demo-card">
         <h1>Vanilla FACE Baselines</h1>
-        <p>
-          These forms show what the browser currently thinks would be submitted
-          over the wire before Angular is involved.
+        <p class="demo-copy">
+          These examples show the browser's current native
+          <code>FormData</code> for the controls before any framework-specific
+          form integration is involved.
         </p>
       </section>
 
       <section class="demo-card">
         <h2>Simple Combobox</h2>
-        <p>
-          This is the control-group example: a select-only FACE control with a
-          single scalar <code>value</code> and ordinary form participation.
+        <p class="demo-copy">
+          This is the control-group example. It is a select-only FACE control
+          with a single scalar <code>value</code> and ordinary form
+          participation.
         </p>
         <form id="combo-demo-form" class="demo-form">
           <label>
             Produce choice
-            <boxes-combo-box id="produce-field" name="produce" required>
+            <boxes-combobox id="produce-field" name="produce" required>
               <option value="" selected>Choose a produce item</option>
               <option value="blueberry">Blueberry</option>
               <option value="lemon">Lemon</option>
               <option value="mango">Mango</option>
-            </boxes-combo-box>
+            </boxes-combobox>
           </label>
 
           <div class="button-row">
@@ -57,7 +59,7 @@
 
       <section class="demo-card">
         <h2>Checkbox Control</h2>
-        <p>
+        <p class="demo-copy">
           This setup is valid because checkbox-like controls are driven by
           <code>checked</code>, not by a scalar text-like <code>value</code>.
           When the box is unchecked, the field disappears from native
@@ -84,7 +86,7 @@
 
       <section class="demo-card">
         <h2>Multi-Select Control</h2>
-        <p>
+        <p class="demo-copy">
           This setup is valid because a multi-select submits a collection. The
           native shape is repeated <code>produceTags</code> entries, not one
           scalar value. Because this control is still select-like, it keeps both
@@ -94,7 +96,7 @@
         <form id="multi-select-demo-form" class="demo-form">
           <label>
             Produce tags
-            <boxes-select-multiple
+            <boxes-multi-select
               id="produce-tags-field"
               name="produceTags"
               required
@@ -103,7 +105,7 @@
               <option value="imported">Imported</option>
               <option value="organic">Organic</option>
               <option value="seasonal">Seasonal</option>
-            </boxes-select-multiple>
+            </boxes-multi-select>
           </label>
 
           <div class="button-row">
@@ -117,7 +119,7 @@
 
       <section class="demo-card">
         <h2>Calendar Picker</h2>
-        <p>
+        <p class="demo-copy">
           This setup is valid because choosing a date from a calendar grid is a
           commit action. There is no incremental text edit stream, so
           <code>change</code> is the meaningful event and omitting

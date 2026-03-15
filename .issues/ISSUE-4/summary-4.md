@@ -2,13 +2,13 @@
 
 **Date:** 2026-03-14
 
-**Prompt/Ask:** Update `boxes-combo-box` so it owns its label via a slot instead of requiring an outer `<label>`, and preserve the expected label spacing and ARIA wiring in the demo.
+**Prompt/Ask:** Update `boxes-combobox` so it owns its label via a slot instead of requiring an outer `<label>`, and preserve the expected label spacing and ARIA wiring in the demo.
 
 ## Completed
-- Added a named `label` slot to `boxes-combo-box`.
+- Added a named `label` slot to `boxes-combobox`.
 - Wired the internal label into the combobox and listbox `aria-labelledby` flow when the slot is populated.
 - Added label-click focus behavior so clicking the slotted label focuses the internal combobox control.
-- Updated the `boxes-web` demo to use standalone `boxes-combo-box` elements with slotted labels instead of wrapping them in external `<label>` elements.
+- Updated the `boxes-web` demo to use standalone `boxes-combobox` elements with slotted labels instead of wrapping them in external `<label>` elements.
 - Kept the dependent second-field behavior intact while preserving the secondary field's slotted label during option replacement.
 
 ## Current Status
@@ -19,7 +19,7 @@
 - This was a follow-up adjustment within the existing `ISSUE-4` baseline implementation scope.
 
 ## Files Changed
-- `libs/boxes/src/combo-box/combo-box.ts` - Added the `label` slot, internal ARIA labeling, and label-click focus behavior.
+- `libs/boxes/src/combobox/combobox.ts` - Added the `label` slot, internal ARIA labeling, and label-click focus behavior.
 - `app/boxes-web/index.html` - Switched the demo to slotted labels on the component itself.
 - `app/boxes-web/src/main.ts` - Updated dependent-field option management to preserve the secondary field's slotted label node.
 - `.issues/ISSUE-4/summary-4.md` - Recorded this follow-up session.

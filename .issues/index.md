@@ -28,6 +28,9 @@ Generated: 2026-03-15
 | ID                            | Title                                                          | Complexity | PR  |
 | ----------------------------- | -------------------------------------------------------------- | ---------- | --- |
 | [ISSUE-11](./ISSUE-11/issue.md) | Update AI-README with current repo structure and build guidance | low |     |
+| [ISSUE-12](./ISSUE-12/issue.md) | Normalize combobox naming across the repo | medium |     |
+| [ISSUE-13](./ISSUE-13/issue.md) | Normalize multi-select naming across the repo | medium |     |
+| [ISSUE-14](./ISSUE-14/issue.md) | Align demo app copy and layout across web, Angular, and React | medium |     |
 
 ### Done
 

@@ -1,18 +1,18 @@
 import { html, LitElement, unsafeCSS } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { customElement, property, query, state } from 'lit/decorators.js';
-import hostStyles from './combo-box.scss?inline';
+import hostStyles from './combobox.scss?inline';
 
-export const ComboBox = 'boxes-combo-box';
+export const Combobox = 'boxes-combobox';
 
-export type ComboBoxOption = {
+export type ComboboxOption = {
   label: string;
   value: string;
   disabled: boolean;
 };
 
-@customElement(ComboBox)
-export class ComboBoxEl extends LitElement {
+@customElement(Combobox)
+export class ComboboxEl extends LitElement {
   static override styles = unsafeCSS(hostStyles);
   static override shadowRootOptions = {
     ...LitElement.shadowRootOptions,
@@ -31,22 +31,22 @@ export class ComboBoxEl extends LitElement {
     Previous: 8,
     Type: 9,
   } as const;
-  private static _comboBoxId = 0;
+  private static _comboboxId = 0;
 
   @property({ type: Boolean, reflect: true }) public disabled = false;
   @property({ type: Boolean, reflect: true }) public fullwidth = false;
   @property({ reflect: true }) public name = '';
   @property({ type: Boolean, reflect: true }) public required = false;
 
-  @state() private accessor _activeIndex = -1;
-  @state() private accessor _open = false;
-  @state() private accessor _options: ComboBoxOption[] = [];
-  @state() private accessor _selectedIndex = -1;
+  @state() private _activeIndex = -1;
+  @state() private _open = false;
+  @state() private _options: ComboboxOption[] = [];
+  @state() private _selectedIndex = -1;
 
   @query('.combo-input') private _comboEl!: HTMLDivElement;
   @query('.combo-menu') private _listboxEl!: HTMLDivElement;
 
-  private readonly _baseId = `${ComboBox}-${(ComboBoxEl._comboBoxId += 1)}`;
+  private readonly _baseId = `${Combobox}-${(ComboboxEl._comboboxId += 1)}`;
   private readonly _internals: ElementInternals;
   private _defaultSelectedIndex = -1;
   private _formDisabled = false;
@@ -303,11 +303,11 @@ export class ComboBoxEl extends LitElement {
       return -1;
     }
 
-    if (action === ComboBoxEl.selectActions.First) {
+    if (action === ComboboxEl.selectActions.First) {
       return this._getFirstEnabledIndex();
     }
 
-    if (action === ComboBoxEl.selectActions.Last) {
+    if (action === ComboboxEl.selectActions.Last) {
       return this._getLastEnabledIndex();
     }
 
@@ -326,8 +326,8 @@ export class ComboBoxEl extends LitElement {
       action,
     );
     const direction: 1 | -1 =
-      action === ComboBoxEl.selectActions.Previous ||
-      action === ComboBoxEl.selectActions.PageUp
+      action === ComboboxEl.selectActions.Previous ||
+      action === ComboboxEl.selectActions.PageUp
         ? -1
         : 1;
 
@@ -377,30 +377,30 @@ export class ComboBoxEl extends LitElement {
     }
 
     switch (action) {
-      case ComboBoxEl.selectActions.First:
-      case ComboBoxEl.selectActions.Last:
-      case ComboBoxEl.selectActions.Next:
-      case ComboBoxEl.selectActions.Previous:
-      case ComboBoxEl.selectActions.PageUp:
-      case ComboBoxEl.selectActions.PageDown: {
+      case ComboboxEl.selectActions.First:
+      case ComboboxEl.selectActions.Last:
+      case ComboboxEl.selectActions.Next:
+      case ComboboxEl.selectActions.Previous:
+      case ComboboxEl.selectActions.PageUp:
+      case ComboboxEl.selectActions.PageDown: {
         event.preventDefault();
         this._updateMenuState(true, false);
         this._onOptionChange(this._getNavigableIndex(action));
         return;
       }
-      case ComboBoxEl.selectActions.CloseSelect:
+      case ComboboxEl.selectActions.CloseSelect:
         event.preventDefault();
         this._commitSelection(this._activeIndex, true);
         this._updateMenuState(false);
         return;
-      case ComboBoxEl.selectActions.Close:
+      case ComboboxEl.selectActions.Close:
         event.preventDefault();
         this._updateMenuState(false);
         return;
-      case ComboBoxEl.selectActions.Type:
+      case ComboboxEl.selectActions.Type:
         this._onComboType(event.key);
         return;
-      case ComboBoxEl.selectActions.Open:
+      case ComboboxEl.selectActions.Open:
         event.preventDefault();
         this._updateMenuState(true);
         return;
@@ -644,15 +644,15 @@ export class ComboBoxEl extends LitElement {
     const openKeys = ['ArrowDown', 'ArrowUp', 'Enter', ' '];
 
     if (!menuOpen && openKeys.includes(key)) {
-      return ComboBoxEl.selectActions.Open;
+      return ComboboxEl.selectActions.Open;
     }
 
     if (key === 'Home') {
-      return ComboBoxEl.selectActions.First;
+      return ComboboxEl.selectActions.First;
     }
 
     if (key === 'End') {
-      return ComboBoxEl.selectActions.Last;
+      return ComboboxEl.selectActions.Last;
     }
 
     if (
@@ -660,7 +660,7 @@ export class ComboBoxEl extends LitElement {
       key === 'Clear' ||
       (key.length === 1 && key !== ' ' && !altKey && !ctrlKey && !metaKey)
     ) {
-      return ComboBoxEl.selectActions.Type;
+      return ComboboxEl.selectActions.Type;
     }
 
     if (!menuOpen) {
@@ -668,38 +668,38 @@ export class ComboBoxEl extends LitElement {
     }
 
     if (key === 'ArrowUp' && altKey) {
-      return ComboBoxEl.selectActions.CloseSelect;
+      return ComboboxEl.selectActions.CloseSelect;
     }
 
     if (key === 'ArrowDown' && !altKey) {
-      return ComboBoxEl.selectActions.Next;
+      return ComboboxEl.selectActions.Next;
     }
 
     if (key === 'ArrowUp') {
-      return ComboBoxEl.selectActions.Previous;
+      return ComboboxEl.selectActions.Previous;
     }
 
     if (key === 'PageUp') {
-      return ComboBoxEl.selectActions.PageUp;
+      return ComboboxEl.selectActions.PageUp;
     }
 
     if (key === 'PageDown') {
-      return ComboBoxEl.selectActions.PageDown;
+      return ComboboxEl.selectActions.PageDown;
     }
 
     if (key === 'Escape') {
-      return ComboBoxEl.selectActions.Close;
+      return ComboboxEl.selectActions.Close;
     }
 
     if (key === 'Enter' || key === ' ') {
-      return ComboBoxEl.selectActions.CloseSelect;
+      return ComboboxEl.selectActions.CloseSelect;
     }
 
     return undefined;
   }
 
   private _getIndexByLetter(
-    options: ComboBoxOption[],
+    options: ComboboxOption[],
     filter: string,
     startIndex = 0,
   ) {
@@ -739,17 +739,17 @@ export class ComboBoxEl extends LitElement {
     const pageSize = 10;
 
     switch (action) {
-      case ComboBoxEl.selectActions.First:
+      case ComboboxEl.selectActions.First:
         return 0;
-      case ComboBoxEl.selectActions.Last:
+      case ComboboxEl.selectActions.Last:
         return maxIndex;
-      case ComboBoxEl.selectActions.Previous:
+      case ComboboxEl.selectActions.Previous:
         return Math.max(0, currentIndex - 1);
-      case ComboBoxEl.selectActions.Next:
+      case ComboboxEl.selectActions.Next:
         return Math.min(maxIndex, currentIndex + 1);
-      case ComboBoxEl.selectActions.PageUp:
+      case ComboboxEl.selectActions.PageUp:
         return Math.max(0, currentIndex - pageSize);
-      case ComboBoxEl.selectActions.PageDown:
+      case ComboboxEl.selectActions.PageDown:
         return Math.min(maxIndex, currentIndex + pageSize);
       default:
         return currentIndex;
@@ -794,4 +794,4 @@ export class ComboBoxEl extends LitElement {
 }
 
 export type SelectAction =
-  (typeof ComboBoxEl.selectActions)[keyof typeof ComboBoxEl.selectActions];
+  (typeof ComboboxEl.selectActions)[keyof typeof ComboboxEl.selectActions];

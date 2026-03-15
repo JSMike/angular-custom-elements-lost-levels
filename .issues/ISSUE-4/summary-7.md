@@ -2,7 +2,7 @@
 
 **Date:** 2026-03-14
 
-**Prompt/Ask:** Fix the vertical centering of the `boxes-combo-box` chevron, specifically the `.combo::after` pseudo-element.
+**Prompt/Ask:** Fix the vertical centering of the `boxes-combobox` chevron, specifically the `.combo::after` pseudo-element.
 
 ## Completed
 - Updated the `.combo::after` positioning so the chevron is vertically centered in the control instead of using the inherited APG `65%` offset.
@@ -15,7 +15,7 @@
 - This was a small styling correction within the existing `ISSUE-4` baseline implementation scope.
 
 ## Files Changed
-- `libs/boxes/src/combo-box/combo-box.scss` - Changed the chevron pseudo-element from `top: 65%` / `translateY(-65%)` to centered positioning.
+- `libs/boxes/src/combobox/combobox.scss` - Changed the chevron pseudo-element from `top: 65%` / `translateY(-65%)` to centered positioning.
 - `.issues/ISSUE-4/summary-7.md` - Recorded this styling fix.
 
 ## Verification

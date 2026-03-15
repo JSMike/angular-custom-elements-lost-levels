@@ -5,9 +5,9 @@
 
 ## What Was Done
 - Built a baseline `boxes` FACE component set around the Angular forms investigation, including:
-  - `boxes-combo-box`
+  - `boxes-combobox`
   - `boxes-checkbox`
-  - `boxes-select-multiple`
+  - `boxes-multi-select`
   - `boxes-calendar-picker`
 - Created a plain web baseline app in `apps/boxes-web` that shows the browser's current `FormData` for each control.
 - Created an Angular consumer app in `apps/boxes-angular` that shows Angular reactive-form JSON next to native `FormData` for the exact same controls.
@@ -19,9 +19,9 @@
 - Closed the issue after the user accepted the examples and asked to move it to `done`.
 
 ## Files Changed
-- `libs/boxes/src/combo-box/*` - Added and refined the FACE select-only combobox baseline.
+- `libs/boxes/src/combobox/*` - Added and refined the FACE select-only combobox baseline.
 - `libs/boxes/src/checkbox/*` - Added a FACE checkbox repro control.
-- `libs/boxes/src/select-multiple/*` - Added a FACE multi-select repro control.
+- `libs/boxes/src/multi-select/*` - Added a FACE multi-select repro control.
 - `libs/boxes/src/calendar-picker/*` - Added a FACE calendar-picker repro control.
 - `libs/boxes/src/index.ts` and related library entrypoints - Exported the new controls.
 - `apps/boxes-web/*` - Built and simplified the plain web baseline app.
@@ -33,7 +33,7 @@
 - `.issues/index.md` - Reflected the issue lifecycle change.
 
 ## Key Decisions Made
-- Use a working combo-box as the control-group example instead of trying to force every repro through a single control.
+- Use a working combobox as the control-group example instead of trying to force every repro through a single control.
 - Keep best-practice event semantics per control rather than mutating components just to trigger Angular failures.
 - Separate plain web and Angular examples so native platform behavior and Angular behavior are directly comparable.
 

@@ -2,7 +2,7 @@
 
 **Date:** 2026-03-14
 
-**Prompt/Ask:** Add another baseline FACE component to `libs/boxes`, similar to the spec's `my-checkbox` example, using the same folder/export structure as `combo-box`.
+**Prompt/Ask:** Add another baseline FACE component to `libs/boxes`, similar to the spec's `my-checkbox` example, using the same folder/export structure as `combobox`.
 
 ## Completed
 - Added a new `checkbox` entrypoint under `libs/boxes/src/checkbox`.
@@ -13,7 +13,7 @@
 
 ## Current Status
 - `ISSUE-4` remains in progress overall.
-- The `boxes` library now contains two baseline FACE fixtures: `boxes-combo-box` and `boxes-checkbox`.
+- The `boxes` library now contains two baseline FACE fixtures: `boxes-combobox` and `boxes-checkbox`.
 
 ## Plan Coverage
 - Covered all steps for adding and verifying the new library component.

@@ -6,11 +6,11 @@
 
 ## Completed
 - Re-verified the current sourcemap chain with both the emitted artifacts and the live Angular dev server.
-- Confirmed that `dist/libs/boxes/combo-box.js` ends with `//# sourceMappingURL=combo-box.js.map`.
+- Confirmed that `dist/libs/boxes/combobox.js` ends with `//# sourceMappingURL=combobox.js.map`.
 - Confirmed that Angular's `dist/apps/boxes-angular/browser/main.js.map` embeds `dist/libs/boxes/*.js` as sources and includes `sourcesContent` for those transpiled library files.
 - Confirmed the live Angular dev server serves `main.js.map` but does **not** serve the aliased library URLs:
-  - `/dist/libs/boxes/combo-box.js` -> `404`
-  - `/dist/libs/boxes/combo-box.js.map` -> `404`
+  - `/dist/libs/boxes/combobox.js` -> `404`
+  - `/dist/libs/boxes/combobox.js.map` -> `404`
 - Inspected Angular's local build/dev-server code and found supporting evidence for why this happens:
   - the Vite dev-server `fs.allow` list explicitly includes `node_modules`, cache output, and asset sources
   - the Angular memory plugin serves generated application output files, not arbitrary `dist/libs/boxes/*` files
@@ -30,16 +30,16 @@
 - `.issues/ISSUE-6/summary-5.md` - Recorded this session.
 
 ## Verification
-- `tail -n 5 dist/libs/boxes/combo-box.js`
+- `tail -n 5 dist/libs/boxes/combobox.js`
 - `npx nx build boxes`
 - `npx nx build boxes-angular --configuration development`
 - Parsed `dist/apps/boxes-angular/browser/main.js.map` and confirmed:
-  - `dist/libs/boxes/combo-box.js` appears in `sources`
-  - the corresponding `sourcesContent` contains the transpiled library JS plus `//# sourceMappingURL=combo-box.js.map`
+  - `dist/libs/boxes/combobox.js` appears in `sources`
+  - the corresponding `sourcesContent` contains the transpiled library JS plus `//# sourceMappingURL=combobox.js.map`
 - Live server checks against `http://127.0.0.1:4200`:
   - `/main.js.map` -> `200`
-  - `/dist/libs/boxes/combo-box.js` -> `404`
-  - `/dist/libs/boxes/combo-box.js.map` -> `404`
+  - `/dist/libs/boxes/combobox.js` -> `404`
+  - `/dist/libs/boxes/combobox.js.map` -> `404`
 - Inspected local Angular source files:
   - `node_modules/@angular/build/src/builders/dev-server/vite/server.js`
   - `node_modules/@angular/build/src/tools/vite/plugins/angular-memory-plugin.js`

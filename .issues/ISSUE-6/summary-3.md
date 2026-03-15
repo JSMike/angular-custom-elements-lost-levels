@@ -28,7 +28,7 @@
 - Confirmed `apps/boxes-angular` development builds emit `browser/main.js.map`.
 - Parsed `dist/apps/boxes-angular/browser/main.js.map` and verified its library-related entries still point to:
   - `dist/libs/boxes/property-DhOurD-o.js`
-  - `dist/libs/boxes/combo-box.js`
+  - `dist/libs/boxes/combobox.js`
   - `dist/libs/boxes/checkbox.js`
 - Confirmed the Angular build map does **not** contain `libs/boxes/src/*`.
 

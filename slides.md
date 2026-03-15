@@ -100,10 +100,10 @@ layout: two-cols
 }
 
 // apps/boxes-angular/src/main.ts
-import '@/boxes/combo-box.js';
+import '@/boxes/combobox.js';
 
-// dist/libs/boxes/combo-box.js
-//# sourceMappingURL=combo-box.js.map
+// dist/libs/boxes/combobox.js
+//# sourceMappingURL=combobox.js.map
 ```
 
 **Takeaway:** the verified behavior is that the browser only gets the transpiled library JavaScript; the exact Angular root cause is still being investigated.
@@ -117,7 +117,7 @@ layout: two-cols
 
 **Status:** confirmed
 
-- Control: `boxes-select-multiple`
+- Control: `boxes-multi-select`
 - Baseline app: `apps/boxes-web`
 - Setup validity: the submitted platform shape is a collection with repeated `produceTags` entries
 - Event model: this stays select-like, so it keeps both `input` and `change`

@@ -1,18 +1,19 @@
 <section class="demo-shell">
   <header class="demo-card">
-    <h1>Angular Form Repros</h1>
+    <h1>Angular FACE Comparisons</h1>
     <p class="demo-copy">
-      Each example compares Angular's current reactive-form model with the
-      browser's current native <code>FormData</code> from the exact same form.
+      These examples keep the same controls as the plain web baseline, but
+      compare Angular's reactive-form model with the browser's current native
+      <code>FormData</code> from the exact same form.
     </p>
   </header>
 
   <section class="demo-card">
     <h2>Simple Combobox</h2>
     <p class="demo-copy">
-      This is the control-group example. The control has a single scalar
-      <code>value</code>, dispatches ordinary selection events, and matches the
-      assumptions behind <code>ngDefaultControl</code>.
+      This is the control-group example. It is a select-only FACE control with
+      a single scalar <code>value</code> and ordinary form participation, so it
+      matches the assumptions behind <code>ngDefaultControl</code>.
     </p>
 
     <form
@@ -24,7 +25,7 @@
     >
       <div class="field">
         <label for="produce-field">Produce choice</label>
-        <boxes-combo-box
+        <boxes-combobox
           id="produce-field"
           name="produce"
           required
@@ -35,7 +36,7 @@
           <option value="blueberry">Blueberry</option>
           <option value="lemon">Lemon</option>
           <option value="mango">Mango</option>
-        </boxes-combo-box>
+        </boxes-combobox>
       </div>
 
       <div class="button-row">
@@ -61,11 +62,10 @@
     <h2>Checkbox Control</h2>
     <p class="demo-copy">
       This setup is valid because checkbox-like controls are driven by
-      <code>checked</code>, not a scalar text-like <code>value</code>. Angular
-      has a dedicated accessor for native checkboxes for exactly this reason.
-      The mismatch is clearest after checking once and then unchecking: native
-      <code>FormData</code> drops the field, but Angular keeps the last scalar
-      value.
+      <code>checked</code>, not a scalar text-like <code>value</code>. When the
+      box is unchecked, the field disappears from native <code>FormData</code>
+      entirely. Angular has a dedicated accessor for native checkboxes for
+      exactly this reason, which is why the mismatch is clearest here.
     </p>
 
     <form
@@ -112,7 +112,8 @@
       native shape is repeated <code>produceTags</code> entries, not one scalar
       value. Because this control is still select-like, it keeps both
       <code>input</code> and <code>change</code> rather than forcing a
-      change-only contract.
+      change-only contract. The mismatch is that Angular still keeps only one
+      scalar string.
     </p>
 
     <form
@@ -124,7 +125,7 @@
     >
       <div class="field">
         <label for="produce-tags-field">Produce tags</label>
-        <boxes-select-multiple
+        <boxes-multi-select
           id="produce-tags-field"
           name="produceTags"
           required
@@ -135,7 +136,7 @@
           <option value="imported">Imported</option>
           <option value="organic">Organic</option>
           <option value="seasonal">Seasonal</option>
-        </boxes-select-multiple>
+        </boxes-multi-select>
       </div>
 
       <div class="button-row">
@@ -163,7 +164,8 @@
       This setup is valid because choosing a date from a calendar grid is a
       commit action. There is no incremental text edit stream, so
       <code>change</code> is the meaningful event and omitting
-      <code>input</code> is a reasonable implementation choice.
+      <code>input</code> is a reasonable implementation choice. That makes it a
+      useful repro for Angular's default text-like assumptions.
     </p>
 
     <form

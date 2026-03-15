@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "customElements": "./custom-elements.json",
+  "sideEffects": true,
   "exports": {
     "./react": {
       "types": "./types/react.d.ts"

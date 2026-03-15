@@ -33,4 +33,4 @@
 
 ## Next Steps
 - Add screenshots or short recordings if you want the deck to feel closer to the final presentation.
-- Consider a short baseline slide for the combo-box if you want the talk to show one clearly working control before the failures.
+- Consider a short baseline slide for the combobox if you want the talk to show one clearly working control before the failures.

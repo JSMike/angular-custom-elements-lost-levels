@@ -12,7 +12,7 @@
   - the library emits `.js.map`
   - Angular's `main.js.map` embeds the transpiled library JS
   - the browser cannot load the second-level `/dist/libs/boxes/*.js(.map)` URLs
-- Added the `//# sourceMappingURL=combo-box.js.map` example directly in the slide code block so the missing-link point is explicit.
+- Added the `//# sourceMappingURL=combobox.js.map` example directly in the slide code block so the missing-link point is explicit.
 - Updated the `ISSUE-10` tracker note to keep the slide work aligned with this corrected explanation.
 
 ## Current Status

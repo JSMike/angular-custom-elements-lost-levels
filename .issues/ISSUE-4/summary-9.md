@@ -14,7 +14,7 @@
 
 ## Current Status
 - `ISSUE-4` remains in progress overall.
-- The non-Angular baseline now demonstrates both a `value`-based FACE control (`boxes-combo-box`) and a `checked`-based FACE control (`boxes-checkbox`) in the same dependent form flow.
+- The non-Angular baseline now demonstrates both a `value`-based FACE control (`boxes-combobox`) and a `checked`-based FACE control (`boxes-checkbox`) in the same dependent form flow.
 
 ## Plan Coverage
 - Extended the existing plain web baseline demo to incorporate the new checkbox FACE fixture.

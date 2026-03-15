@@ -32,6 +32,6 @@ Seeded from the `README.md` heading `Form Associated Custom Elements`.
 ## Current Session Focus
 
 - Expand the baseline `boxes` library with additional FACE controls that exercise Angular form edge cases.
-- Keep the demos simple by separating the checkbox repro from the combo-box control-group example.
+- Keep the demos simple by separating the checkbox repro from the combobox control-group example.
 - Build matching plain-web and Angular examples for multi-select collection values and commit-style calendar selection.
 - Capture the Angular-vs-native mismatches in a form that can be promoted directly into presentation slides.

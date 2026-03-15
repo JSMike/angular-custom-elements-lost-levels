@@ -8,7 +8,8 @@
       "@nx/react/typings/image.d.ts",
       "vite/client",
       "../../libs/boxes/src/types/react.d.ts"
-    ]
+    ],
+    "composite": false
   },
   "exclude": [
     "src/**/*.spec.ts",
@@ -25,6 +26,7 @@
     "src/**/*.jsx",
     "src/**/*.ts",
     "src/**/*.tsx",
+    "src/**/*.d.ts",
     "../../libs/boxes/src/**/*.ts",
     "../../libs/boxes/src/**/*.d.ts"
   ]

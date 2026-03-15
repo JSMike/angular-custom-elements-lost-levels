@@ -564,31 +564,31 @@
               }
             }
           ],
-          "name": "ComboBoxEl",
+          "name": "ComboboxEl",
           "superclass": {
             "name": "LitElement"
           },
-          "tagName": "boxes-combo-box"
+          "tagName": "boxes-combobox"
         }
       ],
       "exports": [
         {
           "declaration": {
-            "name": "ComboBoxEl"
+            "name": "ComboboxEl"
           },
           "kind": "js",
-          "name": "ComboBoxEl"
+          "name": "ComboboxEl"
         },
         {
           "declaration": {
-            "name": "ComboBoxEl"
+            "name": "ComboboxEl"
           },
           "kind": "custom-element-definition",
-          "name": "boxes-combo-box"
+          "name": "boxes-combobox"
         }
       ],
       "kind": "javascript-module",
-      "path": "combo-box.js"
+      "path": "combobox.js"
     },
     {
       "declarations": [
@@ -688,7 +688,7 @@
               "kind": "field",
               "name": "selectedValues",
               "type": {
-                "text": "SelectMultipleValue"
+                "text": "MultiSelectValue"
               }
             },
             {
@@ -768,31 +768,31 @@
               }
             }
           ],
-          "name": "SelectMultipleEl",
+          "name": "MultiSelectEl",
           "superclass": {
             "name": "LitElement"
           },
-          "tagName": "boxes-select-multiple"
+          "tagName": "boxes-multi-select"
         }
       ],
       "exports": [
         {
           "declaration": {
-            "name": "SelectMultipleEl"
+            "name": "MultiSelectEl"
           },
           "kind": "js",
-          "name": "SelectMultipleEl"
+          "name": "MultiSelectEl"
         },
         {
           "declaration": {
-            "name": "SelectMultipleEl"
+            "name": "MultiSelectEl"
           },
           "kind": "custom-element-definition",
-          "name": "boxes-select-multiple"
+          "name": "boxes-multi-select"
         }
       ],
       "kind": "javascript-module",
-      "path": "select-multiple.js"
+      "path": "multi-select.js"
     }
   ]
 }

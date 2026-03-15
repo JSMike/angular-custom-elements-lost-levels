@@ -20,18 +20,18 @@ Create the initial Slidev presentation deck that will hold the Angular Web Compo
 
 ## Prompt
 
-The user added Slidev and an empty `slides.md`, and wants dedicated slides for upcoming repros including select-multiple and calendar-picker controls.
+The user added Slidev and an empty `slides.md`, and wants dedicated slides for upcoming repros including multi-select and calendar-picker controls.
 
 ## Requirements
 
 - Create an initial Slidev deck in `slides.md`.
 - Include slide structure for current confirmed findings and planned repros.
-- Add dedicated slides for the planned select-multiple and calendar-picker repros.
+- Add dedicated slides for the planned multi-select and calendar-picker repros.
 - Keep the deck aligned with the repo's engineering findings instead of generic conference filler.
 - Verify the deck builds successfully with Slidev.
 
 ## Current Session Focus
 
-- Replace the placeholder select-multiple and calendar-picker slides with confirmed findings from the working demos.
+- Replace the placeholder multi-select and calendar-picker slides with confirmed findings from the working demos.
 - Keep the deck grounded in observed Angular-vs-native JSON output instead of speculative slide content.
 - Add rationale in the slide captions for why each repro setup is valid, especially around checkbox `checked` semantics and commit-style controls.

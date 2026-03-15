@@ -41,19 +41,19 @@ Seeded from the `README.md` heading `Aliasing / Build Config`.
 - `apps/boxes-angular/tsconfig.json` resolves that alias to `dist/libs/boxes/*` inside the same monorepo.
 - This dist-alias path exists by design in the current repo because Angular is not consuming the raw `libs/boxes/src/*` source directly.
 - The `boxes` library can emit external `.js.map` files for its built output.
-- The transpiled library files in `dist/libs/boxes/*.js` still include `//# sourceMappingURL=...` comments such as `//# sourceMappingURL=combo-box.js.map`.
+- The transpiled library files in `dist/libs/boxes/*.js` still include `//# sourceMappingURL=...` comments such as `//# sourceMappingURL=combobox.js.map`.
 - `apps/boxes-angular` development builds can enable Angular sourcemaps with `scripts`, `styles`, and `vendor` all turned on.
 - Even with both of those in place, Angular's emitted `dist/apps/boxes-angular/browser/main.js.map` still points to:
   - `dist/libs/boxes/property-DhOurD-o.js`
   - `dist/libs/boxes/query-DMPvxsdM.js`
-  - `dist/libs/boxes/combo-box.js`
+  - `dist/libs/boxes/combobox.js`
   - `dist/libs/boxes/checkbox.js`
-  - `dist/libs/boxes/select-multiple.js`
+  - `dist/libs/boxes/multi-select.js`
   - `dist/libs/boxes/calendar-picker.js`
 - The Angular bundle map embeds the transpiled library files as `sourcesContent`, which is why Chrome DevTools can still show the built JavaScript.
 - The Angular dev server serves `main.js.map`, but it does **not** serve the aliased library URLs:
-  - `/dist/libs/boxes/combo-box.js` -> `404`
-  - `/dist/libs/boxes/combo-box.js.map` -> `404`
+  - `/dist/libs/boxes/combobox.js` -> `404`
+  - `/dist/libs/boxes/combobox.js.map` -> `404`
 - Because that second-level sourcemap URL is not served to the browser, Chrome DevTools cannot follow the library's `sourceMappingURL` comment back to `libs/boxes/src/*`.
 - Angular's Vite dev-server configuration explicitly allows `node_modules` and asset paths, while the Angular memory plugin serves only generated application output files. This supports the conclusion that the aliased `dist/libs/boxes/*` path is outside what the dev server exposes directly.
 - Not directly confirmed from the current repo: a browser request to `node_modules/@/boxes/*`. The emitted `main.js.map` references `dist/libs/boxes/*.js`, not `node_modules`.

@@ -27,10 +27,10 @@ export class CalendarPickerEl extends LitElement {
   @property({ reflect: true }) public placeholder = 'Choose a date';
   @property({ type: Boolean, reflect: true }) public required = false;
 
-  @state() private accessor _activeIndex = -1;
-  @state() private accessor _open = false;
-  @state() private accessor _options: CalendarPickerOption[] = [];
-  @state() private accessor _selectedIndex = -1;
+  @state() private _activeIndex = -1;
+  @state() private _open = false;
+  @state() private _options: CalendarPickerOption[] = [];
+  @state() private _selectedIndex = -1;
 
   @query('.calendar-trigger') private _triggerEl!: HTMLButtonElement;
 

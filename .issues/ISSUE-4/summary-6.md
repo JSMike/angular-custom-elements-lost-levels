@@ -2,12 +2,12 @@
 
 **Date:** 2026-03-14
 
-**Prompt/Ask:** Refactor `boxes-combo-box` so most helper functions and constants live on the class as member functions/properties, and export the combobox types instead of keeping them internal.
+**Prompt/Ask:** Refactor `boxes-combobox` so most helper functions and constants live on the class as member functions/properties, and export the combobox types instead of keeping them internal.
 
 ## Completed
-- Moved the standalone combobox helper logic into `ComboBoxEl` as private member methods.
-- Moved the action constants onto `ComboBoxEl` as a static member instead of keeping them as a module-level constant.
-- Converted `ComboBoxOption` from an internal interface to an exported type alias.
+- Moved the standalone combobox helper logic into `ComboboxEl` as private member methods.
+- Moved the action constants onto `ComboboxEl` as a static member instead of keeping them as a module-level constant.
+- Converted `ComboboxOption` from an internal interface to an exported type alias.
 - Exported the combobox action type so the file’s type surface is explicit.
 - Kept the runtime behavior unchanged.
 
@@ -19,7 +19,7 @@
 - This was an internal-structure cleanup within the existing `ISSUE-4` baseline implementation scope.
 
 ## Files Changed
-- `libs/boxes/src/combo-box/combo-box.ts` - Moved helper logic into the class and exported the combobox types.
+- `libs/boxes/src/combobox/combobox.ts` - Moved helper logic into the class and exported the combobox types.
 - `.issues/ISSUE-4/summary-6.md` - Recorded this cleanup session.
 
 ## Verification

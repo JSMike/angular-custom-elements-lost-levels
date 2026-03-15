@@ -8,7 +8,7 @@ Create the first Slidev deck for this repo so the presentation work can evolve a
 
 - [x] Create a new issue to track the Slidev deck work.
 - [x] Seed `slides.md` with deck headmatter and an initial slide structure.
-- [x] Add dedicated slides for the select-multiple and calendar-picker repros.
+- [x] Add dedicated slides for the multi-select and calendar-picker repros.
 - [x] Build the Slidev deck to verify the Markdown is valid.
 
 ## Notes

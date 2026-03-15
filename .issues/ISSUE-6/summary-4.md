@@ -25,13 +25,13 @@
 ## Verification
 - `npx nx build boxes`
 - `npx nx build boxes-angular --configuration development`
-- Parsed `dist/libs/boxes/combo-box.js.map` and confirmed it includes `../../../libs/boxes/src/combo-box/combo-box.ts`.
+- Parsed `dist/libs/boxes/combobox.js.map` and confirmed it includes `../../../libs/boxes/src/combobox/combobox.ts`.
 - Parsed `dist/apps/boxes-angular/browser/main.js.map` and confirmed its library-related entries still point only to:
   - `dist/libs/boxes/property-DhOurD-o.js`
   - `dist/libs/boxes/query-DMPvxsdM.js`
-  - `dist/libs/boxes/combo-box.js`
+  - `dist/libs/boxes/combobox.js`
   - `dist/libs/boxes/checkbox.js`
-  - `dist/libs/boxes/select-multiple.js`
+  - `dist/libs/boxes/multi-select.js`
   - `dist/libs/boxes/calendar-picker.js`
 - Confirmed the Angular bundle map does **not** include `libs/boxes/src/*`.
 

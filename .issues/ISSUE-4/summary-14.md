@@ -2,10 +2,10 @@
 
 **Date:** 2026-03-15
 
-**Prompt/Ask:** Create select-multiple and calendar FACE components, wire them into the plain-web and Angular demos, and confirm the Angular form issues.
+**Prompt/Ask:** Create multi-select and calendar FACE components, wire them into the plain-web and Angular demos, and confirm the Angular form issues.
 
 ## Completed
-- Added `boxes-select-multiple` as a form-associated multi-select control that submits repeated values under one field name while exposing a native-like scalar `value`.
+- Added `boxes-multi-select` as a form-associated multi-select control that submits repeated values under one field name while exposing a native-like scalar `value`.
 - Added `boxes-calendar-picker` as a form-associated commit-style picker that updates form participation and dispatches `change` without `input`.
 - Expanded `apps/boxes-web` into three separate baseline demos: the existing dependent combobox/checkbox flow, a multi-select demo, and a calendar-picker demo.
 - Expanded `apps/boxes-angular` into three matching repro sections so Angular form JSON and native `FormData` JSON are visible side by side for each control.
@@ -25,9 +25,9 @@
 - Verified the new mismatches in a browser against current Angular behavior.
 
 ## Files Changed
-- `libs/boxes/src/select-multiple/select-multiple.ts` - Added the FACE multi-select control.
-- `libs/boxes/src/select-multiple/select-multiple.scss` - Added multi-select styling.
-- `libs/boxes/src/select-multiple/index.ts` - Added the multi-select export entry.
+- `libs/boxes/src/multi-select/multi-select.ts` - Added the FACE multi-select control.
+- `libs/boxes/src/multi-select/multi-select.scss` - Added multi-select styling.
+- `libs/boxes/src/multi-select/index.ts` - Added the multi-select export entry.
 - `libs/boxes/src/calendar-picker/calendar-picker.ts` - Added the FACE calendar picker control.
 - `libs/boxes/src/calendar-picker/calendar-picker.scss` - Added calendar picker styling.
 - `libs/boxes/src/calendar-picker/index.ts` - Added the calendar picker export entry.

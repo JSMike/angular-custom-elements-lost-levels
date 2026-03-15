@@ -2,18 +2,18 @@
 
 **Date:** 2026-03-15
 
-**Prompt/Ask:** Seed the Slidev deck and include dedicated slides for the planned select-multiple and calendar-picker repros.
+**Prompt/Ask:** Seed the Slidev deck and include dedicated slides for the planned multi-select and calendar-picker repros.
 
 ## Completed
 - Created `ISSUE-9` to track the Slidev presentation work.
 - Seeded `slides.md` with an initial Slidev deck structure.
-- Added slides for the current confirmed findings and placeholder slides for the planned select-multiple and calendar-picker repros.
+- Added slides for the current confirmed findings and placeholder slides for the planned multi-select and calendar-picker repros.
 - Installed `@slidev/theme-default` so the local Slidev CLI could build the deck successfully.
 
 ## Current Status
 - `ISSUE-9` is in progress.
 - The deck now exists as a working scaffold rather than an empty file.
-- The select-multiple and calendar-picker repros each have dedicated slides marked as planned.
+- The multi-select and calendar-picker repros each have dedicated slides marked as planned.
 
 ## Plan Coverage
 - Completed the initial deck scaffold.
@@ -35,7 +35,7 @@
 - Confirmed the deck contains dedicated slides for:
   - checkbox repro
   - monorepo sourcemap repro
-  - select-multiple repro
+  - multi-select repro
   - calendar-picker repro
 
 ## Next Steps

@@ -5,7 +5,7 @@
 **Prompt/Ask:** Revert the manual change that made the combobox emit `change` for programmatic value updates.
 
 ## Completed
-- Restored native-like event behavior for `boxes-combo-box` so programmatic `.value` assignment no longer emits form events by default.
+- Restored native-like event behavior for `boxes-combobox` so programmatic `.value` assignment no longer emits form events by default.
 - Reverted `_commitSelection()` to dispatch `input` and `change` only for user-driven selection changes.
 
 ## Current Status
@@ -16,7 +16,7 @@
 - Tightened the baseline FACE fixture to preserve native event semantics for later Angular comparisons.
 
 ## Files Changed
-- `libs/boxes/src/combo-box/combo-box.ts` - Reverted event dispatch so programmatic selection updates do not emit `input`/`change`.
+- `libs/boxes/src/combobox/combobox.ts` - Reverted event dispatch so programmatic selection updates do not emit `input`/`change`.
 - `.issues/ISSUE-4/summary-13.md` - Recorded this session.
 
 ## Verification

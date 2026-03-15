@@ -22,11 +22,11 @@
 
 ## Verification
 - Parsed `dist/apps/boxes-angular/browser/main.js.map` and confirmed it contains `dist/libs/boxes/*.js` plus `sourcesContent`.
-- Confirmed `dist/libs/boxes/combo-box.js` includes `//# sourceMappingURL=combo-box.js.map`.
+- Confirmed `dist/libs/boxes/combobox.js` includes `//# sourceMappingURL=combobox.js.map`.
 - Live server checks against `http://127.0.0.1:4200`:
   - `/main.js.map` -> `200`
-  - `/dist/libs/boxes/combo-box.js` -> `404`
-  - `/dist/libs/boxes/combo-box.js.map` -> `404`
+  - `/dist/libs/boxes/combobox.js` -> `404`
+  - `/dist/libs/boxes/combobox.js.map` -> `404`
 - Inspected:
   - `node_modules/@angular/build/src/builders/dev-server/vite/server.js`
   - `node_modules/@angular/build/src/tools/vite/plugins/angular-memory-plugin.js`

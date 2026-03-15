@@ -1,8 +1,11 @@
 /// <reference types='vitest' />
+import path from 'node:path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
+
+const boxesSourceRoot = path.resolve(import.meta.dirname, '../../libs/boxes/src');
 
 export default defineConfig(() => ({
   root: import.meta.dirname,
@@ -15,14 +18,21 @@ export default defineConfig(() => ({
     port: 4300,
     host: 'localhost',
   },
+  resolve: {
+    alias: [
+      {
+        find: /^@\/boxes\/(.+)$/,
+        replacement: path.join(boxesSourceRoot, '$1'),
+      },
+    ],
+  },
   plugins: [
     react({
-      plugins: [],
       tsDecorators: true,
       useAtYourOwnRisk_mutateSwcOptions(options) {
-        options.jsc ??= {};
-        options.jsc.transform ??= {};
-        options.jsc.transform.useDefineForClassFields = false;
+        if (options.jsc && options.jsc.transform) {
+          options.jsc.transform.useDefineForClassFields = false;
+        }
       },
     }),
     nxViteTsPaths(),
