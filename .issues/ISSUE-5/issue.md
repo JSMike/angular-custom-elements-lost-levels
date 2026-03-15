@@ -3,7 +3,7 @@
 <!-- Metadata -->
 | Field        | Value            |
 |--------------|------------------|
-| Status       | backlog          |
+| Status       | in-progress      |
 | Owner        | TBD              |
 | Complexity   | medium           |
 | Created      | 2026-03-14       |
@@ -15,7 +15,7 @@
 
 ## Summary
 
-Reproduce how Angular SSR and hydration behave when pages render custom elements before those elements are defined on the client.
+Reproduce how Angular SSR and hydration behave when pages render custom elements before those elements are defined on the client, with a React/Next.js SSR baseline for comparison.
 
 ## Prompt
 
@@ -24,6 +24,7 @@ Seeded from the `README.md` heading `SSR`.
 ## Requirements
 
 - Create a minimal Angular SSR reproduction that renders one or more custom elements.
+- Create a Next.js baseline that uses `@lit-labs/nextjs` to server-render the same controls outside Angular.
 - Document server-rendered output, client upgrade behavior, and hydration results.
 - Capture warnings, mismatches, broken interactions, or timing issues.
 - Compare Angular behavior with a non-Angular baseline where useful.

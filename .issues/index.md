@@ -8,6 +8,7 @@ Generated: 2026-03-15
 
 | ID                            | Title                                                                 | Complexity | Blocked By |
 | ----------------------------- | --------------------------------------------------------------------- | ---------- | ---------- |
+| [ISSUE-5](./ISSUE-5/issue.md) | Investigate Angular SSR and hydration with custom elements            | medium     |            |
 | [ISSUE-10](./ISSUE-10/issue.md) | Expand and polish slides for Angular custom-element investigation issues | medium     | ISSUE-5, ISSUE-8 |
 
 ### Ready
@@ -19,8 +20,8 @@ Generated: 2026-03-15
 
 | ID                            | Title                                                                    | Complexity | Priority | Blocked By |
 | ----------------------------- | ------------------------------------------------------------------------ | ---------- | -------- | ---------- |
-| [ISSUE-5](./ISSUE-5/issue.md) | Investigate Angular SSR and hydration with custom elements               | medium     | medium   |            |
 | [ISSUE-8](./ISSUE-8/issue.md) | Investigate Angular template binding semantics with custom elements      | medium     | high     |            |
+| [ISSUE-15](./ISSUE-15/issue.md) | Follow up with `@lit-labs/ssr-react` on child-driven custom-element SSR hydration mismatch | medium     | medium   |            |
 
 ### Review
 

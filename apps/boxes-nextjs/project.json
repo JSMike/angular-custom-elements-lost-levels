@@ -1,0 +1,9 @@
+{
+  "name": "boxes-nextjs",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/boxes-nextjs/src",
+  "projectType": "application",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project boxes-nextjs --web",
+  "targets": {}
+}

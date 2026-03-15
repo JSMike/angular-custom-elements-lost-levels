@@ -1,4 +1,4 @@
-import { html, LitElement, unsafeCSS } from 'lit';
+import { html, LitElement, nothing, unsafeCSS } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import hostStyles from './combobox.scss?inline';
@@ -95,7 +95,6 @@ export class ComboboxEl extends LitElement {
     super.connectedCallback();
     this.addEventListener('focus', this._handleHostFocus);
     this._syncHostFocusability();
-    this._syncOptionsFromLightDom();
   }
 
   public override disconnectedCallback() {
@@ -157,8 +156,13 @@ export class ComboboxEl extends LitElement {
     }
   }
 
+  protected override firstUpdated() {
+    this._syncOptionsFromLightDom();
+  }
+
   override render() {
     const selectedOption = this._options[this._selectedIndex];
+    const selectedLabel = selectedOption?.label ?? nothing;
     const controlLabelIds =
       this.getAttribute('aria-labelledby') ?? this._getAssociatedLabelIds();
     const ariaLabel = controlLabelIds
@@ -190,7 +194,7 @@ export class ComboboxEl extends LitElement {
           @click="${this._handleComboClick}"
           @keydown="${this._handleComboKeyDown}"
         >
-          ${selectedOption?.label ?? ''}
+          ${selectedLabel}
         </div>
         <div
           id="${this._getListboxId()}"

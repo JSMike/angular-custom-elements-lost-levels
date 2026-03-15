@@ -80,7 +80,6 @@ export class CalendarPickerEl extends LitElement {
     super.connectedCallback();
     this.addEventListener('focus', this._handleHostFocus);
     this._syncHostFocusability();
-    this._syncOptionsFromLightDom();
   }
 
   public override disconnectedCallback() {
@@ -129,6 +128,10 @@ export class CalendarPickerEl extends LitElement {
       this._syncHostFocusability();
       this._updateFormState();
     }
+  }
+
+  protected override firstUpdated() {
+    this._syncOptionsFromLightDom();
   }
 
   override render() {

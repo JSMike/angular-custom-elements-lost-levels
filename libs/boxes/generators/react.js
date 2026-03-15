@@ -76,7 +76,39 @@ function buildTypingsFile(components) {
     '  Partial<ComponentPropertyMap[Tag]> &',
     '  Partial<ComponentEventMap[Tag]>;',
     '',
+    "declare module 'react' {",
+    '  namespace JSX {',
+    '    interface IntrinsicElements {',
+  );
+
+  for (const component of components) {
+    lines.push(
+      `      '${component.tagName}': ComponentProps<'${component.tagName}'>;`,
+    );
+  }
+
+  lines.push(
+    '    }',
+    '  }',
+    '}',
+    '',
     "declare module 'react/jsx-runtime' {",
+    '  namespace JSX {',
+    '    interface IntrinsicElements {',
+  );
+
+  for (const component of components) {
+    lines.push(
+      `      '${component.tagName}': ComponentProps<'${component.tagName}'>;`,
+    );
+  }
+
+  lines.push(
+    '    }',
+    '  }',
+    '}',
+    '',
+    'declare global {',
     '  namespace JSX {',
     '    interface IntrinsicElements {',
   );

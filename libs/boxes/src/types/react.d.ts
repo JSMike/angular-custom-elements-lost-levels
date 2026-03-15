@@ -80,7 +80,29 @@ type ComponentProps<Tag extends ComponentTagName> = Omit<
   Partial<ComponentPropertyMap[Tag]> &
   Partial<ComponentEventMap[Tag]>;
 
+declare module 'react' {
+  namespace JSX {
+    interface IntrinsicElements {
+      'boxes-calendar-picker': ComponentProps<'boxes-calendar-picker'>;
+      'boxes-checkbox': ComponentProps<'boxes-checkbox'>;
+      'boxes-combobox': ComponentProps<'boxes-combobox'>;
+      'boxes-multi-select': ComponentProps<'boxes-multi-select'>;
+    }
+  }
+}
+
 declare module 'react/jsx-runtime' {
+  namespace JSX {
+    interface IntrinsicElements {
+      'boxes-calendar-picker': ComponentProps<'boxes-calendar-picker'>;
+      'boxes-checkbox': ComponentProps<'boxes-checkbox'>;
+      'boxes-combobox': ComponentProps<'boxes-combobox'>;
+      'boxes-multi-select': ComponentProps<'boxes-multi-select'>;
+    }
+  }
+}
+
+declare global {
   namespace JSX {
     interface IntrinsicElements {
       'boxes-calendar-picker': ComponentProps<'boxes-calendar-picker'>;
