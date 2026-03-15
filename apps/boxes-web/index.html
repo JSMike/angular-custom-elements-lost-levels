@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Boxes - Web</title>
+    <base href="/" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/src/styles.scss" />
+    <style>
+      body:has(
+        boxes-combo-box:not(:defined),
+        boxes-checkbox:not(:defined),
+        boxes-select-multiple:not(:defined),
+        boxes-calendar-picker:not(:defined)
+      ) {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="demo-stack">
+      <section class="demo-card">
+        <h1>Vanilla FACE Baselines</h1>
+        <p>
+          These forms show what the browser currently thinks would be submitted
+          over the wire before Angular is involved.
+        </p>
+      </section>
+
+      <section class="demo-card">
+        <h2>Simple Combobox</h2>
+        <p>
+          This is the control-group example: a select-only FACE control with a
+          single scalar <code>value</code> and ordinary form participation.
+        </p>
+        <form id="combo-demo-form" class="demo-form">
+          <label>
+            Produce choice
+            <boxes-combo-box id="produce-field" name="produce" required>
+              <option value="" selected>Choose a produce item</option>
+              <option value="blueberry">Blueberry</option>
+              <option value="lemon">Lemon</option>
+              <option value="mango">Mango</option>
+            </boxes-combo-box>
+          </label>
+
+          <div class="button-row">
+            <button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+          </div>
+        </form>
+        <p>Current FormData JSON</p>
+        <pre id="combo-result"></pre>
+      </section>
+
+      <section class="demo-card">
+        <h2>Checkbox Control</h2>
+        <p>
+          This setup is valid because checkbox-like controls are driven by
+          <code>checked</code>, not by a scalar text-like <code>value</code>.
+          When the box is unchecked, the field disappears from native
+          <code>FormData</code> entirely.
+        </p>
+        <form id="checkbox-demo-form" class="demo-form">
+          <label class="checkbox-row">
+            <boxes-checkbox
+              id="confirmation-field"
+              name="confirmedProduce"
+              value="confirmed"
+            ></boxes-checkbox>
+            <span>Confirm the produce selection</span>
+          </label>
+
+          <div class="button-row">
+            <button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+          </div>
+        </form>
+        <p>Current FormData JSON</p>
+        <pre id="checkbox-result"></pre>
+      </section>
+
+      <section class="demo-card">
+        <h2>Multi-Select Control</h2>
+        <p>
+          This setup is valid because a multi-select submits a collection. The
+          native shape is repeated <code>produceTags</code> entries, not one
+          scalar value. Because this control is still select-like, it keeps both
+          <code>input</code> and <code>change</code> rather than forcing a
+          change-only contract.
+        </p>
+        <form id="multi-select-demo-form" class="demo-form">
+          <label>
+            Produce tags
+            <boxes-select-multiple
+              id="produce-tags-field"
+              name="produceTags"
+              required
+            >
+              <option value="fresh">Fresh</option>
+              <option value="imported">Imported</option>
+              <option value="organic">Organic</option>
+              <option value="seasonal">Seasonal</option>
+            </boxes-select-multiple>
+          </label>
+
+          <div class="button-row">
+            <button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+          </div>
+        </form>
+        <p>Current FormData JSON</p>
+        <pre id="multi-select-result"></pre>
+      </section>
+
+      <section class="demo-card">
+        <h2>Calendar Picker</h2>
+        <p>
+          This setup is valid because choosing a date from a calendar grid is a
+          commit action. There is no incremental text edit stream, so
+          <code>change</code> is the meaningful event and omitting
+          <code>input</code> is a reasonable implementation choice.
+        </p>
+        <form id="calendar-demo-form" class="demo-form">
+          <label>
+            Delivery date
+            <boxes-calendar-picker
+              id="delivery-date-field"
+              name="deliveryDate"
+              placeholder="Choose a delivery date"
+              required
+            >
+              <option value="2026-03-16">Mon 16</option>
+              <option value="2026-03-17">Tue 17</option>
+              <option value="2026-03-18">Wed 18</option>
+              <option value="2026-03-19">Thu 19</option>
+              <option value="2026-03-20">Fri 20</option>
+              <option value="2026-03-21">Sat 21</option>
+              <option value="2026-03-22">Sun 22</option>
+            </boxes-calendar-picker>
+          </label>
+
+          <div class="button-row">
+            <button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+          </div>
+        </form>
+        <p>Current FormData JSON</p>
+        <pre id="calendar-result"></pre>
+      </section>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

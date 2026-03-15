@@ -1,0 +1,113 @@
+:host {
+  display: block;
+}
+
+:host([hidden]) {
+  display: none;
+}
+
+:host([fullwidth]) .calendar-picker {
+  max-width: none;
+}
+
+.calendar-picker {
+  margin-bottom: 1.5em;
+  margin-top: 0.25rem;
+  max-width: 420px;
+  position: relative;
+}
+
+.calendar-trigger {
+  align-items: center;
+  background-color: #f5f5f5;
+  border: 2px solid rgb(0 0 0 / 75%);
+  border-radius: 0.75rem;
+  cursor: default;
+  display: flex;
+  font: inherit;
+  justify-content: space-between;
+  min-height: calc(1.4em + 26px);
+  padding: 0.9rem 1rem;
+  text-align: left;
+  width: 100%;
+}
+
+.calendar-trigger::after {
+  border-bottom: 2px solid rgb(0 0 0 / 75%);
+  border-right: 2px solid rgb(0 0 0 / 75%);
+  content: '';
+  display: block;
+  flex: 0 0 auto;
+  height: 12px;
+  margin-left: 0.75rem;
+  transform: rotate(45deg);
+  width: 12px;
+}
+
+.calendar-trigger:focus {
+  border-color: #0067b8;
+  box-shadow: 0 0 4px 2px #0067b8;
+  outline: 4px solid transparent;
+}
+
+.calendar-trigger:disabled {
+  background-color: #e7e7e7;
+  color: rgb(0 0 0 / 60%);
+  cursor: not-allowed;
+}
+
+.calendar-placeholder {
+  color: rgb(0 0 0 / 55%);
+}
+
+.calendar-panel {
+  background-color: #f5f5f5;
+  border: 1px solid rgb(0 0 0 / 75%);
+  border-radius: 0.75rem;
+  box-shadow: 0 18px 40px rgb(0 0 0 / 12%);
+  display: none;
+  left: 0;
+  padding: 0.9rem;
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  width: 100%;
+  z-index: 10;
+}
+
+.open .calendar-panel {
+  display: block;
+}
+
+.calendar-grid {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.calendar-date {
+  align-items: center;
+  background: #fff;
+  border: 1px solid rgb(0 0 0 / 15%);
+  border-radius: 0.5rem;
+  cursor: default;
+  display: flex;
+  font: inherit;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0.65rem 0.25rem;
+}
+
+.calendar-date[aria-disabled='true'] {
+  color: rgb(0 0 0 / 45%);
+}
+
+.calendar-date[aria-pressed='true'] {
+  background-color: rgb(0 103 184 / 10%);
+  border-color: rgb(0 103 184 / 45%);
+  color: #004578;
+}
+
+.calendar-date.date-current {
+  outline: 3px solid #0067b8;
+  outline-offset: 2px;
+}

@@ -12,14 +12,16 @@ const srcDir = path.resolve(__dirname, 'src');
 const entries = fs
   .readdirSync(srcDir, { withFileTypes: true })
   .filter(
-    (entry) => entry.isDirectory() && fs.existsSync(path.join(srcDir, entry.name, 'index.ts'))
+    (entry) =>
+      entry.isDirectory() &&
+      fs.existsSync(path.join(srcDir, entry.name, 'index.ts')),
   )
   .map((entry) => entry.name)
   .reduce((cur, next) => {
     return {
       ...cur,
-      [next]: path.join(srcDir, next, 'index.ts')
-    }
+      [next]: path.join(srcDir, next, 'index.ts'),
+    };
   }, {});
 
 export default defineConfig(() => ({
@@ -44,6 +46,7 @@ export default defineConfig(() => ({
     outDir: '../../dist/libs/boxes',
     emptyOutDir: true,
     reportCompressedSize: true,
+    sourcemap: true,
     commonjsOptions: {
       transformMixedEsModules: true,
     },
@@ -61,20 +64,23 @@ export default defineConfig(() => ({
           inputFolder: __dirname,
           baseContents: (pkg: any) => ({
             ...pkg,
-            exports: Object.keys(entries).reduce((acc: any, entry: string) => {
-              acc[`./${entry}`] = {
-                types: `./${entry}/index.d.ts`,
-                default: `./${entry}.js`
-              };
-              return acc;
-            }, {
-              './package.json': {
-                default: './package.json'
+            exports: Object.keys(entries).reduce(
+              (acc: any, entry: string) => {
+                acc[`./${entry}`] = {
+                  types: `./${entry}/index.d.ts`,
+                  default: `./${entry}.js`,
+                };
+                return acc;
               },
-            }),
-          })
-        })
-      ]
+              {
+                './package.json': {
+                  default: './package.json',
+                },
+              },
+            ),
+          }),
+        }),
+      ],
     },
   },
 }));

@@ -1,446 +1,800 @@
 import { html, LitElement, unsafeCSS } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { customElement, property, query, state } from 'lit/decorators.js';
 import hostStyles from './combo-box.scss?inline';
 
 export const ComboBox = 'boxes-combo-box';
 
+export type ComboBoxOption = {
+  label: string;
+  value: string;
+  disabled: boolean;
+};
+
 @customElement(ComboBox)
 export class ComboBoxEl extends LitElement {
   static override styles = unsafeCSS(hostStyles);
+  static override shadowRootOptions = {
+    ...LitElement.shadowRootOptions,
+    delegatesFocus: true,
+  };
+  static formAssociated = true;
+  static readonly selectActions = {
+    Close: 0,
+    CloseSelect: 1,
+    First: 2,
+    Last: 3,
+    Next: 4,
+    Open: 5,
+    PageDown: 6,
+    PageUp: 7,
+    Previous: 8,
+    Type: 9,
+  } as const;
+  private static _comboBoxId = 0;
 
+  @property({ type: Boolean, reflect: true }) public disabled = false;
   @property({ type: Boolean, reflect: true }) public fullwidth = false;
+  @property({ type: Boolean, reflect: true }) public required = false;
+
+  @state() private accessor _activeIndex = -1;
+  @state() private accessor _open = false;
+  @state() private accessor _options: ComboBoxOption[] = [];
+  @state() private accessor _selectedIndex = -1;
+
+  @query('.combo-input') private _comboEl!: HTMLDivElement;
+  @query('.combo-menu') private _listboxEl!: HTMLDivElement;
+
+  private readonly _baseId = `${ComboBox}-${(ComboBoxEl._comboBoxId += 1)}`;
+  private readonly _internals: ElementInternals;
+  private _defaultSelectedIndex = -1;
+  private _formDisabled = false;
+  private _ignoreBlur = false;
+  private _searchString = '';
+  private _searchTimeout?: number;
+
+  public constructor() {
+    super();
+    this._internals = this.attachInternals();
+  }
+
+  public get form() {
+    return this._internals.form;
+  }
+
+  public get labels() {
+    return this._internals.labels;
+  }
+
+  public get name() {
+    return this.getAttribute('name') ?? '';
+  }
+
+  public get type() {
+    return this.localName;
+  }
+
+  public get validationMessage() {
+    return this._internals.validationMessage;
+  }
+
+  public get validity() {
+    return this._internals.validity;
+  }
+
+  public get value() {
+    return this._options[this._selectedIndex]?.value ?? '';
+  }
+
+  public set value(nextValue: string) {
+    this._selectByValue(nextValue, false);
+  }
+
+  public get willValidate() {
+    return this._internals.willValidate;
+  }
+
+  public override connectedCallback() {
+    super.connectedCallback();
+    this.addEventListener('focus', this._handleHostFocus);
+    this._syncHostFocusability();
+    this._syncOptionsFromLightDom();
+  }
+
+  public override disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEventListener('focus', this._handleHostFocus);
+
+    if (this._searchTimeout !== undefined) {
+      window.clearTimeout(this._searchTimeout);
+    }
+  }
+
+  public override focus(options?: FocusOptions) {
+    this._comboEl?.focus(options);
+  }
+
+  public checkValidity() {
+    return this._internals.checkValidity();
+  }
+
+  public formDisabledCallback(disabled: boolean) {
+    this._formDisabled = disabled;
+    this._syncHostFocusability();
+    this._updateFormState();
+
+    if (disabled) {
+      this._updateMenuState(false, false);
+    }
+  }
+
+  public formResetCallback() {
+    this._commitSelection(this._defaultSelectedIndex, false);
+    this._updateMenuState(false, false);
+  }
+
+  public formStateRestoreCallback(state: string | File | FormData | null) {
+    if (typeof state === 'string') {
+      this._selectByValue(state, false);
+    }
+  }
+
+  public reportValidity() {
+    return this._internals.reportValidity();
+  }
+
+  protected override updated(changedProperties: Map<string, unknown>) {
+    if (
+      changedProperties.has('disabled') ||
+      changedProperties.has('required')
+    ) {
+      this._syncHostFocusability();
+      this._updateFormState();
+    }
+
+    if (
+      changedProperties.has('_open') ||
+      changedProperties.has('_activeIndex')
+    ) {
+      this._syncScrollPosition();
+    }
+  }
 
   override render() {
+    const selectedOption = this._options[this._selectedIndex];
+    const controlLabelIds =
+      this.getAttribute('aria-labelledby') ?? this._getAssociatedLabelIds();
+    const ariaLabel = controlLabelIds
+      ? undefined
+      : (this.getAttribute('aria-label') ?? undefined);
+    const activeDescendant =
+      this._open && this._activeIndex >= 0
+        ? this._getOptionId(this._activeIndex)
+        : undefined;
+
     return html`
-      <div class="combo js-select">
-        <div id="combo1-label" class="combo-label"><slot name="Label"></slot></div>
-        <div aria-controls="listbox1" aria-expanded="false" aria-haspopup="listbox" aria-labelledby="combo1-label" id="combo1" class="combo-input" role="combobox" tabindex="0"></div>
-        <div class="combo-menu" role="listbox" id="listbox1" aria-labelledby="combo1-label" tabindex="-1"></div>
+      <div class="combo js-select ${this._open ? 'open' : ''}">
+        <div
+          id="${this._getComboId()}"
+          class="combo-input"
+          role="combobox"
+          tabindex="-1"
+          aria-activedescendant="${ifDefined(activeDescendant)}"
+          aria-controls="${this._getListboxId()}"
+          aria-autocomplete="none"
+          aria-disabled="${String(this._isDisabled())}"
+          aria-expanded="${String(this._open)}"
+          aria-haspopup="listbox"
+          aria-invalid="${String(!this.validity.valid)}"
+          aria-label="${ifDefined(ariaLabel)}"
+          aria-labelledby="${ifDefined(controlLabelIds || undefined)}"
+          aria-required="${ifDefined(this.required ? 'true' : undefined)}"
+          @blur="${this._handleComboBlur}"
+          @click="${this._handleComboClick}"
+          @keydown="${this._handleComboKeyDown}"
+        >
+          ${selectedOption?.label ?? ''}
+        </div>
+        <div
+          id="${this._getListboxId()}"
+          class="combo-menu"
+          role="listbox"
+          aria-labelledby="${ifDefined(controlLabelIds || undefined)}"
+        >
+          ${this._options.map((option, index) => {
+            const isActive = index === this._activeIndex;
+            const isSelected = index === this._selectedIndex;
+
+            return html`
+              <div
+                id="${this._getOptionId(index)}"
+                class="combo-option ${isActive ? 'option-current' : ''}"
+                data-index="${index}"
+                role="option"
+                aria-disabled="${String(option.disabled)}"
+                aria-selected="${String(isSelected)}"
+                @click="${this._handleOptionClick}"
+                @mousedown="${this._handleOptionMouseDown}"
+              >
+                ${option.label}
+              </div>
+            `;
+          })}
+        </div>
+        <slot hidden @slotchange="${this._handleOptionsSlotChange}"></slot>
       </div>
     `;
   }
+
+  private _commitSelection(index: number, emitEvents: boolean) {
+    const normalizedIndex = this._normalizeSelectionIndex(index);
+    const previousValue = this.value;
+    const nextValue =
+      normalizedIndex >= 0 ? (this._options[normalizedIndex]?.value ?? '') : '';
+    const changed =
+      previousValue !== nextValue || this._selectedIndex !== normalizedIndex;
+
+    this._selectedIndex = normalizedIndex;
+    this._activeIndex = normalizedIndex;
+    this._syncLightDomSelection();
+    this._updateFormState();
+
+    if (emitEvents && changed) {
+      this.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+      this.dispatchEvent(
+        new Event('change', { bubbles: true, composed: true }),
+      );
+    }
+  }
+
+  private _getAssociatedLabelIds() {
+    const labels = this.labels
+      ? Array.from(this.labels as NodeListOf<HTMLLabelElement>)
+      : [];
+
+    if (labels.length === 0) {
+      return '';
+    }
+
+    return labels
+      .map((label, index) => {
+        if (!label.id) {
+          label.id = `${this._baseId}-label-${index + 1}`;
+        }
+
+        return label.id;
+      })
+      .join(' ');
+  }
+
+  private _getComboId() {
+    return `${this._baseId}-combo`;
+  }
+
+  private _getEnabledIndex(index: number, step: 1 | -1) {
+    for (
+      let candidate = index;
+      candidate >= 0 && candidate < this._options.length;
+      candidate += step
+    ) {
+      if (!this._options[candidate]?.disabled) {
+        return candidate;
+      }
+    }
+
+    return -1;
+  }
+
+  private _getFirstEnabledIndex() {
+    return this._getEnabledIndex(0, 1);
+  }
+
+  private _getLastEnabledIndex() {
+    return this._getEnabledIndex(this._options.length - 1, -1);
+  }
+
+  private _getLightOptions() {
+    return Array.from(this.querySelectorAll('option'));
+  }
+
+  private _getListboxId() {
+    return `${this._baseId}-listbox`;
+  }
+
+  private _getNavigableIndex(action: SelectAction) {
+    if (this._options.length === 0) {
+      return -1;
+    }
+
+    if (action === ComboBoxEl.selectActions.First) {
+      return this._getFirstEnabledIndex();
+    }
+
+    if (action === ComboBoxEl.selectActions.Last) {
+      return this._getLastEnabledIndex();
+    }
+
+    const fallbackIndex =
+      this._activeIndex >= 0 ? this._activeIndex : this._selectedIndex;
+    const currentIndex =
+      fallbackIndex >= 0 ? fallbackIndex : this._getFirstEnabledIndex();
+
+    if (currentIndex < 0) {
+      return -1;
+    }
+
+    const targetIndex = this._getUpdatedIndex(
+      currentIndex,
+      this._options.length - 1,
+      action,
+    );
+    const direction: 1 | -1 =
+      action === ComboBoxEl.selectActions.Previous ||
+      action === ComboBoxEl.selectActions.PageUp
+        ? -1
+        : 1;
+
+    return this._getEnabledIndex(targetIndex, direction);
+  }
+
+  private _getOptionId(index: number) {
+    return `${this._baseId}-option-${index}`;
+  }
+
+  private _handleComboBlur = (event: FocusEvent) => {
+    if (this._ignoreBlur) {
+      this._ignoreBlur = false;
+      this._comboEl?.focus();
+      return;
+    }
+
+    const relatedTarget = event.relatedTarget as Node | null;
+
+    if (relatedTarget && this.renderRoot.contains(relatedTarget)) {
+      return;
+    }
+
+    if (this._open) {
+      this._commitSelection(this._activeIndex, true);
+      this._updateMenuState(false, false);
+    }
+  };
+
+  private _handleComboClick = () => {
+    if (this._isDisabled()) {
+      return;
+    }
+
+    this._updateMenuState(!this._open, false);
+  };
+
+  private _handleComboKeyDown = (event: KeyboardEvent) => {
+    if (this._isDisabled() || this._options.length === 0) {
+      return;
+    }
+
+    const action = this._getActionFromKey(event, this._open);
+
+    if (action === undefined) {
+      return;
+    }
+
+    switch (action) {
+      case ComboBoxEl.selectActions.First:
+      case ComboBoxEl.selectActions.Last:
+      case ComboBoxEl.selectActions.Next:
+      case ComboBoxEl.selectActions.Previous:
+      case ComboBoxEl.selectActions.PageUp:
+      case ComboBoxEl.selectActions.PageDown: {
+        event.preventDefault();
+        this._updateMenuState(true, false);
+        this._onOptionChange(this._getNavigableIndex(action));
+        return;
+      }
+      case ComboBoxEl.selectActions.CloseSelect:
+        event.preventDefault();
+        this._commitSelection(this._activeIndex, true);
+        this._updateMenuState(false);
+        return;
+      case ComboBoxEl.selectActions.Close:
+        event.preventDefault();
+        this._updateMenuState(false);
+        return;
+      case ComboBoxEl.selectActions.Type:
+        this._onComboType(event.key);
+        return;
+      case ComboBoxEl.selectActions.Open:
+        event.preventDefault();
+        this._updateMenuState(true);
+        return;
+      default:
+        return;
+    }
+  };
+
+  private _handleHostFocus = (event: FocusEvent) => {
+    if (event.target !== this || this._isDisabled()) {
+      return;
+    }
+
+    this._comboEl?.focus();
+  };
+
+  private _handleOptionClick = (event: Event) => {
+    const target = event.currentTarget as HTMLElement;
+    const index = Number(target.dataset.index);
+
+    if (!Number.isFinite(index) || this._options[index]?.disabled) {
+      return;
+    }
+
+    this._onOptionChange(index);
+    this._commitSelection(index, true);
+    this._updateMenuState(false);
+  };
+
+  private _handleOptionMouseDown = () => {
+    this._ignoreBlur = true;
+  };
+
+  private _handleOptionsSlotChange = () => {
+    this._syncOptionsFromLightDom();
+  };
+
+  private _isDisabled() {
+    return this.disabled || this._formDisabled;
+  }
+
+  private _normalizeSelectionIndex(index: number) {
+    if (index < 0 || index >= this._options.length) {
+      return -1;
+    }
+
+    if (!this._options[index]?.disabled) {
+      return index;
+    }
+
+    const nextEnabled = this._getEnabledIndex(index + 1, 1);
+
+    if (nextEnabled >= 0) {
+      return nextEnabled;
+    }
+
+    return this._getEnabledIndex(index - 1, -1);
+  }
+
+  private _onComboType(letter: string) {
+    this._updateMenuState(true, false);
+
+    if (this._searchTimeout !== undefined) {
+      window.clearTimeout(this._searchTimeout);
+    }
+
+    this._searchTimeout = window.setTimeout(() => {
+      this._searchString = '';
+    }, 500);
+
+    this._searchString += letter;
+
+    const searchIndex = this._getIndexByLetter(
+      this._options,
+      this._searchString,
+      Math.max(0, this._activeIndex + 1),
+    );
+
+    if (searchIndex >= 0) {
+      this._onOptionChange(searchIndex);
+      return;
+    }
+
+    if (this._searchTimeout !== undefined) {
+      window.clearTimeout(this._searchTimeout);
+    }
+
+    this._searchString = '';
+  }
+
+  private _onOptionChange(index: number) {
+    if (
+      index < 0 ||
+      index >= this._options.length ||
+      this._options[index]?.disabled
+    ) {
+      return;
+    }
+
+    this._activeIndex = index;
+  }
+
+  private _selectByValue(value: string, emitEvents: boolean) {
+    const selectedIndex = this._options.findIndex(
+      (option) => option.value === value,
+    );
+    this._commitSelection(selectedIndex, emitEvents);
+  }
+
+  private _syncHostFocusability() {
+    this.tabIndex = this._isDisabled() ? -1 : 0;
+  }
+
+  private _syncLightDomSelection() {
+    this._getLightOptions().forEach((option, index) => {
+      option.selected = index === this._selectedIndex;
+    });
+  }
+
+  private _syncOptionsFromLightDom() {
+    const lightOptions = this._getLightOptions();
+    const currentValue = this.value;
+
+    this._options = lightOptions.map((option) => ({
+      disabled: option.disabled,
+      label: option.label || option.textContent?.trim() || '',
+      value: option.hasAttribute('value')
+        ? option.value
+        : option.label || option.textContent?.trim() || '',
+    }));
+
+    this._defaultSelectedIndex = lightOptions.findIndex(
+      (option) => option.defaultSelected,
+    );
+
+    if (this._defaultSelectedIndex < 0 && this._options.length > 0) {
+      this._defaultSelectedIndex = 0;
+    }
+
+    let nextSelectedIndex =
+      currentValue !== ''
+        ? this._options.findIndex((option) => option.value === currentValue)
+        : -1;
+
+    if (nextSelectedIndex < 0) {
+      nextSelectedIndex = lightOptions.findIndex((option) => option.selected);
+    }
+
+    if (nextSelectedIndex < 0) {
+      nextSelectedIndex = this._defaultSelectedIndex;
+    }
+
+    this._commitSelection(nextSelectedIndex, false);
+  }
+
+  private _syncScrollPosition() {
+    if (!this._open || this._activeIndex < 0) {
+      return;
+    }
+
+    const activeElement = this.renderRoot.querySelector<HTMLElement>(
+      `#${this._getOptionId(this._activeIndex)}`,
+    );
+
+    if (!activeElement) {
+      return;
+    }
+
+    if (this._isScrollable(this._listboxEl)) {
+      this._maintainScrollVisibility(activeElement, this._listboxEl);
+    }
+
+    if (!this._isElementInView(activeElement)) {
+      activeElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+
+  private _updateFormState() {
+    const selectedOption = this._options[this._selectedIndex];
+    const submissionValue = selectedOption ? selectedOption.value : null;
+    const restoreState = selectedOption ? selectedOption.value : '';
+    const controlAnchor = this._comboEl;
+
+    this._internals.setFormValue(submissionValue, restoreState);
+
+    if (this.required && !selectedOption?.value) {
+      if (controlAnchor) {
+        this._internals.setValidity(
+          { valueMissing: true },
+          'Please select an option.',
+          controlAnchor,
+        );
+      } else {
+        this._internals.setValidity(
+          { valueMissing: true },
+          'Please select an option.',
+        );
+      }
+      return;
+    }
+
+    this._internals.setValidity({});
+  }
+
+  private _updateMenuState(open: boolean, callFocus = true) {
+    if (this._isDisabled()) {
+      this._open = false;
+      return;
+    }
+
+    this._open = open;
+
+    if (open && this._activeIndex < 0) {
+      this._activeIndex =
+        this._selectedIndex >= 0
+          ? this._selectedIndex
+          : this._getFirstEnabledIndex();
+    }
+
+    if (callFocus) {
+      this._comboEl?.focus();
+    }
+  }
+
+  // Adapted from the WAI-ARIA APG select-only combobox example:
+  // https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/
+  private _filterOptions(
+    options: Array<{ label: string; index: number }>,
+    filter: string,
+    exclude: number[] = [],
+  ) {
+    return options.filter((option) => {
+      const matches =
+        option.label.toLowerCase().indexOf(filter.toLowerCase()) === 0;
+      return matches && !exclude.includes(option.index);
+    });
+  }
+
+  private _getActionFromKey(event: KeyboardEvent, menuOpen: boolean) {
+    const { key, altKey, ctrlKey, metaKey } = event;
+    const openKeys = ['ArrowDown', 'ArrowUp', 'Enter', ' '];
+
+    if (!menuOpen && openKeys.includes(key)) {
+      return ComboBoxEl.selectActions.Open;
+    }
+
+    if (key === 'Home') {
+      return ComboBoxEl.selectActions.First;
+    }
+
+    if (key === 'End') {
+      return ComboBoxEl.selectActions.Last;
+    }
+
+    if (
+      key === 'Backspace' ||
+      key === 'Clear' ||
+      (key.length === 1 && key !== ' ' && !altKey && !ctrlKey && !metaKey)
+    ) {
+      return ComboBoxEl.selectActions.Type;
+    }
+
+    if (!menuOpen) {
+      return undefined;
+    }
+
+    if (key === 'ArrowUp' && altKey) {
+      return ComboBoxEl.selectActions.CloseSelect;
+    }
+
+    if (key === 'ArrowDown' && !altKey) {
+      return ComboBoxEl.selectActions.Next;
+    }
+
+    if (key === 'ArrowUp') {
+      return ComboBoxEl.selectActions.Previous;
+    }
+
+    if (key === 'PageUp') {
+      return ComboBoxEl.selectActions.PageUp;
+    }
+
+    if (key === 'PageDown') {
+      return ComboBoxEl.selectActions.PageDown;
+    }
+
+    if (key === 'Escape') {
+      return ComboBoxEl.selectActions.Close;
+    }
+
+    if (key === 'Enter' || key === ' ') {
+      return ComboBoxEl.selectActions.CloseSelect;
+    }
+
+    return undefined;
+  }
+
+  private _getIndexByLetter(
+    options: ComboBoxOption[],
+    filter: string,
+    startIndex = 0,
+  ) {
+    const searchable = options
+      .map((option, index) => ({
+        label: option.label,
+        index,
+        disabled: option.disabled,
+      }))
+      .filter((option) => !option.disabled);
+    const orderedOptions = [
+      ...searchable.filter((option) => option.index >= startIndex),
+      ...searchable.filter((option) => option.index < startIndex),
+    ];
+    const firstMatch = this._filterOptions(orderedOptions, filter)[0];
+    const allSameLetter = filter
+      .split('')
+      .every((letter) => letter === filter[0]);
+
+    if (firstMatch) {
+      return firstMatch.index;
+    }
+
+    if (allSameLetter) {
+      const matches = this._filterOptions(orderedOptions, filter[0]);
+      return matches[0]?.index ?? -1;
+    }
+
+    return -1;
+  }
+
+  private _getUpdatedIndex(
+    currentIndex: number,
+    maxIndex: number,
+    action: SelectAction,
+  ) {
+    const pageSize = 10;
+
+    switch (action) {
+      case ComboBoxEl.selectActions.First:
+        return 0;
+      case ComboBoxEl.selectActions.Last:
+        return maxIndex;
+      case ComboBoxEl.selectActions.Previous:
+        return Math.max(0, currentIndex - 1);
+      case ComboBoxEl.selectActions.Next:
+        return Math.min(maxIndex, currentIndex + 1);
+      case ComboBoxEl.selectActions.PageUp:
+        return Math.max(0, currentIndex - pageSize);
+      case ComboBoxEl.selectActions.PageDown:
+        return Math.min(maxIndex, currentIndex + pageSize);
+      default:
+        return currentIndex;
+    }
+  }
+
+  private _isElementInView(element: Element) {
+    const bounding = element.getBoundingClientRect();
+
+    return (
+      bounding.top >= 0 &&
+      bounding.left >= 0 &&
+      bounding.bottom <=
+        (window.innerHeight || document.documentElement.clientHeight) &&
+      bounding.right <=
+        (window.innerWidth || document.documentElement.clientWidth)
+    );
+  }
+
+  private _isScrollable(
+    element: HTMLElement | null | undefined,
+  ): element is HTMLElement {
+    return Boolean(element && element.clientHeight < element.scrollHeight);
+  }
+
+  private _maintainScrollVisibility(
+    activeElement: HTMLElement,
+    scrollParent: HTMLElement,
+  ) {
+    const { offsetHeight, offsetTop } = activeElement;
+    const { offsetHeight: parentOffsetHeight, scrollTop } = scrollParent;
+
+    const isAbove = offsetTop < scrollTop;
+    const isBelow = offsetTop + offsetHeight > scrollTop + parentOffsetHeight;
+
+    if (isAbove) {
+      scrollParent.scrollTo(0, offsetTop);
+    } else if (isBelow) {
+      scrollParent.scrollTo(0, offsetTop - parentOffsetHeight + offsetHeight);
+    }
+  }
 }
 
-// /*
-//  *   This content is licensed according to the W3C Software License at
-//  *   https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document
-//  */
-
-// 'use strict';
-
-// // Save a list of named combobox actions, for future readability
-// const SelectActions = {
-//   Close: 0,
-//   CloseSelect: 1,
-//   First: 2,
-//   Last: 3,
-//   Next: 4,
-//   Open: 5,
-//   PageDown: 6,
-//   PageUp: 7,
-//   Previous: 8,
-//   Select: 9,
-//   Type: 10,
-// };
-
-// /*
-//  * Helper functions
-//  */
-
-// // filter an array of options against an input string
-// // returns an array of options that begin with the filter string, case-independent
-// function filterOptions(options = [], filter, exclude = []) {
-//   return options.filter((option) => {
-//     const matches = option.toLowerCase().indexOf(filter.toLowerCase()) === 0;
-//     return matches && exclude.indexOf(option) < 0;
-//   });
-// }
-
-// // map a key press to an action
-// function getActionFromKey(event, menuOpen) {
-//   const { key, altKey, ctrlKey, metaKey } = event;
-//   const openKeys = ['ArrowDown', 'ArrowUp', 'Enter', ' ']; // all keys that will do the default open action
-//   // handle opening when closed
-//   if (!menuOpen && openKeys.includes(key)) {
-//     return SelectActions.Open;
-//   }
-
-//   // home and end move the selected option when open or closed
-//   if (key === 'Home') {
-//     return SelectActions.First;
-//   }
-//   if (key === 'End') {
-//     return SelectActions.Last;
-//   }
-
-//   // handle typing characters when open or closed
-//   if (
-//     key === 'Backspace' ||
-//     key === 'Clear' ||
-//     (key.length === 1 && key !== ' ' && !altKey && !ctrlKey && !metaKey)
-//   ) {
-//     return SelectActions.Type;
-//   }
-
-//   // handle keys when open
-//   if (menuOpen) {
-//     if (key === 'ArrowUp' && altKey) {
-//       return SelectActions.CloseSelect;
-//     } else if (key === 'ArrowDown' && !altKey) {
-//       return SelectActions.Next;
-//     } else if (key === 'ArrowUp') {
-//       return SelectActions.Previous;
-//     } else if (key === 'PageUp') {
-//       return SelectActions.PageUp;
-//     } else if (key === 'PageDown') {
-//       return SelectActions.PageDown;
-//     } else if (key === 'Escape') {
-//       return SelectActions.Close;
-//     } else if (key === 'Enter' || key === ' ') {
-//       return SelectActions.CloseSelect;
-//     }
-//   }
-// }
-
-// // return the index of an option from an array of options, based on a search string
-// // if the filter is multiple iterations of the same letter (e.g "aaa"), then cycle through first-letter matches
-// function getIndexByLetter(options, filter, startIndex = 0) {
-//   const orderedOptions = [
-//     ...options.slice(startIndex),
-//     ...options.slice(0, startIndex),
-//   ];
-//   const firstMatch = filterOptions(orderedOptions, filter)[0];
-//   const allSameLetter = (array) => array.every((letter) => letter === array[0]);
-
-//   // first check if there is an exact match for the typed string
-//   if (firstMatch) {
-//     return options.indexOf(firstMatch);
-//   }
-
-//   // if the same letter is being repeated, cycle through first-letter matches
-//   else if (allSameLetter(filter.split(''))) {
-//     const matches = filterOptions(orderedOptions, filter[0]);
-//     return options.indexOf(matches[0]);
-//   }
-
-//   // if no matches, return -1
-//   else {
-//     return -1;
-//   }
-// }
-
-// // get an updated option index after performing an action
-// function getUpdatedIndex(currentIndex, maxIndex, action) {
-//   const pageSize = 10; // used for pageup/pagedown
-
-//   switch (action) {
-//     case SelectActions.First:
-//       return 0;
-//     case SelectActions.Last:
-//       return maxIndex;
-//     case SelectActions.Previous:
-//       return Math.max(0, currentIndex - 1);
-//     case SelectActions.Next:
-//       return Math.min(maxIndex, currentIndex + 1);
-//     case SelectActions.PageUp:
-//       return Math.max(0, currentIndex - pageSize);
-//     case SelectActions.PageDown:
-//       return Math.min(maxIndex, currentIndex + pageSize);
-//     default:
-//       return currentIndex;
-//   }
-// }
-
-// // check if element is visible in browser view port
-// function isElementInView(element) {
-//   var bounding = element.getBoundingClientRect();
-
-//   return (
-//     bounding.top >= 0 &&
-//     bounding.left >= 0 &&
-//     bounding.bottom <=
-//       (window.innerHeight || document.documentElement.clientHeight) &&
-//     bounding.right <=
-//       (window.innerWidth || document.documentElement.clientWidth)
-//   );
-// }
-
-// // check if an element is currently scrollable
-// function isScrollable(element) {
-//   return element && element.clientHeight < element.scrollHeight;
-// }
-
-// // ensure a given child element is within the parent's visible scroll area
-// // if the child is not visible, scroll the parent
-// function maintainScrollVisibility(activeElement, scrollParent) {
-//   const { offsetHeight, offsetTop } = activeElement;
-//   const { offsetHeight: parentOffsetHeight, scrollTop } = scrollParent;
-
-//   const isAbove = offsetTop < scrollTop;
-//   const isBelow = offsetTop + offsetHeight > scrollTop + parentOffsetHeight;
-
-//   if (isAbove) {
-//     scrollParent.scrollTo(0, offsetTop);
-//   } else if (isBelow) {
-//     scrollParent.scrollTo(0, offsetTop - parentOffsetHeight + offsetHeight);
-//   }
-// }
-
-// /*
-//  * Select Component
-//  * Accepts a combobox element and an array of string options
-//  */
-// const Select = function (el, options = []) {
-//   // element refs
-//   this.el = el;
-//   this.labelEl = el.querySelector('.combo-label');
-//   this.comboEl = el.querySelector('[role=combobox]');
-//   this.listboxEl = el.querySelector('[role=listbox]');
-
-//   // data
-//   this.idBase = this.comboEl.id || 'combo';
-//   this.options = options;
-
-//   // state
-//   this.activeIndex = 0;
-//   this.open = false;
-//   this.searchString = '';
-//   this.searchTimeout = null;
-
-//   // init
-//   if (el && this.comboEl && this.listboxEl) {
-//     this.init();
-//   }
-// };
-
-// Select.prototype.init = function () {
-//   // select first option by default
-//   this.comboEl.innerHTML = this.options[0];
-
-//   // add event listeners
-//   this.labelEl.addEventListener('click', this.onLabelClick.bind(this));
-//   this.comboEl.addEventListener('blur', this.onComboBlur.bind(this));
-//   this.listboxEl.addEventListener('focusout', this.onComboBlur.bind(this));
-//   this.comboEl.addEventListener('click', this.onComboClick.bind(this));
-//   this.comboEl.addEventListener('keydown', this.onComboKeyDown.bind(this));
-
-//   // create options
-//   this.options.map((option, index) => {
-//     const optionEl = this.createOption(option, index);
-//     this.listboxEl.appendChild(optionEl);
-//   });
-// };
-
-// Select.prototype.createOption = function (optionText, index) {
-//   const optionEl = document.createElement('div');
-//   optionEl.setAttribute('role', 'option');
-//   optionEl.id = `${this.idBase}-${index}`;
-//   optionEl.className =
-//     index === 0 ? 'combo-option option-current' : 'combo-option';
-//   optionEl.setAttribute('aria-selected', `${index === 0}`);
-//   optionEl.innerText = optionText;
-
-//   optionEl.addEventListener('click', (event) => {
-//     event.stopPropagation();
-//     this.onOptionClick(index);
-//   });
-//   optionEl.addEventListener('mousedown', this.onOptionMouseDown.bind(this));
-
-//   return optionEl;
-// };
-
-// Select.prototype.getSearchString = function (char) {
-//   // reset typing timeout and start new timeout
-//   // this allows us to make multiple-letter matches, like a native select
-//   if (typeof this.searchTimeout === 'number') {
-//     window.clearTimeout(this.searchTimeout);
-//   }
-
-//   this.searchTimeout = window.setTimeout(() => {
-//     this.searchString = '';
-//   }, 500);
-
-//   // add most recent letter to saved search string
-//   this.searchString += char;
-//   return this.searchString;
-// };
-
-// Select.prototype.onLabelClick = function () {
-//   this.comboEl.focus();
-// };
-
-// Select.prototype.onComboBlur = function (event) {
-//   // do nothing if relatedTarget is contained within listboxEl
-//   if (this.listboxEl.contains(event.relatedTarget)) {
-//     return;
-//   }
-
-//   // select current option and close
-//   if (this.open) {
-//     this.selectOption(this.activeIndex);
-//     this.updateMenuState(false, false);
-//   }
-// };
-
-// Select.prototype.onComboClick = function () {
-//   this.updateMenuState(!this.open, false);
-// };
-
-// Select.prototype.onComboKeyDown = function (event) {
-//   const { key } = event;
-//   const max = this.options.length - 1;
-
-//   const action = getActionFromKey(event, this.open);
-
-//   switch (action) {
-//     case SelectActions.Last:
-//     case SelectActions.First:
-//       this.updateMenuState(true);
-//     // intentional fallthrough
-//     case SelectActions.Next:
-//     case SelectActions.Previous:
-//     case SelectActions.PageUp:
-//     case SelectActions.PageDown:
-//       event.preventDefault();
-//       return this.onOptionChange(
-//         getUpdatedIndex(this.activeIndex, max, action)
-//       );
-//     case SelectActions.CloseSelect:
-//       event.preventDefault();
-//       this.selectOption(this.activeIndex);
-//     // intentional fallthrough
-//     case SelectActions.Close:
-//       event.preventDefault();
-//       return this.updateMenuState(false);
-//     case SelectActions.Type:
-//       return this.onComboType(key);
-//     case SelectActions.Open:
-//       event.preventDefault();
-//       return this.updateMenuState(true);
-//   }
-// };
-
-// Select.prototype.onComboType = function (letter) {
-//   // open the listbox if it is closed
-//   this.updateMenuState(true);
-
-//   // find the index of the first matching option
-//   const searchString = this.getSearchString(letter);
-//   const searchIndex = getIndexByLetter(
-//     this.options,
-//     searchString,
-//     this.activeIndex + 1
-//   );
-
-//   // if a match was found, go to it
-//   if (searchIndex >= 0) {
-//     this.onOptionChange(searchIndex);
-//   }
-//   // if no matches, clear the timeout and search string
-//   else {
-//     window.clearTimeout(this.searchTimeout);
-//     this.searchString = '';
-//   }
-// };
-
-// Select.prototype.onOptionChange = function (index) {
-//   // update state
-//   this.activeIndex = index;
-
-//   // update aria-activedescendant
-//   this.comboEl.setAttribute('aria-activedescendant', `${this.idBase}-${index}`);
-
-//   // update active option styles
-//   const options = this.el.querySelectorAll('[role=option]');
-//   [...options].forEach((optionEl) => {
-//     optionEl.classList.remove('option-current');
-//   });
-//   options[index].classList.add('option-current');
-
-//   // ensure the new option is in view
-//   if (isScrollable(this.listboxEl)) {
-//     maintainScrollVisibility(options[index], this.listboxEl);
-//   }
-
-//   // ensure the new option is visible on screen
-//   // ensure the new option is in view
-//   if (!isElementInView(options[index])) {
-//     options[index].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-//   }
-// };
-
-// Select.prototype.onOptionClick = function (index) {
-//   this.onOptionChange(index);
-//   this.selectOption(index);
-//   this.updateMenuState(false);
-// };
-
-// Select.prototype.onOptionMouseDown = function () {
-//   // Clicking an option will cause a blur event,
-//   // but we don't want to perform the default keyboard blur action
-//   this.ignoreBlur = true;
-// };
-
-// Select.prototype.selectOption = function (index) {
-//   // update state
-//   this.activeIndex = index;
-
-//   // update displayed value
-//   const selected = this.options[index];
-//   this.comboEl.innerHTML = selected;
-
-//   // update aria-selected
-//   const options = this.el.querySelectorAll('[role=option]');
-//   [...options].forEach((optionEl) => {
-//     optionEl.setAttribute('aria-selected', 'false');
-//   });
-//   options[index].setAttribute('aria-selected', 'true');
-// };
-
-// Select.prototype.updateMenuState = function (open, callFocus = true) {
-//   if (this.open === open) {
-//     return;
-//   }
-
-//   // update state
-//   this.open = open;
-
-//   // update aria-expanded and styles
-//   this.comboEl.setAttribute('aria-expanded', `${open}`);
-//   open ? this.el.classList.add('open') : this.el.classList.remove('open');
-
-//   // update activedescendant
-//   const activeID = open ? `${this.idBase}-${this.activeIndex}` : '';
-//   this.comboEl.setAttribute('aria-activedescendant', activeID);
-
-//   if (activeID === '' && !isElementInView(this.comboEl)) {
-//     this.comboEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-//   }
-
-//   // move focus back to the combobox, if needed
-//   callFocus && this.comboEl.focus();
-// };
-
-// // init select
-// window.addEventListener('load', function () {
-//   const options = [
-//     'Choose a Fruit',
-//     'Apple',
-//     'Banana',
-//     'Blueberry',
-//     'Boysenberry',
-//     'Cherry',
-//     'Cranberry',
-//     'Durian',
-//     'Eggplant',
-//     'Fig',
-//     'Grape',
-//     'Guava',
-//     'Huckleberry',
-//   ];
-//   const selectEls = document.querySelectorAll('.js-select');
-
-//   selectEls.forEach((el) => {
-//     new Select(el, options);
-//   });
-// });
+export type SelectAction =
+  (typeof ComboBoxEl.selectActions)[keyof typeof ComboBoxEl.selectActions];

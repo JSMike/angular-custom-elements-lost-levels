@@ -1,0 +1,81 @@
+- main [ref=e2]:
+  - generic [ref=e3]:
+    - heading "Vanilla FACE Baselines" [level=1] [ref=e4]
+    - paragraph [ref=e5]: These forms show what the browser currently thinks would be submitted over the wire before Angular is involved.
+  - generic [ref=e6]:
+    - heading "Simple Combobox" [level=2] [ref=e7]
+    - paragraph [ref=e8]:
+      - text: "This is the control-group example: a select-only FACE control with a single scalar"
+      - code [ref=e9]: value
+      - text: and ordinary form participation.
+    - generic [ref=e10]:
+      - generic [ref=e11]:
+        - text: Produce choice
+        - combobox [ref=e14]: Choose a produce item
+      - generic [ref=e15]:
+        - button "Submit" [ref=e16]
+        - button "Reset" [ref=e17]
+    - paragraph [ref=e18]: Current FormData JSON
+    - generic [ref=e19]: "{ \"produce\": \"\" }"
+  - generic [ref=e20]:
+    - heading "Checkbox Control" [level=2] [ref=e21]
+    - paragraph [ref=e22]:
+      - text: This setup is valid because checkbox-like controls are driven by
+      - code [ref=e23]: checked
+      - text: ", not by a scalar text-like"
+      - code [ref=e24]: value
+      - text: . When the box is unchecked, the field disappears from native
+      - code [ref=e25]: FormData
+      - text: entirely.
+    - generic [ref=e26]:
+      - generic [ref=e29]: Confirm the produce selection
+      - generic [ref=e30]:
+        - button "Submit" [ref=e31]
+        - button "Reset" [ref=e32]
+    - paragraph [ref=e33]: Current FormData JSON
+    - generic [ref=e34]: "{}"
+  - generic [ref=e35]:
+    - heading "Multi-Select Control" [level=2] [ref=e36]
+    - paragraph [ref=e37]:
+      - text: This setup is valid because a multi-select submits a collection. The native shape is repeated
+      - code [ref=e38]: produceTags
+      - text: entries, not one scalar value. Because this control is still select-like, it keeps both
+      - code [ref=e39]: input
+      - text: and
+      - code [ref=e40]: change
+      - text: rather than forcing a change-only contract.
+    - generic [ref=e41]:
+      - generic [ref=e42]:
+        - text: Produce tags
+        - listbox [ref=e45]:
+          - option "Fresh" [ref=e46]:
+            - generic [ref=e47]: Fresh
+          - option "Imported" [ref=e49]:
+            - generic [ref=e50]: Imported
+          - option "Organic" [ref=e52]:
+            - generic [ref=e53]: Organic
+          - option "Seasonal" [ref=e55]:
+            - generic [ref=e56]: Seasonal
+      - generic [ref=e58]:
+        - button "Submit" [ref=e59]
+        - button "Reset" [ref=e60]
+    - paragraph [ref=e61]: Current FormData JSON
+    - generic [ref=e62]: "{}"
+  - generic [ref=e63]:
+    - heading "Calendar Picker" [level=2] [ref=e64]
+    - paragraph [ref=e65]:
+      - text: This setup is valid because choosing a date from a calendar grid is a commit action. There is no incremental text edit stream, so
+      - code [ref=e66]: change
+      - text: is the meaningful event and omitting
+      - code [ref=e67]: input
+      - text: is a reasonable implementation choice.
+    - generic [ref=e68]:
+      - generic [ref=e69]:
+        - text: Delivery date
+        - button "Choose a delivery date" [ref=e72]:
+          - generic [ref=e73]: Choose a delivery date
+      - generic [ref=e74]:
+        - button "Submit" [ref=e75]
+        - button "Reset" [ref=e76]
+    - paragraph [ref=e77]: Current FormData JSON
+    - generic [ref=e78]: "{}"
