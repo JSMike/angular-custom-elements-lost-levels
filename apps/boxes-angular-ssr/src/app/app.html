@@ -1,0 +1,218 @@
+<section class="demo-shell">
+  <header class="demo-card">
+    <h1>Angular FACE SSR Comparisons</h1>
+    <p class="demo-copy">
+      This app mirrors the Angular client-side baseline, but runs through
+      Angular SSR so the initial HTML can be inspected before the custom
+      elements upgrade on the client. The JSON panels still compare Angular's
+      reactive-form model with the browser's current native
+      <code>FormData</code> from the same forms after hydration.
+    </p>
+  </header>
+
+  <section class="demo-card">
+    <h2>Simple Combobox</h2>
+    <p class="demo-copy">
+      This is the control-group example. It is a select-only FACE control with
+      a single scalar <code>value</code> and ordinary form participation, so it
+      matches the assumptions behind <code>ngDefaultControl</code>.
+    </p>
+
+    <form
+      #comboDemoForm
+      class="demo-form"
+      [formGroup]="comboForm"
+      (ngSubmit)="onComboSubmit($event)"
+      (reset)="onComboReset($event)"
+    >
+      <div class="field">
+        <label for="produce-field">Produce choice</label>
+        <boxes-combobox
+          id="produce-field"
+          name="produce"
+          required
+          formControlName="produce"
+          ngDefaultControl
+        >
+          <option value="" selected>Choose a produce item</option>
+          <option value="blueberry">Blueberry</option>
+          <option value="lemon">Lemon</option>
+          <option value="mango">Mango</option>
+        </boxes-combobox>
+      </div>
+
+      <div class="button-row">
+        <button type="submit">Submit</button>
+        <button type="reset">Reset</button>
+      </div>
+    </form>
+
+    <section class="result-grid">
+      <div>
+        <p>Current Angular Form JSON</p>
+        <pre>{{ comboAngularFormValueJson() }}</pre>
+      </div>
+
+      <div>
+        <p>Current native FormData JSON</p>
+        <pre>{{ comboNativeFormDataJson() }}</pre>
+      </div>
+    </section>
+  </section>
+
+  <section class="demo-card">
+    <h2>Checkbox Control</h2>
+    <p class="demo-copy">
+      This setup is valid because checkbox-like controls are driven by
+      <code>checked</code>, not a scalar text-like <code>value</code>. When the
+      box is unchecked, the field disappears from native <code>FormData</code>
+      entirely. Angular has a dedicated accessor for native checkboxes for
+      exactly this reason, which is why the mismatch is clearest here.
+    </p>
+
+    <form
+      #checkboxDemoForm
+      class="demo-form"
+      [formGroup]="checkboxForm"
+      (ngSubmit)="onCheckboxSubmit($event)"
+      (reset)="onCheckboxReset($event)"
+    >
+      <div class="checkbox-row">
+        <boxes-checkbox
+          id="confirmation-field"
+          name="confirmedProduce"
+          formControlName="confirmedProduce"
+          ngDefaultControl
+          [value]="'confirmed'"
+        ></boxes-checkbox>
+        <label for="confirmation-field">Confirm the produce selection</label>
+      </div>
+
+      <div class="button-row">
+        <button type="submit">Submit</button>
+        <button type="reset">Reset</button>
+      </div>
+    </form>
+
+    <section class="result-grid">
+      <div>
+        <p>Current Angular Form JSON</p>
+        <pre>{{ checkboxAngularFormValueJson() }}</pre>
+      </div>
+
+      <div>
+        <p>Current native FormData JSON</p>
+        <pre>{{ checkboxNativeFormDataJson() }}</pre>
+      </div>
+    </section>
+  </section>
+
+  <section class="demo-card">
+    <h2>Multi-Select Control</h2>
+    <p class="demo-copy">
+      This setup is valid because a multi-select submits a collection. The
+      native shape is repeated <code>produceTags</code> entries, not one scalar
+      value. Because this control is still select-like, it keeps both
+      <code>input</code> and <code>change</code> rather than forcing a
+      change-only contract. The mismatch is that Angular still keeps only one
+      scalar string.
+    </p>
+
+    <form
+      #multiSelectDemoForm
+      class="demo-form"
+      [formGroup]="multiSelectForm"
+      (ngSubmit)="onMultiSelectSubmit($event)"
+      (reset)="onMultiSelectReset($event)"
+    >
+      <div class="field">
+        <label for="produce-tags-field">Produce tags</label>
+        <boxes-multi-select
+          id="produce-tags-field"
+          name="produceTags"
+          required
+          formControlName="produceTags"
+          ngDefaultControl
+        >
+          <option value="fresh">Fresh</option>
+          <option value="imported">Imported</option>
+          <option value="organic">Organic</option>
+          <option value="seasonal">Seasonal</option>
+        </boxes-multi-select>
+      </div>
+
+      <div class="button-row">
+        <button type="submit">Submit</button>
+        <button type="reset">Reset</button>
+      </div>
+    </form>
+
+    <section class="result-grid">
+      <div>
+        <p>Current Angular Form JSON</p>
+        <pre>{{ multiSelectAngularFormValueJson() }}</pre>
+      </div>
+
+      <div>
+        <p>Current native FormData JSON</p>
+        <pre>{{ multiSelectNativeFormDataJson() }}</pre>
+      </div>
+    </section>
+  </section>
+
+  <section class="demo-card">
+    <h2>Calendar Picker</h2>
+    <p class="demo-copy">
+      This setup is valid because choosing a date from a calendar grid is a
+      commit action. There is no incremental text edit stream, so
+      <code>change</code> is the meaningful event and omitting
+      <code>input</code> is a reasonable implementation choice. That makes it a
+      useful repro for Angular's default text-like assumptions.
+    </p>
+
+    <form
+      #calendarDemoForm
+      class="demo-form"
+      [formGroup]="calendarForm"
+      (ngSubmit)="onCalendarSubmit($event)"
+      (reset)="onCalendarReset($event)"
+    >
+      <div class="field">
+        <label for="delivery-date-field">Delivery date</label>
+        <boxes-calendar-picker
+          id="delivery-date-field"
+          name="deliveryDate"
+          placeholder="Choose a delivery date"
+          required
+          formControlName="deliveryDate"
+          ngDefaultControl
+        >
+          <option value="2026-03-16">Mon 16</option>
+          <option value="2026-03-17">Tue 17</option>
+          <option value="2026-03-18">Wed 18</option>
+          <option value="2026-03-19">Thu 19</option>
+          <option value="2026-03-20">Fri 20</option>
+          <option value="2026-03-21">Sat 21</option>
+          <option value="2026-03-22">Sun 22</option>
+        </boxes-calendar-picker>
+      </div>
+
+      <div class="button-row">
+        <button type="submit">Submit</button>
+        <button type="reset">Reset</button>
+      </div>
+    </form>
+
+    <section class="result-grid">
+      <div>
+        <p>Current Angular Form JSON</p>
+        <pre>{{ calendarAngularFormValueJson() }}</pre>
+      </div>
+
+      <div>
+        <p>Current native FormData JSON</p>
+        <pre>{{ calendarNativeFormDataJson() }}</pre>
+      </div>
+    </section>
+  </section>
+</section>

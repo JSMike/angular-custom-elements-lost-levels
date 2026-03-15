@@ -1,0 +1,105 @@
+{
+  "name": "boxes-angular-ssr",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "app",
+  "sourceRoot": "apps/boxes-angular-ssr/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "dependsOn": [
+        {
+          "projects": "boxes",
+          "target": "build"
+        }
+      ],
+      "options": {
+        "outputPath": "dist/apps/boxes-angular-ssr",
+        "browser": "apps/boxes-angular-ssr/src/main.ts",
+        "tsConfig": "apps/boxes-angular-ssr/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/boxes-angular-ssr/public"
+          }
+        ],
+        "security": {
+          "allowedHosts": ["localhost", "127.0.0.1"]
+        },
+        "styles": ["apps/boxes-angular-ssr/src/styles.scss"],
+        "server": "apps/boxes-angular-ssr/src/main.server.ts",
+        "ssr": {
+          "entry": "apps/boxes-angular-ssr/src/server.ts"
+        },
+        "outputMode": "server"
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "4kb",
+              "maximumError": "8kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "continuous": true,
+      "executor": "@angular/build:dev-server",
+      "dependsOn": [
+        {
+          "projects": "boxes",
+          "target": "build"
+        }
+      ],
+      "options": {
+        "port": 4400
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "boxes-angular-ssr:build:production"
+        },
+        "development": {
+          "buildTarget": "boxes-angular-ssr:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "serve-static": {
+      "continuous": true,
+      "executor": "@nx/web:file-server",
+      "dependsOn": [
+        {
+          "projects": "boxes",
+          "target": "build"
+        }
+      ],
+      "options": {
+        "buildTarget": "boxes-angular-ssr:build",
+        "port": 4400,
+        "staticFilePath": "dist/apps/boxes-angular-ssr/browser",
+        "spa": true
+      }
+    }
+  }
+}

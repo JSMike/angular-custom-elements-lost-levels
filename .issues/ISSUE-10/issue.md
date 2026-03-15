@@ -10,7 +10,7 @@
 | Source       | user-request                              |
 | External     |                                           |
 | Blocks       |                                           |
-| Blocked-by   | ISSUE-5, ISSUE-8                          |
+| Blocked-by   | ISSUE-8                                   |
 | Priority     | medium                                    |
 
 ## Summary

@@ -70,7 +70,7 @@ export default defineConfig(() => ({
     },
     rollupOptions: {
       // External packages that should not be bundled into your library.
-      external: [],
+      external: [/^lit(\/.*)?$/],
       plugins: [
         generatePackageJson({
           inputFolder: __dirname,

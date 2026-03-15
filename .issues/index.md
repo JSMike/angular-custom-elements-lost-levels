@@ -8,8 +8,7 @@ Generated: 2026-03-15
 
 | ID                            | Title                                                                 | Complexity | Blocked By |
 | ----------------------------- | --------------------------------------------------------------------- | ---------- | ---------- |
-| [ISSUE-5](./ISSUE-5/issue.md) | Investigate Angular SSR and hydration with custom elements            | medium     |            |
-| [ISSUE-10](./ISSUE-10/issue.md) | Expand and polish slides for Angular custom-element investigation issues | medium     | ISSUE-5, ISSUE-8 |
+| [ISSUE-10](./ISSUE-10/issue.md) | Expand and polish slides for Angular custom-element investigation issues | medium     | ISSUE-8 |
 
 ### Ready
 
@@ -21,6 +20,7 @@ Generated: 2026-03-15
 | ID                            | Title                                                                    | Complexity | Priority | Blocked By |
 | ----------------------------- | ------------------------------------------------------------------------ | ---------- | -------- | ---------- |
 | [ISSUE-8](./ISSUE-8/issue.md) | Investigate Angular template binding semantics with custom elements      | medium     | high     |            |
+| [ISSUE-16](./ISSUE-16/issue.md) | Eliminate initial Lit update warnings in child-driven controls | small      | medium   |            |
 | [ISSUE-15](./ISSUE-15/issue.md) | Follow up with `@lit-labs/ssr-react` on child-driven custom-element SSR hydration mismatch | medium     | medium   |            |
 
 ### Review
@@ -43,3 +43,5 @@ Generated: 2026-03-15
 | [ISSUE-12](./ISSUE-12/issue.md) | Normalize combobox naming across the repo | 2026-03-15 |
 | [ISSUE-13](./ISSUE-13/issue.md) | Normalize multi-select naming across the repo | 2026-03-15 |
 | [ISSUE-14](./ISSUE-14/issue.md) | Align demo app copy and layout across web, Angular, and React | 2026-03-15 |
+| [ISSUE-5](./ISSUE-5/issue.md) | Investigate Angular SSR and hydration with custom elements | 2026-03-15 |
+| [ISSUE-17](./ISSUE-17/issue.md) | Confirm Lit dev-mode warning source in Angular apps | 2026-03-15 |
