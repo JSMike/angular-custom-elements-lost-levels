@@ -43,12 +43,12 @@ layout: section
 
 # Confirmed Repros
 
-| Repro                                     | Current Result                                                      | Tracking  |
-| ----------------------------------------- | ------------------------------------------------------------------- | --------- |
-| FACE checkbox under `ngDefaultControl`    | After uncheck, Angular keeps the last scalar value while native drops the field | `ISSUE-4` |
-| FACE multi-select under `ngDefaultControl`| Angular only keeps a scalar `value`, not the repeated submitted set | `ISSUE-4` |
-| FACE calendar under `ngDefaultControl`    | Angular stays stale when the control commits on `change` only       | `ISSUE-4` |
-| Built library sourcemaps in the monorepo  | Angular map output stops at `dist/libs/boxes/*.js`                  | `ISSUE-6` |
+| Repro                                     | Current Result                                                      |
+| ----------------------------------------- | ------------------------------------------------------------------- |
+| FACE checkbox under `ngDefaultControl`    | After uncheck, Angular keeps the last scalar value while native drops the field |
+| FACE multi-select under `ngDefaultControl`| Angular only keeps a scalar `value`, not the repeated submitted set |
+| FACE calendar under `ngDefaultControl`    | Angular stays stale when the control commits on `change` only       |
+| Built library sourcemaps in the monorepo  | Verified: DevTools falls back to transpiled `dist/libs/boxes/*.js`; root cause inside Angular's serving/resolution path is still under investigation |
 
 ---
 
@@ -81,16 +81,32 @@ layout: two-cols
 
 ---
 
-# Monorepo Sourcemap Repro
+# Monorepo Dist-Alias Sourcemap Repro
 
 **Status:** confirmed
 
-- Library build emits `.js.map` files for `libs/boxes`
-- Angular dev builds emit `main.js.map` with vendor sourcemaps enabled
-- Current finding: Angular still maps only to `dist/libs/boxes/*.js`
-- Original library sources under `libs/boxes/src/*` stay unavailable in Chrome DevTools
+- Current repo setup: `apps/boxes-angular/src/main.ts` imports `@/boxes/*`
+- Alias path: `apps/boxes-angular/tsconfig.json` resolves that to `dist/libs/boxes/*`
+- Library build: `libs/boxes` emits external `.js.map` files that point back to `libs/boxes/src/*`
+- Verified claim: Angular's `main.js.map` embeds the transpiled `dist/libs/boxes/*.js` files, so DevTools can show the built JavaScript
+- Verified claim: those built files still advertise `//# sourceMappingURL=...`, but the Angular dev server does not serve the matching `/dist/libs/boxes/*.js(.map)` URLs
+- Practical effect: the browser cannot resolve the second-level sourcemap and debugging stays in the transpiled dist output instead of the component TypeScript files
+- Root cause: still unknown; the current evidence shows a serving/resolution gap, but not the exact internal Angular decision that causes it
 
-**Takeaway:** same-monorepo package consumption is still a debugging limitation worth showing explicitly.
+```ts
+// apps/boxes-angular/tsconfig.json
+"paths": {
+  "@/boxes/*": ["dist/libs/boxes/*"]
+}
+
+// apps/boxes-angular/src/main.ts
+import '@/boxes/combo-box.js';
+
+// dist/libs/boxes/combo-box.js
+//# sourceMappingURL=combo-box.js.map
+```
+
+**Takeaway:** the verified behavior is that the browser only gets the transpiled library JavaScript; the exact Angular root cause is still being investigated.
 
 ---
 

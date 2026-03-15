@@ -48,7 +48,8 @@
           }
         }
       },
-      "defaultConfiguration": "production"
+      "defaultConfiguration": "production",
+      "dependsOn": ["^build"]
     },
     "serve": {
       "continuous": true,
@@ -61,27 +62,11 @@
           "buildTarget": "boxes-angular:build:development"
         }
       },
-      "defaultConfiguration": "development"
+      "defaultConfiguration": "development",
+      "dependsOn": ["^build"]
     },
     "lint": {
       "executor": "@nx/eslint:lint"
-    },
-    "serve-static": {
-      "continuous": true,
-      "executor": "@nx/web:file-server",
-      "options": {
-        "buildTarget": "boxes-angular:build:development",
-        "staticFilePath": "dist/apps/boxes-angular/browser",
-        "spa": true
-      },
-      "configurations": {
-        "production": {
-          "buildTarget": "boxes-angular:build:production"
-        },
-        "development": {
-          "buildTarget": "boxes-angular:build:development"
-        }
-      }
     }
   }
 }

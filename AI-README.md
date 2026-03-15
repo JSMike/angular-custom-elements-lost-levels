@@ -1,44 +1,87 @@
-# AI Project Guide (Starter)
-
-This document is a starter template for project-specific guidance. Update it for your repo once you know the runtime, tooling, and conventions.
+# AI Project Guide
 
 ## Required Reading
 
-**You MUST read `AI-WORKFLOW.md` before starting any work.** It defines the mandatory issue tracking workflow.
+- Read `AI-WORKFLOW.md` before starting work.
+- Check `.issues/` for an existing issue before creating a new one.
 
 ## Project Overview
 
-Describe the product, purpose, and key constraints here.
+This repository isolates Web Component integration issues that appear in Angular, verifies the same controls in a plain web baseline, and turns confirmed findings into Slidev presentation material.
+
+The current repo has three main work areas:
+- `libs/boxes` contains the form-associated custom elements used as repro fixtures.
+- `apps/boxes-web` is the plain web baseline app.
+- `apps/boxes-angular` is the Angular comparison app.
 
 ## Runtime & Tooling
 
-- Primary runtime: (e.g., Node, Python, Go)
-- Package manager: (e.g., npm, pnpm, poetry)
-- Build/test commands: (fill in)
-
-## Operational Notes
-
-- Environment variables: (list)
-- Sync/cron jobs: (list)
-- Deployment notes: (list)
+- Primary runtime: Node.js
+- Package manager: `npm`
+- Workspace/build system: `Nx`
+- Frameworks/tools in active use:
+  - Angular in `apps/boxes-angular`
+  - Vite in `apps/boxes-web` and `libs/boxes`
+  - Lit in `libs/boxes`
+  - Slidev via `slides.md`
 
 ## Repository Structure
 
-- `src/` - application code
-- `tests/` - tests
-- `scripts/` - automation
+- `apps/boxes-web/` - Plain web baseline harness for current `FormData` behavior.
+- `apps/boxes-angular/` - Angular repro app that compares Angular form state with native `FormData`.
+- `libs/boxes/` - Web Component library with FACE controls such as combobox, checkbox, multi-select, and calendar picker.
+- `slides.md` - Main Slidev deck for confirmed findings and planned slide work.
+- `.issues/` - Required issue-tracking record for all work.
 
 ## Common Commands
 
 ```bash
-# dev
-# build
-# test
-# lint
+# serve the plain web baseline
+npx nx serve boxes-web
+
+# serve the Angular repro app
+npx nx serve boxes-angular
+
+# build the component library
+npx nx build boxes
+
+# build the plain web app
+npx nx build boxes-web
+
+# build the Angular app
+npx nx build boxes-angular
+
+# lint the active projects
+npx nx lint boxes
+npx nx lint boxes-web
+npx nx lint boxes-angular
+
+# run the Slidev deck locally
+npm run slidev
+
+# build slides to dist/slides
+npm run slidev:build
 ```
+
+## Operational Notes
+
+- `dist/` is shared across repo outputs. Do not treat it as disposable.
+- `apps/boxes-angular` consumes the built library from `dist/libs/boxes` through the `@/boxes/*` path alias in `apps/boxes-angular/tsconfig.json`.
+- The Angular app does not currently consume `libs/boxes/src/*` directly; the built output path is intentional in this repo.
+- The Angular browser build output lives under `dist/apps/boxes-angular/browser`.
+- The plain web build output lives under `dist/apps/boxes-web`.
+- The library build output lives under `dist/libs/boxes`.
+
+## Slidev Rule
+
+- Always use `npm run slidev:build`.
+- Do not use `npx slidev build slides.md`.
+- The raw Slidev build command writes to the repo root `dist/` by default and can overwrite or clear Nx build outputs such as `dist/libs/boxes`, `dist/apps/boxes-web`, and `dist/apps/boxes-angular`.
+- The repo script already sets `-o dist/slides`, which keeps slide output isolated.
 
 ## Notes for AI Agents
 
-- Keep changes scoped to the issue being worked on.
-- Update `.issues/index.md` when creating or completing issues.
+- Keep changes scoped to the active issue.
 - Add a session summary after any work.
+- If you change slide content, prefer `npm run slidev:build` for verification.
+- If you change `libs/boxes` behavior, verify both the plain web baseline and the Angular comparison app when relevant.

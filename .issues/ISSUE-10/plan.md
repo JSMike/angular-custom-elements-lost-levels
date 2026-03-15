@@ -6,8 +6,8 @@ Turn the engineering findings from the main Angular custom-element investigation
 
 ## Steps
 
-- [ ] Collect the current confirmed findings from `ISSUE-4` and `ISSUE-6`.
-- [ ] Add slide-ready evidence and narrative structure for those completed findings.
+- [x] Collect the current confirmed findings from `ISSUE-4` and `ISSUE-6`.
+- [x] Add slide-ready evidence and narrative structure for those completed findings.
 - [ ] Expand the deck as `ISSUE-5`, `ISSUE-7`, and `ISSUE-8` produce confirmed results.
 - [ ] Keep the deck buildable and synchronized with the issue tracker.
 

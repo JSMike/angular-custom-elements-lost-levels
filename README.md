@@ -7,7 +7,7 @@ This repository is for isolating Web Component integration issues that appear in
 - `libs/boxes` contains the baseline custom elements used as repro fixtures.
 - `apps/boxes-web` is a plain web harness used to confirm baseline behavior before Angular is introduced.
 - `apps/boxes-angular` is the first Angular consumer app used to compare Angular form state with the plain web baseline.
-- Current known limitation: when Angular consumes the built Web Component library from the same monorepo, Chrome DevTools still stops at `dist/libs/boxes/*.js` instead of mapping back to `libs/boxes/src/*`, even when the library emits sourcemaps.
+- Current known limitation: when Angular consumes the built Web Component library from the same monorepo, the browser can see the transpiled `dist/libs/boxes/*.js` sources from `main.js.map`, but the library's own sourcemap URLs are not served by the Angular dev server, so Chrome DevTools cannot step back to `libs/boxes/src/*`.
 - The current goal is to grow the component set, then add Angular repro apps, then add comparison apps in other frameworks or plain web where needed.
 
 ## Roadmap
@@ -64,7 +64,8 @@ Current finding:
 
 - `libs/boxes` can emit `.js.map` files, and `apps/boxes-angular` can enable Angular development sourcemaps with vendor resolution.
 - That is still not enough when the Angular app consumes the built library from the same monorepo path.
-- Angular's emitted `main.js.map` stops at `dist/libs/boxes/*.js` instead of chaining back to `libs/boxes/src/*`, which leaves the original component sources unavailable in Chrome DevTools.
+- Angular's emitted `main.js.map` embeds `dist/libs/boxes/*.js`, and those transpiled files still advertise `//# sourceMappingURL=...`.
+- However, the Angular dev server does not serve the aliased `/dist/libs/boxes/*.js` and `/dist/libs/boxes/*.js.map` URLs, so the browser cannot follow the second-level sourcemap back to `libs/boxes/src/*`.
 
 Initial questions:
 
