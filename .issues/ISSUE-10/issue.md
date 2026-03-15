@@ -10,7 +10,7 @@
 | Source       | user-request                              |
 | External     |                                           |
 | Blocks       |                                           |
-| Blocked-by   | ISSUE-5, ISSUE-7, ISSUE-8                 |
+| Blocked-by   | ISSUE-5, ISSUE-8                          |
 | Priority     | medium                                    |
 
 ## Summary
@@ -34,3 +34,5 @@ Turn the findings from the main investigation issues into a more complete presen
 - Strengthen the `ISSUE-6` sourcemap slide so it describes the real repository setup: `@/boxes/*` imports aliased to `dist/libs/boxes/*`, library sourcemaps present, Angular vendor sourcemaps enabled, and the final bundle map still stopping at the dist output.
 - Keep the presentation audience-facing: remove `.issues` references from the deck itself and describe the sourcemap problem in terms of what the browser debugger can actually see.
 - Make the sourcemap slide more precise: the aliased library files advertise `sourceMappingURL`, but the Angular dev server does not serve the corresponding `dist/libs/boxes/*.js(.map)` URLs, so DevTools stays on the transpiled code.
+- Add an Angular tooling slide that distinguishes the verified limitation from the workaround: Angular only supports the built-in schemas, `CUSTOM_ELEMENTS_SCHEMA` suppresses errors instead of loading typed metadata, and generated Angular proxy directives can restore template validation for known custom elements.
+- Make the slide explicit that the proxy-directive approach is not a complete solution: it pushes Angular-specific packaging and versioning work onto the Web Component library author.
