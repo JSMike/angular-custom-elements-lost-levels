@@ -1,0 +1,798 @@
+{
+  "schemaVersion": "2.1.0",
+  "modules": [
+    {
+      "declarations": [
+        {
+          "attributes": [
+            {
+              "fieldName": "disabled",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "fieldName": "fullwidth",
+              "name": "fullwidth",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "fieldName": "name",
+              "name": "name",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "fieldName": "placeholder",
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "fieldName": "required",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              }
+            }
+          ],
+          "customElement": true,
+          "events": [
+            {
+              "name": "change",
+              "type": {
+                "text": "Event"
+              }
+            }
+          ],
+          "kind": "class",
+          "members": [
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "fullwidth",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "form",
+              "readonly": true,
+              "type": {
+                "text": "HTMLFormElement | null"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "labels",
+              "readonly": true,
+              "type": {
+                "text": "NodeList"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "readonly": true,
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "validationMessage",
+              "readonly": true,
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "validity",
+              "readonly": true,
+              "type": {
+                "text": "ValidityState"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "willValidate",
+              "readonly": true,
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "checkValidity",
+              "parameters": [],
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "focus",
+              "parameters": [
+                {
+                  "name": "options",
+                  "type": {
+                    "text": "FocusOptions"
+                  }
+                }
+              ],
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "reportValidity",
+              "parameters": [],
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              }
+            }
+          ],
+          "name": "CalendarPickerEl",
+          "superclass": {
+            "name": "LitElement"
+          },
+          "tagName": "boxes-calendar-picker"
+        }
+      ],
+      "exports": [
+        {
+          "declaration": {
+            "name": "CalendarPickerEl"
+          },
+          "kind": "js",
+          "name": "CalendarPickerEl"
+        },
+        {
+          "declaration": {
+            "name": "CalendarPickerEl"
+          },
+          "kind": "custom-element-definition",
+          "name": "boxes-calendar-picker"
+        }
+      ],
+      "kind": "javascript-module",
+      "path": "calendar-picker.js"
+    },
+    {
+      "declarations": [
+        {
+          "attributes": [
+            {
+              "fieldName": "checked",
+              "name": "checked",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "fieldName": "disabled",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "fieldName": "name",
+              "name": "name",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "fieldName": "required",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "fieldName": "value",
+              "name": "value",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "customElement": true,
+          "events": [
+            {
+              "name": "change",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "input",
+              "type": {
+                "text": "Event"
+              }
+            }
+          ],
+          "kind": "class",
+          "members": [
+            {
+              "kind": "field",
+              "name": "checked",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "form",
+              "readonly": true,
+              "type": {
+                "text": "HTMLFormElement | null"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "labels",
+              "readonly": true,
+              "type": {
+                "text": "NodeList"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "readonly": true,
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "validationMessage",
+              "readonly": true,
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "validity",
+              "readonly": true,
+              "type": {
+                "text": "ValidityState"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "willValidate",
+              "readonly": true,
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "checkValidity",
+              "parameters": [],
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "reportValidity",
+              "parameters": [],
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              }
+            }
+          ],
+          "name": "CheckboxEl",
+          "superclass": {
+            "name": "LitElement"
+          },
+          "tagName": "boxes-checkbox"
+        }
+      ],
+      "exports": [
+        {
+          "declaration": {
+            "name": "CheckboxEl"
+          },
+          "kind": "js",
+          "name": "CheckboxEl"
+        },
+        {
+          "declaration": {
+            "name": "CheckboxEl"
+          },
+          "kind": "custom-element-definition",
+          "name": "boxes-checkbox"
+        }
+      ],
+      "kind": "javascript-module",
+      "path": "checkbox.js"
+    },
+    {
+      "declarations": [
+        {
+          "attributes": [
+            {
+              "fieldName": "disabled",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "fieldName": "fullwidth",
+              "name": "fullwidth",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "fieldName": "name",
+              "name": "name",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "fieldName": "required",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              }
+            }
+          ],
+          "customElement": true,
+          "events": [
+            {
+              "name": "change",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "input",
+              "type": {
+                "text": "Event"
+              }
+            }
+          ],
+          "kind": "class",
+          "members": [
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "fullwidth",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "form",
+              "readonly": true,
+              "type": {
+                "text": "HTMLFormElement | null"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "labels",
+              "readonly": true,
+              "type": {
+                "text": "NodeList"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "readonly": true,
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "validationMessage",
+              "readonly": true,
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "validity",
+              "readonly": true,
+              "type": {
+                "text": "ValidityState"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "willValidate",
+              "readonly": true,
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "checkValidity",
+              "parameters": [],
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "focus",
+              "parameters": [
+                {
+                  "name": "options",
+                  "type": {
+                    "text": "FocusOptions"
+                  }
+                }
+              ],
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "reportValidity",
+              "parameters": [],
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              }
+            }
+          ],
+          "name": "ComboBoxEl",
+          "superclass": {
+            "name": "LitElement"
+          },
+          "tagName": "boxes-combo-box"
+        }
+      ],
+      "exports": [
+        {
+          "declaration": {
+            "name": "ComboBoxEl"
+          },
+          "kind": "js",
+          "name": "ComboBoxEl"
+        },
+        {
+          "declaration": {
+            "name": "ComboBoxEl"
+          },
+          "kind": "custom-element-definition",
+          "name": "boxes-combo-box"
+        }
+      ],
+      "kind": "javascript-module",
+      "path": "combo-box.js"
+    },
+    {
+      "declarations": [
+        {
+          "attributes": [
+            {
+              "fieldName": "disabled",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "fieldName": "fullwidth",
+              "name": "fullwidth",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "fieldName": "name",
+              "name": "name",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "fieldName": "required",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              }
+            }
+          ],
+          "customElement": true,
+          "events": [
+            {
+              "name": "change",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "input",
+              "type": {
+                "text": "Event"
+              }
+            }
+          ],
+          "kind": "class",
+          "members": [
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "fullwidth",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "form",
+              "readonly": true,
+              "type": {
+                "text": "HTMLFormElement | null"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "labels",
+              "readonly": true,
+              "type": {
+                "text": "NodeList"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "selectedValues",
+              "type": {
+                "text": "SelectMultipleValue"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "readonly": true,
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "validationMessage",
+              "readonly": true,
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "validity",
+              "readonly": true,
+              "type": {
+                "text": "ValidityState"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "willValidate",
+              "readonly": true,
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "checkValidity",
+              "parameters": [],
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "focus",
+              "parameters": [
+                {
+                  "name": "options",
+                  "type": {
+                    "text": "FocusOptions"
+                  }
+                }
+              ],
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "reportValidity",
+              "parameters": [],
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              }
+            }
+          ],
+          "name": "SelectMultipleEl",
+          "superclass": {
+            "name": "LitElement"
+          },
+          "tagName": "boxes-select-multiple"
+        }
+      ],
+      "exports": [
+        {
+          "declaration": {
+            "name": "SelectMultipleEl"
+          },
+          "kind": "js",
+          "name": "SelectMultipleEl"
+        },
+        {
+          "declaration": {
+            "name": "SelectMultipleEl"
+          },
+          "kind": "custom-element-definition",
+          "name": "boxes-select-multiple"
+        }
+      ],
+      "kind": "javascript-module",
+      "path": "select-multiple.js"
+    }
+  ]
+}

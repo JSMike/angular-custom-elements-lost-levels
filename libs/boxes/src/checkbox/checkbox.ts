@@ -13,6 +13,7 @@ export class CheckboxEl extends LitElement {
 
   @property({ type: Boolean, reflect: true }) public checked = false;
   @property({ type: Boolean, reflect: true }) public disabled = false;
+  @property({ reflect: true }) public name = '';
   @property({ type: Boolean, reflect: true }) public required = false;
   @property({ reflect: true }) public value = 'on';
 
@@ -33,10 +34,6 @@ export class CheckboxEl extends LitElement {
 
   public get labels() {
     return this._internals.labels;
-  }
-
-  public get name() {
-    return this.getAttribute('name') ?? '';
   }
 
   public get type() {

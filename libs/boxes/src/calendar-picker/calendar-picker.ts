@@ -23,6 +23,7 @@ export class CalendarPickerEl extends LitElement {
 
   @property({ type: Boolean, reflect: true }) public disabled = false;
   @property({ type: Boolean, reflect: true }) public fullwidth = false;
+  @property({ reflect: true }) public name = '';
   @property({ reflect: true }) public placeholder = 'Choose a date';
   @property({ type: Boolean, reflect: true }) public required = false;
 
@@ -49,10 +50,6 @@ export class CalendarPickerEl extends LitElement {
 
   public get labels() {
     return this._internals.labels;
-  }
-
-  public get name() {
-    return this.getAttribute('name') ?? '';
   }
 
   public get type() {

@@ -5,5 +5,34 @@
   "projectType": "library",
   "tags": [],
   "// targets": "to see all targets run: nx show project boxes --web",
-  "targets": {}
+  "targets": {
+    "generate-types": {
+      "executor": "nx:run-commands",
+      "outputs": [
+        "{projectRoot}/src/custom-elements.json",
+        "{projectRoot}/src/types/react.d.ts"
+      ],
+      "options": {
+        "commands": [
+          "node libs/boxes/generators/react.js",
+          "node libs/boxes/generators/custom-elements-manifest.js"
+        ],
+        "parallel": false
+      }
+    },
+    "build": {
+      "executor": "@nx/vite:build",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/libs/boxes",
+        "viteConfig": "libs/boxes/vite.config.ts"
+      },
+      "dependsOn": [
+        "generate-types",
+        "^build"
+      ]
+    }
+  }
 }

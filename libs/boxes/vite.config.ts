@@ -29,7 +29,19 @@ export default defineConfig(() => ({
   cacheDir: '../../node_modules/.vite/libs/boxes',
   plugins: [
     nxViteTsPaths(),
-    nxCopyAssetsPlugin(['*.md']),
+    nxCopyAssetsPlugin([
+      '*.md',
+      {
+        input: 'src',
+        glob: 'custom-elements.json',
+        output: '.',
+      },
+      {
+        input: 'src/types',
+        glob: '**/*',
+        output: 'types',
+      },
+    ]),
     dts({
       entryRoot: 'src',
       tsconfigPath: path.join(__dirname, 'tsconfig.lib.json'),
@@ -73,6 +85,7 @@ export default defineConfig(() => ({
                 return acc;
               },
               {
+                ...(pkg.exports ?? {}),
                 './package.json': {
                   default: './package.json',
                 },
