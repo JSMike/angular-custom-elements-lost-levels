@@ -14,7 +14,7 @@ background: '#1a1a2e'
 # Web Components in Angular
 ## [custom-elements-everywhere.com](https://custom-elements-everywhere.com/#angular) the lost levels
 
-**Form integration · Template type-checking · Monorepo experience · SSR setup**
+**Form integration · Template type-checking · Monorepo integration · SSR setup**
 
 <div class="mt-10 grid grid-cols-2 gap-4 text-sm">
 
@@ -61,8 +61,8 @@ layout: default
 ## Template Type-Checking
 - `CUSTOM_ELEMENTS_SCHEMA` and IDE integration
 
-## Monorepo Experience
-- TypeScript aliases and build configuration
+## Monorepo Integration
+- Difficulties with Angular in an integrated monorepo
 
 ## SSR Setup
 - An overview of what's required integrate with @lit-labs/ssr
@@ -277,9 +277,9 @@ These are complementary, not competing, ideas.
 layout: section
 ---
 
-# Issue 2: Template Type-Checking
+# Template Type-Checking
 
-`CUSTOM_ELEMENTS_SCHEMA` suppresses errors — it does not load typed metadata
+`CUSTOM_ELEMENTS_SCHEMA`
 
 ---
 layout: two-cols
@@ -287,7 +287,7 @@ layout: two-cols
 
 # What Angular Sees Today
 
-To use a custom element in an Angular template, you add `CUSTOM_ELEMENTS_SCHEMA`.
+To use a custom element in an Angular template, you must add `CUSTOM_ELEMENTS_SCHEMA`.
 
 ```ts {3,7}
 // app.ts
@@ -322,54 +322,6 @@ It is an **error suppressor**, not a schema loader. The name is misleading.
 <!--
 Worth saying clearly: CUSTOM_ELEMENTS_SCHEMA has "schema" in the name, but it does not ingest a schema.
 It is a global opt-out from Angular's normal DOM property checking for custom elements.
--->
-
----
-layout: two-cols
----
-
-# What React Gets Today
-
-The component library already ships a generated `react.d.ts` that augments JSX.
-
-```ts
-// libs/boxes/src/types/react.d.ts
-import type { HTMLAttributes } from 'react';
-
-declare module 'react/jsx-runtime' {
-  namespace JSX {
-    interface IntrinsicElements {
-      'boxes-checkbox': HTMLAttributes<HTMLElement> & {
-        checked?: boolean;
-        value?: string;
-        name?: string;
-      };
-    }
-  }
-}
-```
-
-::right::
-
-
-In React, this gives you today:
-
-- ✅ `[checked]` is typed as `boolean`
-- ✅ `notARealProp` is a **compile error**
-- ✅ Property completions in the editor
-- ✅ No framework-specific runtime shims
-
-
-
-The generated typing lives in the **component library**. Consuming apps get it for free. No suppressions needed.
-
-**This is the baseline Angular should be able to reach.**
-
-
-<!--
-This is working in boxes-react today, not hypothetical.
-The library ships react.d.ts and boxes-react consumes it through a Vite alias.
-No Angular-equivalent path exists.
 -->
 
 ---
@@ -419,9 +371,65 @@ The workaround is valid. It is not acceptable as the permanent answer.
 layout: two-cols
 ---
 
+# The JSX Framework Workaround
+
+`@types/react` defines `JSX.IntrinsicElements` as an extendable interface. Component libraries augment it to ship typed bindings alongside the components.
+
+```ts
+// libs/boxes/src/types/react.d.ts
+import type { HTMLAttributes } from 'react';
+
+declare module 'react/jsx-runtime' {
+  namespace JSX {
+    interface IntrinsicElements {
+      'boxes-checkbox': HTMLAttributes<HTMLElement> & {
+        checked?: boolean;
+        value?: string;
+        name?: string;
+      };
+    }
+  }
+}
+```
+
+This isn't free — must be authored or generated, built, and kept in sync per framework.
+
+::right::
+
+With the `.d.ts` added to the consuming app's `tsconfig`:
+
+```json
+// tsconfig.app.json
+"types": ["boxes/types/react.d.ts"]
+```
+
+- ✅ `checked` is typed as `boolean`
+- ✅ `notARealProp` is a **compile error**
+- ✅ Property completions in the IDE
+- ✅ No suppressions, no runtime shims
+
+<div class="callout mt-2">
+
+This works for any framework with a `jsx-runtime` module that exposes a `JSX.IntrinsicElements` interface — React, Preact, and Solid all support this pattern. The `boxes` library already ships `react.d.ts` and it works today in `boxes-react`.
+
+</div>
+
+Preferable to proxy directives — one app-level `tsconfig` entry rather than importing directives into every Angular component — but still not the right answer. A framework-agnostic source of truth shouldn't require per-framework artifacts.
+
+<!--
+The key point: the extensibility is in the type system, not the framework.
+Any JSX-based framework can consume the same declaration file.
+The boxes library already generates this. Angular has no equivalent path.
+The next slide shows what the actual standard looks like — custom-elements.json.
+-->
+
+---
+layout: two-cols
+---
+
 # The Proposed Angular Direction
 
-The missing capability: **ingest standard `custom-elements.json` and synthesize typed template metadata.**
+The proposal: an Angular compiler option that reads `custom-elements.json` and synthesizes typed template bindings. This enables web component libraries to follow the [Custom Elements Manifest standard](https://github.com/webcomponents/custom-elements-manifest) and ship one manifest, with no per-framework builds required.
 
 ```json
 // tsconfig.json
@@ -443,12 +451,7 @@ With this, Angular could:
 - Validate `[checked]` against the manifest's `boolean` type
 - Reject `[notARealProp]` as an error
 - Drive language-service completions from manifest properties and events
-- Let `CUSTOM_ELEMENTS_SCHEMA` remain the escape hatch for unknown elements
-
-
-
-The component library already generates `custom-elements.json` (CEM format). The manifest exists. Angular just does not consume it.
-
+- Remove the need for per-component `CUSTOM_ELEMENTS_SCHEMA` opt-in
 
 <!--
 This is not asking for a new format. CEM (Custom Elements Manifest) is the standard.
@@ -460,15 +463,48 @@ The ask is for Angular's compiler and language service to read it.
 layout: section
 ---
 
-# Issue 3: Debug Experience
+# Monorepo Integration
 
-The browser debugger falls back to transpiled library JavaScript
+Difficulties with Angular in an integrated monorepo
 
 ---
 layout: default
 ---
 
-# The Sourcemap Gap
+# The Build Configuration Problem
+
+Other frameworks in this monorepo can reference the library source directly via TypeScript path aliases:
+
+```json
+// tsconfig.json (React, Next.js)
+"paths": { "@boxes/*": ["libs/boxes/src/*"] }
+```
+
+Angular's builder cannot follow these aliases to source. It requires compiled `dist/` output:
+
+```json
+// tsconfig.json (Angular)
+"paths": { "@boxes/*": ["dist/libs/boxes/*"] }
+```
+
+This means the Angular dev server cannot pick up library source changes directly — every change to the `boxes` library requires a rebuild of `dist/` before it is reflected in the running app.
+
+<div class="callout mt-4">
+
+The Angular builder does not expose enough configuration to work around this. The `dist/` dependency is not a choice — it is a constraint imposed by the build tooling.
+
+</div>
+
+<!--
+Other frameworks work directly against source, giving immediate feedback during development.
+Angular developers working alongside a web component library in a monorepo face a mandatory rebuild step that doesn't exist for their React or Next.js colleagues.
+-->
+
+---
+layout: default
+---
+
+# The Sourcemap Gap — A Consequence
 
 <div class="grid grid-cols-2 gap-4 mt-4">
 
@@ -506,11 +542,9 @@ libs/boxes (Vite build)
 </div>
 
 
-**Practical result:** Chrome DevTools can show the transpiled `dist/libs/boxes/combobox.js` because it is embedded in `main.js.map`. But it cannot follow the `sourceMappingURL` comment in that file to reach the original TypeScript source — because the library file URL is never served.
+Because Angular must consume compiled `dist/` output, the Angular dev server never serves the library source files. Chrome DevTools can show the transpiled `dist/libs/boxes/combobox.js` embedded in `main.js.map`, but cannot follow the `sourceMappingURL` to reach the original TypeScript — those URLs 404.
 
-
-
-**Debugging stays in transpiled JavaScript instead of component TypeScript.** The root cause inside Angular's dev server configuration is still under investigation, but the browser-level failure is confirmed.
+**Debugging stays in transpiled JavaScript instead of component TypeScript.**
 
 
 <!--
@@ -519,12 +553,57 @@ When something goes wrong in a FACE control used in Angular, you cannot easily s
 -->
 
 ---
+layout: two-cols
+---
+
+# How Storybook Handles This
+
+Storybook exposes `viteFinal` and `webpackFinal` hooks in `.storybook/main.ts` — async functions that receive the bundler config and return a merged config. No ejecting required.
+
+```ts
+// .storybook/main.ts
+async viteFinal(config) {
+  const { mergeConfig } = await import('vite');
+  return mergeConfig(config, {
+    resolve: {
+      alias: {
+        '@boxes': path.resolve(__dirname, '../libs/boxes/src'),
+      },
+    },
+  });
+}
+```
+
+Source changes are picked up immediately by the dev server — no `dist/` rebuild step.
+
+::right::
+
+Angular's builder treats its Vite and esbuild configuration as internal implementation details with no documented extension point. Adopting a similar hook would not require ejecting from the Angular CLI.
+
+```json
+// Proposed: angular.json
+"serve": {
+  "builder": "@angular/build:dev-server",
+  "options": {
+    "viteFinal": "./vite.extend.ts"
+  }
+}
+```
+
+This is an [open community request](https://github.com/angular/angular-cli/issues/26329) with multiple related issues filed since 2023 — none have shipped in a stable release.
+
+<!--
+Storybook's hooks are officially documented, typed via StorybookConfig, and work across React, Angular, Vue, and Svelte targets.
+Angular community workarounds (@angular-builders/custom-esbuild) exist but require swapping the entire builder, losing automatic Angular CLI upgrade guarantees.
+-->
+
+---
 layout: section
 ---
 
-# Issue 4: SSR Setup
+# SSR Setup
 
-Getting custom elements into Angular SSR requires manual work the platform already solves elsewhere
+Steps required to enable @lit-labs/ssr
 
 ---
 layout: two-cols
