@@ -4,8 +4,8 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "slidev": "slidev slides.md",
-    "slidev:build": "slidev build slides.md -o dist/slides --download=true"
+    "slidev": "slidev slides/slides.md",
+    "slidev:build": "slidev build slides/slides.md -o ../dist/slides --download=true"
   },
   "private": true,
   "devDependencies": {
@@ -64,6 +64,7 @@
     "jsonc-eslint-parser": "^2.1.0",
     "lit": "^3.3.2",
     "nx": "22.5.4",
+    "playwright-chromium": "^1.58.2",
     "prettier": "~3.6.2",
     "rollup-plugin-generate-package-json": "^3.2.0",
     "sass": "^1.70.0",

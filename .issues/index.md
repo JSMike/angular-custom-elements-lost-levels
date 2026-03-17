@@ -27,6 +27,7 @@ Generated: 2026-03-15
 
 | ID                            | Title                                                          | Complexity | PR  |
 | ----------------------------- | -------------------------------------------------------------- | ---------- | --- |
+| [ISSUE-18](./ISSUE-18/issue.md) | Review Angular forms directives for custom-element integration behavior | medium     |     |
 
 ### Done
 

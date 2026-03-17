@@ -1,0 +1,37 @@
+.slidev-layout {
+  font-size: 0.85em;
+}
+
+.slidev-layout h1 {
+  font-size: 1.8em;
+}
+
+.slidev-layout h2 {
+  font-size: 1.3em;
+}
+
+.slidev-layout pre,
+.slidev-layout code {
+  font-size: 0.9em;
+}
+
+.callout {
+  border-left: 3px solid var(--slidev-theme-primary);
+  background: color-mix(in srgb, var(--slidev-theme-primary) 10%, transparent);
+  color: inherit;
+  padding: 0.75rem 1rem;
+  border-radius: 0 0.375rem 0.375rem 0;
+  font-size: 0.9em;
+  line-height: 1.6;
+}
+
+.callout code {
+  background: color-mix(in srgb, var(--slidev-theme-primary) 20%, transparent);
+  color: inherit;
+  border-radius: 3px;
+  padding: 0.1em 0.3em;
+}
+
+.two-cols-header, .two-columns {
+  column-gap: 1rem;
+}
