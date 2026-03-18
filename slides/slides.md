@@ -9,45 +9,52 @@ layout: cover
 background: '#1a1a2e'
 ---
 
-<div class="text-white">
+<div class="v1-game-cover">
+  <div class="v1-scanlines"></div>
 
-# Web Components in Angular
-## [Custom Elements Everywhere](https://custom-elements-everywhere.com/#angular): The Lost Levels
+  <div class="v1-hud">
+    <div class="v1-hud-item">
+      <div class="v1-hud-label">SCORE</div>
+      <div class="v1-hud-value">000000</div>
+    </div>
+    <div class="v1-hud-item">
+      <div class="v1-hud-label">WORLD</div>
+      <div class="v1-hud-value">1-1</div>
+    </div>
+    <div class="v1-hud-item">
+      <div class="v1-hud-label">TIME</div>
+      <div class="v1-hud-value">1800</div>
+    </div>
+  </div>
 
-**Form integration · Template type-checking · Monorepo integration · SSR setup**
+  <div class="v1-center">
+    <div class="v1-eyebrow">CUSTOM ELEMENTS EVERYWHERE</div>
+    <div class="v1-main-title">THE LOST<br>LEVELS</div>
+    <div class="v1-sub">Web Components in Angular</div>
+    <div class="v1-press">▶ PRESS START ◀</div>
+    <div class="v1-topics">
+      <span>◆ FORMS</span>
+      <span>◆ TEMPLATE-CHECKING</span>
+      <span>◆ MONOREPO SUPPORT</span>
+      <span>◆ SSR</span>
+    </div>
+  </div>
 
-<div class="mt-10 grid grid-cols-2 gap-4 text-sm">
-
-<div>
-
-**Michael Cebrian**  
-SVP, Principal Engineer - Enterprise Design System  
-M&T Bank
-
+  <div class="v1-footer">
+    <div class="v1-player">
+      <span class="v1-p1">1P</span>
+      <div>
+        <div class="v1-p-name">MICHAEL CEBRIAN</div>
+        <div class="v1-p-sub">SVP, PRINCIPAL ENG · ENTERPRISE DESIGN SYSTEM · M&T BANK</div>
+      </div>
+    </div>
+    <div class="v1-links">
+      <div>💼 <a href="https://linkedin.com/in/michael-cebrian-94248378">linkedin.com/in/michael-cebrian-94248378</a></div>
+      <div>📦 <a href="https://github.com/JSMike/angular-custom-elements-lost-levels">github.com/JSMike/angular-custom-elements-lost-levels</a></div>
+      <div>🔗 <a href="https://box-model.dev">box-model.dev</a> · Angular Enterprise Summit · March 19, 2026</div>
+    </div>
+  </div>
 </div>
-
-<div class="text-gray-300">
-
-💼 [linkedin.com/in/michael-cebrian-94248378](https://linkedin.com/in/michael-cebrian-94248378)  
-📦 [github.com/JSMike/angular-custom-elements-lost-levels](https://github.com/JSMike/angular-custom-elements-lost-levels)  
-🔗 [box-model.dev](https://box-model.dev)
-
-</div>
-
-</div>
-
-<div class="mt-4 text-gray-400 text-xs">
-Angular Enterprise Summit · March 19, 2026
-</div>
-
-</div>
-
-<!--
-Intro: Hi I'm Mike
-I've been using Angular for nearly 10 years, with an emphasis on Design Systems
-I've been working on Web Component based design systems for the past 2.5 years
-And I'm excited to share with you some of the things I've learned about integrating Web Components in Angular
--->
 
 ---
 layout: default
@@ -225,10 +232,10 @@ layout: default
 `ngDefaultControl` is the only value-accessor path available for FACE controls today. Applying it to all four controls exposes where that assumption breaks down.
 
 ```html
-<boxes-combobox formControlName="produce" ngDefaultControl />
-<boxes-checkbox formControlName="confirmedProduce" ngDefaultControl />
-<boxes-calendar-picker formControlName="deliveryDate" ngDefaultControl />
-<boxes-multi-select formControlName="produceTags" ngDefaultControl />
+<boxes-combobox formControlName="produce" ngDefaultControl>...</boxes-combobox>
+<boxes-checkbox formControlName="confirmedProduce" ngDefaultControl></boxes-checkbox>
+<boxes-calendar-picker formControlName="deliveryDate" ngDefaultControl>...</boxes-calendar-picker>
+<boxes-multi-select formControlName="produceTags" ngDefaultControl>...</boxes-multi-select>
 ```
 
 | Control | Angular `formControl.value` | Native `FormData` | Result |
@@ -254,15 +261,14 @@ As a web component library maintainer, I need to support existing Angular Forms 
 The ask is small: let FACE controls opt into the directives Angular already ships.
 
 - Extend existing built-in directives with opt-in attribute selectors
-- Examples: checkbox, single select, multi-select, radio, number, range
-- Reuses Angular's current event and value semantics where the control already matches
-- No new API surface, just opening the door for controls that already behave correctly
 
 <div class="callout mt-6">
 
-Signal Forms is the right long-term direction and genuinely exciting. When it lands, there's a real opportunity to get FACE integration right from the start and avoid the friction points that exist in the current forms API today.
+Signal Forms is currently in development and I'm genuinely excited about it. My hope is that FACE support is baked in from the start, so the friction points in the current forms API never have a chance to carry over.
 
 </div>
+
+[#63015](https://github.com/angular/angular/issues/63015) — open feature request for ngDefaultControl-style opt-in directives for additional value types
 
 <!--
 This is the lowest-lift ask in the talk. The directives already exist. FACE controls already implement the browser contract. The gap is just an opt-in selector that isn't there yet.
