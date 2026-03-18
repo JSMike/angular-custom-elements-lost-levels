@@ -1,10 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "noPropertyAccessFromIndexSignature": true,
-    "noImplicitReturns": true,
     "emitDecoratorMetadata": false,
-    "module": "preserve",
     "paths": {
       "@/boxes/*": ["dist/libs/boxes/*"]
     }

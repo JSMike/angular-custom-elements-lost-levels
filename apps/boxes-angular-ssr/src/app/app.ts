@@ -1,3 +1,7 @@
+import '@/boxes/combobox';
+import '@/boxes/checkbox';
+import '@/boxes/multi-select';
+import '@/boxes/calendar-picker';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,

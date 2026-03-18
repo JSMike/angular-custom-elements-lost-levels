@@ -19,10 +19,10 @@ const boxElementPattern =
 
 installWindowOnGlobal();
 
-await import('@/boxes/calendar-picker.js');
-await import('@/boxes/checkbox.js');
-await import('@/boxes/combobox.js');
-await import('@/boxes/multi-select.js');
+await import('@/boxes/calendar-picker');
+await import('@/boxes/checkbox');
+await import('@/boxes/combobox');
+await import('@/boxes/multi-select');
 
 const app = express();
 const angularApp = new AngularNodeAppEngine();

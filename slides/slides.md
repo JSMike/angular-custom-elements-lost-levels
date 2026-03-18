@@ -12,7 +12,7 @@ background: '#1a1a2e'
 <div class="text-white">
 
 # Web Components in Angular
-## [custom-elements-everywhere.com](https://custom-elements-everywhere.com/#angular) the lost levels
+## [Custom Elements Everywhere](https://custom-elements-everywhere.com/#angular): The Lost Levels
 
 **Form integration · Template type-checking · Monorepo integration · SSR setup**
 
@@ -21,7 +21,7 @@ background: '#1a1a2e'
 <div>
 
 **Michael Cebrian**  
-SVP, Principal Engineer — Enterprise Design System  
+SVP, Principal Engineer - Enterprise Design System  
 M&T Bank
 
 </div>
@@ -44,7 +44,7 @@ Angular Enterprise Summit · March 19, 2026
 
 <!--
 Intro: Hi I'm Mike
-I've been using Angular for nearly 11 years, with an emphasis on Design Systems
+I've been using Angular for nearly 10 years, with an emphasis on Design Systems
 I've been working on Web Component based design systems for the past 2.5 years
 And I'm excited to share with you some of the things I've learned about integrating Web Components in Angular
 -->
@@ -53,47 +53,35 @@ And I'm excited to share with you some of the things I've learned about integrat
 layout: default
 ---
 
-# Overview
+# Angular Gets So Much Right
 
-## Form Integration
-- `ngDefaultControl` compatibility with Form-associated Custom Elements
+The Angular team has built something genuinely impressive. Strong opinions, consistent patterns, and a TypeScript-first approach that makes large codebases maintainable at scale.
 
-## Template Type-Checking
-- `CUSTOM_ELEMENTS_SCHEMA` and IDE integration
+<div class="grid grid-cols-2 gap-6 mt-6">
+<div>
 
-## Monorepo Integration
-- Difficulties with Angular in an integrated monorepo
+**Things that just work**
 
-## SSR Setup
-- An overview of what's required integrate with @lit-labs/ssr
+- Reactive forms with full type safety
+- Dependency injection at every layer
+- Signals-based change detection
+- First-class SSR with hydration
+- `ng update` across major versions
 
-<!--
-This talk will cover four integration points:
-Forms Integration
-Template checking
-Using a local web component library within a monorepo
-And SSR setup for Web Components
--->
+</div>
+<div>
 
----
-layout: default
----
+**A friendly nit-pick**
 
-# The Web Components
+This talk looks at a few places where Web Component integration is rougher than it needs to be. These are friction points I've run into building a design system over the past two and a half years, not complaints about Angular itself.
 
-- `<boxes-combobox>`
-  - Example based on [WAI ARIA - Select-only Combobox](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/)
-    - Baseline, works as `<input type="text">`
-- `<boxes-checkbox>`
-  - Example from [HTML Spec](https://html.spec.whatwg.org/dev/custom-elements.html#custom-elements-face-example)
-    - Uses state other than `value`
-- `<boxes-calendar-picker>`
-  - Single value that relies on `changes` event
-- `<boxes-multi-select>`
-  - Multi-value that relies on `change` event
+The goal is a conversation, not a critique.
+
+</div>
+</div>
 
 <!--
-For these issues I've created a small library of web components to emphasize some of the issues I've faced over the past 2.5 yrs
+Set the tone early. This is a talk from someone who has used Angular for nearly 10 years and wants to see it stay great.
 -->
 
 ---
@@ -108,7 +96,7 @@ layout: section
 layout: default
 ---
 
-# About FACE 🤔
+# About-FACE 🤔🔄️
 
 ```js
 class MyCustomEl extends HTMLElement {
@@ -159,11 +147,11 @@ Angular already ships with multiple value-accessor directives, but only one expo
 </boxes-combobox>
 ```
 
-`<boxes-combobox>` works — it fires `input` and exposes `target.value`, exactly like a text input.
+`<boxes-combobox>` works: it fires `input` and exposes `target.value`, exactly like a text input.
 
 ::right::
 
-`ngDefaultControl` wires up the **default value accessor** — the only built-in accessor Angular lets you attach to a custom element:
+`ngDefaultControl` wires up the **default value accessor**, the only built-in accessor Angular lets you attach to a custom element:
 
 1. Reads `event.target.value` on `input` events
 2. Writes back via `element.value = ...`
@@ -171,13 +159,13 @@ Angular already ships with multiple value-accessor directives, but only one expo
 
 <div class="callout mt-6">
 
-`ngDefaultControl` works for controls that follow text-input semantics — but not all controls do. Angular's forms package already accounts for this: it ships specialized value-accessor directives for native elements with different event and value models. Those directives aren't available for custom elements to opt into.
+`ngDefaultControl` works for controls that follow text-input semantics, but not all controls do. Angular's forms package already accounts for this: it ships specialized value-accessor directives for native elements with different event and value models. Those directives aren't available for custom elements to opt into.
 
 </div>
 
 <!--
 ngDefaultControl works for combobox because it was designed for exactly this shape.
-The next slides show the three other patterns Angular already knows about — and why they break with custom elements.
+The next slides show the three other patterns Angular already knows about, and why they break with custom elements.
 -->
 
 ---
@@ -237,40 +225,25 @@ Combobox is the baseline. The others expose the limits immediately.
 layout: default
 ---
 
-# Two Proposal Paths
+# My Request
 
-<div class="grid grid-cols-2 gap-4 mt-2">
-<div>
+As a web component library maintainer, I need to support existing Angular Forms for at least the next two years.  
+The ask is small: let FACE controls opt into the directives Angular already ships.
 
-## 1. Add opt-in selectors to existing directives
-
-- Let FACE controls opt into existing built-ins with attribute selectors
+- Extend existing built-in directives with opt-in attribute selectors
 - Examples: checkbox, single select, multi-select, radio, number, range
-- Reuses Angular's current event/value semantics where the control already matches
-- Best fit for FACE controls that intentionally mirror native behavior
+- Reuses Angular's current event and value semantics where the control already matches
+- No new API surface — just opening the door for controls that already behave correctly
 
-</div>
-<div>
+<div class="callout mt-6">
 
-## 2. Add a configurable custom-element directive
-
-- Allow configuration of which event updates the model
-- Allow configuration of which property Angular reads and writes
-- Useful for commit-style controls or custom state shapes that do not map cleanly to native accessors
-
-</div>
-</div>
-
-<div class="mt-6 pt-4 border-t border-gray-200 text-sm">
-
-Both paths may be needed: reuse the existing directives where possible, and provide a configurable escape hatch where the existing patterns are too narrow.
+Signal Forms is the right long-term direction and genuinely exciting. When it lands, there's a real opportunity to get FACE integration right from the start and avoid the friction points that exist in the current forms API today.
 
 </div>
 
 <!--
-Proposal 1 is the lowest-friction extension of what Angular already has.
-Proposal 2 acknowledges that not every FACE control is just "checkbox but custom" or "select but custom".
-These are complementary, not competing, ideas.
+This is the lowest-lift ask in the talk. The directives already exist. FACE controls already implement the browser contract. The gap is just an opt-in selector that isn't there yet.
+Signal Forms is where the deeper fix lives, but that doesn't help library maintainers today.
 -->
 
 ---
@@ -348,13 +321,13 @@ export class BoxesCheckboxDirective {
 ::right::
 
 
-**It works** — Angular now rejects `[notARealProp]` again.
+**It works.** Angular now rejects `[notARealProp]` again.
 
 **But it is the wrong boundary:**
 
 - Requires an Angular-specific companion package or code generation step
 - Likely version-sensitive across Angular major releases
-- Duplicates the component API surface — can drift out of sync
+- Duplicates the component API surface, can drift out of sync
 - Places an Angular-specific maintenance burden on a framework-agnostic library
 
 
@@ -392,7 +365,7 @@ declare module 'react/jsx-runtime' {
 }
 ```
 
-This isn't free — must be authored or generated, built, and kept in sync per framework.
+This isn't free: must be authored or generated, built, and kept in sync per framework.
 
 ::right::
 
@@ -410,24 +383,27 @@ With the `.d.ts` added to the consuming app's `tsconfig`:
 
 <div class="callout mt-2">
 
-This works for any framework with a `jsx-runtime` module that exposes a `JSX.IntrinsicElements` interface — React, Preact, and Solid all support this pattern. The `boxes` library already ships `react.d.ts` and it works today in `boxes-react`.
+This works for any framework with a `jsx-runtime` module that exposes a `JSX.IntrinsicElements` interface: React, Preact, and Solid all support this pattern. The `boxes` library already ships `react.d.ts` and it works today in `boxes-react`.
 
 </div>
 
-Preferable to proxy directives — one app-level `tsconfig` entry rather than importing directives into every Angular component — but still not the right answer. A framework-agnostic source of truth shouldn't require per-framework artifacts.
+Preferable to proxy directives: one app-level `tsconfig` entry rather than importing directives into every Angular component, but still not the right answer. A framework-agnostic source of truth shouldn't require per-framework artifacts.
 
 <!--
 The key point: the extensibility is in the type system, not the framework.
 Any JSX-based framework can consume the same declaration file.
 The boxes library already generates this. Angular has no equivalent path.
-The next slide shows what the actual standard looks like — custom-elements.json.
+The next slide shows what the actual standard looks like: custom-elements.json.
 -->
 
 ---
-layout: two-cols
+layout: default
 ---
 
 # The Proposed Angular Direction
+
+<div class="grid grid-cols-2 gap-4">
+<div>
 
 The proposal: an Angular compiler option that reads `custom-elements.json` and synthesizes typed template bindings. This enables web component libraries to follow the [Custom Elements Manifest standard](https://github.com/webcomponents/custom-elements-manifest) and ship one manifest, with no per-framework builds required.
 
@@ -436,14 +412,14 @@ The proposal: an Angular compiler option that reads `custom-elements.json` and s
 {
   "angularCompilerOptions": {
     "customElementManifests": [
-      "./node_modules/@boxes/components/custom-elements.json"
+      "@boxes/components/custom-elements.json"
     ]
   }
 }
 ```
 
-::right::
-
+</div>
+<div>
 
 With this, Angular could:
 
@@ -453,10 +429,66 @@ With this, Angular could:
 - Drive language-service completions from manifest properties and events
 - Remove the need for per-component `CUSTOM_ELEMENTS_SCHEMA` opt-in
 
+</div>
+</div>
+
+<div class="mt-2 border-t border-gray-200 text-sm">
+
+This is a well-documented community ask:  
+[#12045](https://github.com/angular/angular/issues/12045) (the canonical RFC, open since 2016)  
+[#36893](https://github.com/angular/angular/issues/36893) (Language Service + `custom-elements.json`, 2020)  
+[#58483](https://github.com/angular/angular/issues/58483) (TypeScript interface augmentation approach, 2024)
+
+</div>
+
 <!--
-This is not asking for a new format. CEM (Custom Elements Manifest) is the standard.
-Lit, Stencil, and most Web Component toolchains already emit it.
-The ask is for Angular's compiler and language service to read it.
+#12045 is P3, open since 2016; maintainers close CEM-related issues as duplicates of it.
+#36893 specifically requests language service integration with the CEM format.
+#58483 proposes a TypeScript-first approach (interface augmentation) that CEM tooling could target; most actionable recent proposal.
+None have shipped.
+-->
+
+---
+layout: two-cols-header
+---
+
+# Selectors Are Always String Literals in Angular Templates
+
+::left::
+
+**Angular**
+
+The selector must be spelled out as a string literal in every template. There is no way to reference the element class or import.
+
+```html
+<!-- app.html -->
+<boxes-checkbox
+  [checked]="isChecked"
+  name="confirmedProduce">
+</boxes-checkbox>
+```
+
+If the selector changes, every template that uses it must be updated manually. TypeScript has no way to enforce the connection between the string and the class.
+
+::right::
+
+**JSX**
+
+The element is imported as a variable. The selector string is an implementation detail the consumer never needs to know.
+
+```tsx
+import { Checkbox } from '@/boxes/checkbox';
+
+<Checkbox
+  checked={isChecked}
+  name="confirmedProduce"
+/>
+```
+
+Renaming the element is a refactor, not a find-and-replace across templates. The import is the reference.
+
+<!--
+This is not just a DX complaint. It means Angular templates cannot participate in TypeScript's module graph the same way JSX can.
 -->
 
 ---
@@ -471,40 +503,34 @@ Difficulties with Angular in an integrated monorepo
 layout: default
 ---
 
-# The Build Configuration Problem
+# Libraries with Custom Build Requirements
 
-Other frameworks in this monorepo can reference the library source directly via TypeScript path aliases:
+This is an edge case specific to web component libraries that use Vite-native import patterns. The `boxes` library imports component styles using `.scss?inline`, a Vite feature that compiles SCSS and returns it as a string. Angular's esbuild pipeline has no loader for this pattern, so the library source cannot be referenced directly.
 
-```json
-// tsconfig.json (React, Next.js)
-"paths": { "@boxes/*": ["libs/boxes/src/*"] }
-```
-
-Angular's builder cannot follow these aliases to source. It requires compiled `dist/` output:
+Angular must point to pre-built `dist/` output where the `.scss?inline` imports have already been resolved by Vite:
 
 ```json
 // tsconfig.json (Angular)
 "paths": { "@boxes/*": ["dist/libs/boxes/*"] }
 ```
 
-This means the Angular dev server cannot pick up library source changes directly — every change to the `boxes` library requires a rebuild of `dist/` before it is reflected in the running app.
+Every change to the `boxes` library requires a `dist/` rebuild before it is reflected in the running Angular app. Libraries that do not use Vite-specific import patterns are not affected.
 
 <div class="callout mt-4">
 
-The Angular builder does not expose enough configuration to work around this. The `dist/` dependency is not a choice — it is a constraint imposed by the build tooling.
+Frameworks that bundle with Vite or support import plugin configuration handle `.scss?inline` natively and can reference library source directly. Community workarounds for Angular (`@angular-builders/custom-esbuild`) may solve for this but break `ng update` compatibility.
 
 </div>
 
 <!--
-Other frameworks work directly against source, giving immediate feedback during development.
-Angular developers working alongside a web component library in a monorepo face a mandatory rebuild step that doesn't exist for their React or Next.js colleagues.
+Angular libraries and simple web component files work fine; this constraint is specific to libraries with build-time requirements outside Angular's builder.
 -->
 
 ---
 layout: default
 ---
 
-# The Sourcemap Gap — A Consequence
+# The Debug Cost of Building to `dist/`
 
 <div class="grid grid-cols-2 gap-4 mt-4">
 
@@ -526,75 +552,80 @@ libs/boxes (Vite build)
 
 <div>
 
-**What the Angular dev server serves**
+**What the Angular bundler does**
 
 ```
-/main.js          ✅ served
-/main.js.map      ✅ served
-  (embeds dist/libs/boxes/combobox.js source)
+combobox.js → JS transformer
+  //# sourceMappingURL=combobox.js.map  ← original
+  //# sourceMappingURL=data:...         ← TS compiler appends
+  combobox.js.map                       ← never read
 
-/dist/libs/boxes/combobox.js      ❌ 404
-/dist/libs/boxes/combobox.js.map  ❌ 404
+esbuild follows last comment
+  sourcesContent: compiled JS    ← chain stops here
 ```
 
 </div>
 
 </div>
 
+<div class="mt-4 pt-4 border-t border-gray-200 text-sm">
 
-Because Angular must consume compiled `dist/` output, the Angular dev server never serves the library source files. Chrome DevTools can show the transpiled `dist/libs/boxes/combobox.js` embedded in `main.js.map`, but cannot follow the `sourceMappingURL` to reach the original TypeScript — those URLs 404.
+**Root cause:** When no Babel plugins are needed, Angular's JS transformer never reads the `.map` file from disk. With `allowJs` + `inlineSourceMap` enabled, the TypeScript compiler also appends its own inline `data:` sourcemap; esbuild follows the last one, which only traces back to the compiled JS. The chain to TypeScript is never formed.
 
-**Debugging stays in transpiled JavaScript instead of component TypeScript.**
+**The fix:** Read the external `.map` file, strip both `sourceMappingURL` comments, and replace them with a single inline base64 map pointing to the TypeScript source. esbuild chains it correctly. [PR #32788](https://github.com/angular/angular-cli/pull/32788)
 
+</div>
 
 <!--
-This is less severe than the forms and tooling gaps, but it compounds the developer experience problem.
-When something goes wrong in a FACE control used in Angular, you cannot easily set a breakpoint in the component source.
+The hit path is transformData() in javascript-transformer.ts, not the worker; it short-circuits when skipLinker=true and advancedOptimizations=false.
+With allowJs + inlineSourceMap, the TS compiler keeps the original //# sourceMappingURL=combobox.js.map AND appends its own data: inline map. esbuild uses the last one, which wraps the compiled JS content; so sourcesContent in main.js.map contains the JS with the external reference still embedded, unreachable from the browser.
+The fix strips both comments and appends a single inline map (the content of combobox.js.map base64-encoded). No additional dependencies needed.
 -->
 
 ---
 layout: two-cols
 ---
 
-# How Storybook Handles This
+# No Official esbuild Extension Point
 
-Storybook exposes `viteFinal` and `webpackFinal` hooks in `.storybook/main.ts` — async functions that receive the bundler config and return a merged config. No ejecting required.
+Angular's builder treats its esbuild configuration as an internal implementation detail with no documented extension point. Community options exist for both builders: `@angular-builders/custom-webpack` and `@angular-builders/custom-esbuild`. Both require replacing the builder string in `angular.json`.
 
-```ts
-// .storybook/main.ts
-async viteFinal(config) {
-  const { mergeConfig } = await import('vite');
-  return mergeConfig(config, {
-    resolve: {
-      alias: {
-        '@boxes': path.resolve(__dirname, '../libs/boxes/src'),
-      },
-    },
-  });
+```json
+// angular.json: required change
+"serve": {
+  "builder": "@angular-builders/custom-esbuild:dev-server"
 }
 ```
 
-Source changes are picked up immediately by the dev server — no `dist/` rebuild step.
+```ts
+// custom-esbuild.config.ts
+export default {
+  plugins: [myPlugin()],
+};
+```
 
 ::right::
 
-Angular's builder treats its Vite and esbuild configuration as internal implementation details with no documented extension point. Adopting a similar hook would not require ejecting from the Angular CLI.
+**Tradeoffs**
 
-```json
-// Proposed: angular.json
-"serve": {
-  "builder": "@angular/build:dev-server",
-  "options": {
-    "viteFinal": "./vite.extend.ts"
-  }
-}
-```
+- Replacing the builder string in `angular.json` breaks `ng update` compatibility
+- Community maintained, not official Angular packages
+- Angular team has declined to expose a build configuration extension point
 
-This is an [open community request](https://github.com/angular/angular-cli/issues/26329) with multiple related issues filed since 2023 — none have shipped in a stable release.
+**Related issues (closed)**
+
+- [#26329](https://github.com/angular/angular-cli/issues/26329): custom esbuild plugins
+- [#27695](https://github.com/angular/angular-cli/issues/27695): Vite config extension
+
+**Other platforms expose this officially**
+
+- **Storybook**: `viteFinal` / `webpackFinal` hooks in `.storybook/main.ts`
+- **Next.js**: `webpack()` and experimental `turbopack` config in `next.config.js`
 
 <!--
-Storybook's hooks are officially documented, typed via StorybookConfig, and work across React, Angular, Vue, and Svelte targets.
-Angular community workarounds (@angular-builders/custom-esbuild) exist but require swapping the entire builder, losing automatic Angular CLI upgrade guarantees.
+Both issues were closed without resolution; the Angular team's position is that the build pipeline is an internal detail.
+custom-esbuild replaces the builder entirely, so any Angular CLI updates that change builder options or defaults require manual migration rather than ng update.
+Storybook and Next.js treat build extension as a first-class feature. Angular's lack of an equivalent makes Web Component tooling integration significantly harder.
 -->
 
 ---
@@ -606,12 +637,58 @@ layout: section
 Steps required to enable @lit-labs/ssr
 
 ---
-layout: two-cols
+layout: two-cols-header
 ---
 
-# Next.js vs Angular SSR
+# Setting Up Lit SSR: Angular
 
-**Next.js baseline** (`apps/boxes-nextjs`)
+::left::
+
+1. Import hydration support first in `main.ts`, before any element registrations:
+
+```ts
+import '@lit-labs/ssr-client/lit-element-hydrate-support.js';
+```
+
+2. In `server.ts`, install the DOM shim and register each element so Lit can render them on the server:
+
+```ts
+installWindowOnGlobal();
+await import('@/boxes/combobox');
+// remaining elements...
+```
+
+3. Define a regex to identify every custom element selector in the Angular-rendered HTML:
+
+```ts
+/<(boxes-(?:checkbox|combobox|...))\b([^>]*)>([\s\S]*?)<\/\1>/g
+```
+
+::right::
+
+4. Intercept Angular's response: for each HTML page, pass the body through a custom transform before writing it to the client
+
+5. For each regex match, instantiate a `LitElementRenderer`, apply attributes and properties, call `connectedCallback()`, and collect the rendered shadow tree
+
+6. Replace the matched element in the HTML with a declarative shadow DOM equivalent:
+
+```html
+<boxes-combobox>
+  <template shadowrootmode="open">
+    <!-- rendered shadow tree -->
+  </template>
+</boxes-combobox>
+```
+
+<!--
+Angular has no documented hook for transforming SSR output; the response interception and Lit rendering pipeline must be implemented manually in server.ts.
+-->
+
+---
+
+# Setting Up Lit SSR: Next.js
+
+1. Wrap the Next.js config with `@lit-labs/nextjs`:
 
 ```ts
 // next.config.js
@@ -621,20 +698,16 @@ export default withLitSSR({});
 
 That's it. `@lit-labs/nextjs` handles declarative shadow DOM server rendering automatically.
 
-::right::
+**Takeaway:** the same result takes one config line in Next.js and a custom ~150 line server pipeline in Angular.
 
-**Angular SSR** (`apps/boxes-angular-ssr`) required:
+<div class="callout mt-6">
 
-- Configure Angular SSR to allow `localhost` — without this it silently falls back to CSR
-- Implement a manual Lit SSR response transform in `server.ts` using `@lit-labs/ssr`
-- Externalize `lit/*` from the library Vite build so the server transform and the built library share one Lit runtime
-- Register `@lit-labs/ssr-client/lit-element-hydrate-support.js` in the browser entry before elements are registered
+Both Lit and Angular are Google products. There is a real opportunity here for the two teams to work together and make this a first-class experience.
 
-**Takeaway:** the same result takes one config line in Next.js and a custom server pipeline in Angular.
+</div>
 
 <!--
-This is not a criticism of Angular SSR itself — it is a criticism of the gap between the two ecosystems.
-@lit-labs/nextjs exists specifically because Next.js has a hook for transforming server-rendered HTML.
+@lit-labs/nextjs exists specifically because Next.js exposes an official hook for transforming server-rendered HTML.
 Angular's equivalent hook exists but is not documented or supported for this use case.
 -->
 
@@ -660,7 +733,7 @@ layout: two-cols
 // libs/boxes/src/combobox/combobox.ts
 firstUpdated() {
   // option state is derived from light DOM
-  // after the element upgrades in the browser —
+  // after the element upgrades in the browser;
   // not available at server render time
   this._options = [...this.querySelectorAll('option')];
 }
@@ -668,12 +741,12 @@ firstUpdated() {
 
 - Child-driven controls (`combobox`, `multi-select`, `calendar-picker`) can only SSR their shell
 - Options passed as light DOM children are not accessible before `renderShadow()` on the server
-- This is a known limitation of `@lit-labs/ssr` with child-driven patterns — tracked in ISSUE-15
+- This is a known limitation of `@lit-labs/ssr` with child-driven patterns; tracked in ISSUE-15
 
 **Takeaway:** simple self-contained FACE controls SSR correctly; child-driven controls need an upstream fix in `@lit-labs/ssr`.
 
 <!--
-This is a split result — not a total failure.
+This is a split result, not a total failure.
 The form mismatch repros survive SSR and hydration, which means the core findings still hold.
 The child-driven SSR limitation is a separate upstream issue, not an Angular-specific problem.
 -->
@@ -682,189 +755,26 @@ The child-driven SSR limitation is a separate upstream issue, not an Angular-spe
 layout: section
 ---
 
-# The Ask
+# Recap
 
-Four concrete proposals for the Angular team
 
 ---
 layout: default
 ---
 
-# Proposal 1 — FACE-Aware Form Integration
-
-**Problem:** `ngDefaultControl` assumes text-input semantics. FACE controls that use multi-value `setFormValue`, commit-style events, or boolean `checked` semantics silently fail.
-
-
-**Option A — Built-in FACE CVA**
-
-Ship a `FormAssociatedControlValueAccessor` directive that reads from `ElementInternals` rather than `event.target.value`. Automatically detected when a custom element has `formAssociated = true`.
-
-**Option B — FACE-first `ngDefaultControl`**
-
-Extend `ngDefaultControl` to detect `formAssociated` elements and delegate to the FACE value path (observe form reset, read the internals value) before falling back to text-input behavior.
-
-**Either path** eliminates the need for library authors or consuming app developers to write custom CVAs for controls that already implement the platform contract.
-
-
-<!--
-The browser already has a rich integration surface through ElementInternals.
-Angular should be able to read it the same way the browser's form system does.
--->
-
----
-layout: default
----
-
-# Proposal 2 — Manifest-Backed Template Metadata
-
-**Problem:** `CUSTOM_ELEMENTS_SCHEMA` is a suppressor. Angular has no first-class path to load typed custom-element metadata for template checking and language-service completions.
-
-
-**Proposed API**
-
-```json
-{
-  "angularCompilerOptions": {
-    "customElementManifests": ["./node_modules/@boxes/components/custom-elements.json"]
-  }
-}
-```
-
-**What Angular would synthesize from the manifest:**
-
-- Typed template bindings from `attributes` and `properties` entries
-- Event completions and `(event)` binding support from `events` entries
-- Type errors when a binding references a non-existent property
-- Language-service completions without any runtime shim
-
-
-
-`CUSTOM_ELEMENTS_SCHEMA` remains the opt-out. Manifests become the opt-in typed path.
-
-
-<!--
-CEM (Custom Elements Manifest) is already the ecosystem standard.
-Lit, Stencil, and Shoelace all ship it. The Angular compiler team has the most leverage to make this real.
--->
-
----
-layout: default
----
-
-# Proposal 3 — Dev Server Sourcemap Passthrough
-
-**Problem:** The Angular dev server does not serve library files resolved through `tsconfig.json` path aliases. The browser cannot follow the second-level sourcemap chain into component TypeScript source.
-
-
-**Ask:** When the Angular dev server resolves a `paths` alias to a local `dist/` or workspace path, serve the corresponding source files and sourcemaps so the browser can resolve the full chain:
-
-```
-main.js.map → dist/libs/boxes/combobox.js → combobox.js.map → src/combobox.ts
-```
-
-This is lower priority than the forms and tooling gaps, but it compounds the experience problem: when debugging a FACE integration issue in Angular, you are debugging transpiled library output instead of component source.
-
-
-<!--
-This may be a Vite plugin configuration question rather than a deeper Angular change.
-But the effect — that local workspace library source is invisible to the debugger — is real.
--->
-
----
-layout: default
----
-
-# Proposal 4 — First-Class Lit SSR Integration
-
-**Problem:** Angular SSR has no built-in path for server-rendering custom elements with declarative shadow DOM. Achieving it requires a manual response transform, library build changes, and host configuration that should not be the consuming app's responsibility.
-
-**Option A — Official `@angular/ssr` + Lit integration package**
-
-Ship or document an `@angular/ssr` plugin that applies the Lit SSR transform automatically, equivalent to what `@lit-labs/nextjs` does for Next.js.
-
-**Option B — HTML response transform hook**
-
-Expose a supported, documented `server.ts` hook for transforming the Angular SSR HTML response before it is sent to the browser. This would let `@lit-labs/ssr` or any other tool plug in without custom plumbing.
-
-**Either path** removes the need for consuming apps to maintain a custom server pipeline just to get declarative shadow DOM in their initial HTML response.
-
-<!--
-The manual transform works. The point is that it should not be manual.
-@lit-labs/nextjs is ~200 lines of code that any Angular integration could replicate — once there is a hook to plug into.
--->
-
----
-layout: default
----
-
-# Why This Matters
-
-<div class="grid grid-cols-2 gap-4 mt-4">
-
-<div>
-
-**The Web Component promise**
-
-- Write once, use anywhere
-- Framework-agnostic design system components
-- Platform-native form participation via FACE
-- No per-framework runtime shims
-
-</div>
-
-<div>
-
-**What the current Angular gaps require**
-
-- Custom `ControlValueAccessor` per FACE control per semantic type
-- Angular-specific proxy directive package per library
-- Suppressions (`CUSTOM_ELEMENTS_SCHEMA`) instead of validation
-- Transpiled-JS debugging instead of TypeScript source
-
-</div>
-
-</div>
-
-
-Each gap individually is workable. Together, they make Angular the **hardest framework to integrate Web Components into** — despite Angular being the framework most committed to TypeScript correctness.
-
-
-
-These findings are reproducible. The monorepo is available. The goal of this conversation is to find the Angular team's preferred path to closing these gaps.
-
-
-<!--
-This is not adversarial. Angular has the strongest TypeScript story of any major framework.
-These gaps are inconsistencies with that story — not fundamental incompatibilities.
-The proposals are designed to be additive, not breaking.
--->
-
----
-layout: default
----
-
-# Summary
-
-| Issue | Current Angular behavior | Proposed path |
-|-----|--------------------------|---------------|
-| **Form integration** | `ngDefaultControl` reads `input` + `target.value` only | Built-in FACE CVA or FACE-first `ngDefaultControl` |
-| **Template type-checking** | `CUSTOM_ELEMENTS_SCHEMA` suppresses all errors | `customElementManifests` in `angularCompilerOptions` |
-| **Debug experience** | Library sourcemaps not served through path aliases | Dev server passthrough for workspace alias targets |
-| **SSR setup** | Manual Lit SSR transform + host config + build changes required | Official `@angular/ssr` + Lit integration or a supported HTML transform hook |
-
-
-**Reproductions available in:** `apps/boxes-angular`, `apps/boxes-web`, `apps/boxes-react`
-
-**Component library:** `libs/boxes` — FACE controls built with Lit, ships `custom-elements.json` and `react.d.ts`
-
-
-
-Questions welcome. All three repros are live and runnable.
+# Recap
+
+| Area | My Concern | My suggestion |
+|------|------------|---------------|
+| **Form integration** | FACE controls need hand-written CVAs; `ngDefaultControl` reads `event.target.value` only | Opt-in selectors on existing directives now; FACE-aware Signal Forms long term |
+| **Template type-checking** | `CUSTOM_ELEMENTS_SCHEMA` suppresses all errors | `customElementManifests` compiler option to load `custom-elements.json`. Consider variable selectors. |
+| **Build / debug** | Sourcemaps don't chain through path aliases to TypeScript source | Sourcemap chaining fix ([PR #32788](https://github.com/angular/angular-cli/pull/32788) open) |
+| **SSR setup** | Lit SSR requires a custom server pipeline; no official hook to plug into | Angular + Lit teams collaborating on first-class support |
 
 
 <!--
 Leave plenty of time for discussion here.
-The Angular team may have context on internal work that addresses some of these — that's a great outcome.
+The Angular team may have context on internal work that addresses some of these; that's a great outcome.
 The goal is alignment, not advocacy.
 -->
 
@@ -874,15 +784,7 @@ layout: end
 
 # Thank You
 
-**Monorepo:** `angular-web-component-integration`
-
-Five apps · Four FACE controls · Every finding reproducible
-
-<div class="mt-8 text-gray-400 text-sm">
-
-Open question still being investigated: Template binding timing during element upgrade (ISSUE-8) · Child-driven SSR upstream fix (ISSUE-15)
-
-</div>
+**Repo:** [https://github.com/jsmike/angular-custom-elements-lost-levels](https://github.com/jsmike/angular-custom-elements-lost-levels)
 
 <!--
 Mention that ISSUE-8 (template binding timing) and ISSUE-5 (SSR) are next on the investigation list.
