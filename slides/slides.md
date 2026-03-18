@@ -29,7 +29,7 @@ M&T Bank
 <div class="text-gray-300">
 
 💼 [linkedin.com/in/michael-cebrian-94248378](https://linkedin.com/in/michael-cebrian-94248378)  
-📦 [github.com/JSMike/angular-web-component-integration](https://github.com/JSMike/angular-web-component-integration)  
+📦 [github.com/JSMike/angular-custom-elements-lost-levels](https://github.com/JSMike/angular-custom-elements-lost-levels)  
 🔗 [box-model.dev](https://box-model.dev)
 
 </div>
