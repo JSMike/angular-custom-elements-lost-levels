@@ -6,7 +6,6 @@ lineNumbers: false
 transition: slide-left
 drawings: false
 layout: cover
-background: '#1a1a2e'
 ---
 
 <div class="v1-game-cover">
@@ -18,8 +17,8 @@ background: '#1a1a2e'
       <div class="v1-hud-value">000000</div>
     </div>
     <div class="v1-hud-item">
-      <div class="v1-hud-label">WORLD</div>
-      <div class="v1-hud-value">1-1</div>
+      <div class="v1-hud-label">LIVES</div>
+      <div class="v1-hud-value">♥️♥️♥️♥️</div>
     </div>
     <div class="v1-hud-item">
       <div class="v1-hud-label">TIME</div>
@@ -45,19 +44,21 @@ background: '#1a1a2e'
       <span class="v1-p1">1P</span>
       <div>
         <div class="v1-p-name">MICHAEL CEBRIAN</div>
-        <div class="v1-p-sub">SVP, PRINCIPAL ENG · ENTERPRISE DESIGN SYSTEM · M&T BANK</div>
+        <div class="v1-p-sub">PRINCIPAL ENG · ENTERPRISE DESIGN SYSTEM</div>
+        <div class="v1-p-sub">Senior Vice President · M&T BANK</div>
       </div>
     </div>
     <div class="v1-links">
-      <div>💼 <a href="https://linkedin.com/in/michael-cebrian-94248378">linkedin.com/in/michael-cebrian-94248378</a></div>
-      <div>📦 <a href="https://github.com/JSMike/angular-custom-elements-lost-levels">github.com/JSMike/angular-custom-elements-lost-levels</a></div>
-      <div>🔗 <a href="https://box-model.dev">box-model.dev</a> · Angular Enterprise Summit · March 19, 2026</div>
+      <div><a href="https://linkedin.com/in/michael-cebrian-94248378">linkedin.com/in/michael-cebrian-94248378</a></div>
+      <div><a href="https://github.com/JSMike/angular-custom-elements-lost-levels">github.com/JSMike/angular-custom-elements-lost-levels</a></div>
+      <div>Angular Enterprise Summit · March 19, 2026</div>
     </div>
   </div>
 </div>
 
 ---
 layout: default
+class: world-0-1 world-0
 ---
 
 # Angular Gets So Much Right
@@ -93,6 +94,7 @@ Set the tone early. This is a talk from someone who has used Angular for nearly 
 
 ---
 layout: default
+class: world-0-2 world-0
 ---
 
 # The Repo
@@ -115,15 +117,42 @@ Keep this brief. Happy to pull it up and walk through it if there are questions 
 -->
 
 ---
-layout: section
+layout: cover
+background: '#0d1b2a'
 ---
 
-# Form Integration
-
-`ngDefaultControl` compatibility with Form-associated Custom Elements
+<div class="ws1-world">
+  <div class="v1-scanlines"></div>
+  <div class="v1-hud">
+    <div class="v1-hud-item">
+      <div class="v1-hud-label">SCORE</div>
+      <div class="v1-hud-value">000000</div>
+    </div>
+    <div class="v1-hud-item">
+      <div class="v1-hud-label">LIVES</div>
+      <div class="v1-hud-value">♥️♥️♥️♥️</div>
+    </div>
+    <div class="v1-hud-item">
+      <div class="v1-hud-value" style="color: #4fc3f7">WORLD 1</div>
+    </div>
+  </div>
+  <div class="ws1-center">
+    <div class="ws1-eyebrow">◆ LEVEL ONE ◆</div>
+    <div class="ws1-title">FORM<br>INTEGRATION</div>
+    <div class="ws1-sub">ngDefaultControl compatibility<br>with Form-associated Custom Elements</div>
+    <div class="ws1-start">▶ LEVEL START! ◀</div>
+  </div>
+  <div class="ws1-deco">
+    <div class="ws1-wave"></div>
+    <div class="ws1-wave"></div>
+    <div class="ws1-wave"></div>
+    <div class="ws1-seabed"></div>
+  </div>
+</div>
 
 ---
 layout: default
+class: world-1-1 world-1
 ---
 
 # About-FACE 🤔🔄️
@@ -162,6 +191,7 @@ Here are some examples.
 
 ---
 layout: two-cols-header
+class: world-1-2 world-1
 ---
 
 # Angular Forms - In Your FACE
@@ -200,6 +230,7 @@ The next slides show the three other patterns Angular already knows about, and w
 
 ---
 layout: default
+class: world-1-3 world-1
 ---
 
 # Built-in Directives Without a Similar Opt-in
@@ -225,6 +256,7 @@ But all of the extra knowledge is trapped behind native selectors.
 
 ---
 layout: default
+class: world-1-4 world-1
 ---
 
 # When `ngDefaultControl` Is the Only Option
@@ -253,6 +285,7 @@ Combobox is the baseline. The others expose the limits immediately.
 
 ---
 layout: default
+class: world-1-5 world-1
 ---
 
 # My Request
@@ -276,15 +309,42 @@ Signal Forms is where the deeper fix lives, but that doesn't help library mainta
 -->
 
 ---
-layout: section
+layout: cover
+background: '#0a0000'
 ---
 
-# Template Type-Checking
-
-`CUSTOM_ELEMENTS_SCHEMA`
+<div class="ws2-world">
+  <div class="v1-scanlines"></div>
+  <div class="v1-hud">
+    <div class="v1-hud-item">
+      <div class="v1-hud-label">SCORE</div>
+      <div class="v1-hud-value">026934</div>
+    </div>
+    <div class="v1-hud-item">
+      <div class="v1-hud-label">LIVES</div>
+      <div class="v1-hud-value">♥️♥️♥️</div>
+    </div>
+    <div class="v1-hud-item">
+      <div class="v1-hud-value" style="color: #ff6d00">WORLD 2</div>
+    </div>
+  </div>
+  <div class="ws2-center">
+    <div class="ws2-eyebrow">◆ LEVEL TWO ◆</div>
+    <div class="ws2-title">TEMPLATE<br>TYPE-CHECK</div>
+    <div class="ws2-sub">CUSTOM_ELEMENTS_SCHEMA</div>
+    <div class="ws2-start">▶ LEVEL START! ◀</div>
+  </div>
+  <div class="ws2-deco">
+    <div class="ws2-flame"></div>
+    <div class="ws2-flame"></div>
+    <div class="ws2-flame"></div>
+    <div class="ws2-lava"></div>
+  </div>
+</div>
 
 ---
 layout: two-cols
+class: world-2-1 world-2
 ---
 
 # What Angular Sees Today
@@ -328,9 +388,10 @@ It is a global opt-out from Angular's normal DOM property checking for custom el
 
 ---
 layout: two-cols-header
+class: world-2-2 world-2
 ---
 
-# The Only Workaround: Proxy Directives
+# The Workaround: Proxy Directives
 
 ::left::
 
@@ -376,6 +437,7 @@ The workaround is valid. It is not acceptable as the permanent answer.
 
 ---
 layout: two-cols
+class: world-2-3 world-2
 ---
 
 # The JSX Framework Workaround
@@ -432,6 +494,7 @@ The next slide shows what the actual standard looks like: custom-elements.json.
 
 ---
 layout: default
+class: world-2-4 world-2
 ---
 
 # A Typed Alternative to `CUSTOM_ELEMENTS_SCHEMA`
@@ -483,60 +546,38 @@ None have shipped.
 -->
 
 ---
-layout: two-cols-header
+layout: cover
+background: '#080604'
 ---
 
-# Angular Templates Only Accept String Literal Selectors
-
-_Beyond schema validation, Angular templates have no way to use a variable as an element selector._
-
-::left::
-
-**Angular**
-
-The selector must be spelled out as a string literal in every template.
-
-```html
-<!-- app.html -->
-<boxes-checkbox
-  [checked]="isChecked"
-  name="confirmedProduce">
-</boxes-checkbox>
-```
-
-If the selector string changes, every template that uses it must be updated manually.
-
-::right::
-
-**JSX**
-
-The element is imported as a variable. The selector string is an implementation detail the consumer never needs to know.
-
-```tsx
-import { Checkbox } from '@/boxes/checkbox';
-
-<Checkbox
-  checked={isChecked}
-  name="confirmedProduce"
-/>
-```
-
-Renaming the element is a refactor, not a find-and-replace across templates. The import is the reference.
-
-<!--
-This is not just a DX complaint. It means Angular templates cannot participate in TypeScript's module graph the same way JSX can.
--->
-
----
-layout: section
----
-
-# Monorepo Integration
-
-Difficulties with Angular in an integrated monorepo
+<div class="ws3-world">
+  <div class="v1-scanlines"></div>
+  <div class="ws3-ceiling"></div>
+  <div class="v1-hud">
+    <div class="v1-hud-item">
+      <div class="v1-hud-label">SCORE</div>
+      <div class="v1-hud-value">053440</div>
+    </div>
+    <div class="v1-hud-item">
+      <div class="v1-hud-label">LIVES</div>
+      <div class="v1-hud-value">♥️♥️</div>
+    </div>
+    <div class="v1-hud-item">
+      <div class="v1-hud-value" style="color: #ffb300">WORLD 3</div>
+    </div>
+  </div>
+  <div class="ws3-center">
+    <div class="ws3-eyebrow">◆ LEVEL THREE ◆</div>
+    <div class="ws3-title">MONOREPO<br>INTEGRATION</div>
+    <div class="ws3-sub">Difficulties with Angular<br>in an integrated monorepo</div>
+    <div class="ws3-start">▶ LEVEL START! ◀</div>
+  </div>
+  <div class="ws3-floor"></div>
+</div>
 
 ---
 layout: default
+class: world-3-1 world-3
 ---
 
 # Libraries with Custom Build Requirements
@@ -564,6 +605,7 @@ Angular libraries and simple web component files work fine; this constraint is s
 
 ---
 layout: default
+class: world-3-2 world-3
 ---
 
 # The Debug Cost of Building to `dist/`
@@ -620,6 +662,7 @@ The fix strips both comments and appends a single inline map (the content of com
 
 ---
 layout: two-cols
+class: world-3-3 world-3
 ---
 
 # No Official esbuild Extension Point
@@ -665,15 +708,40 @@ Storybook and Next.js treat build extension as a first-class feature. Angular's 
 -->
 
 ---
-layout: section
+layout: cover
+background: '#0d2137'
 ---
 
-# SSR Setup
-
-Steps required to enable @lit-labs/ssr
+<div class="ws4-world">
+  <div class="v1-scanlines"></div>
+  <div class="ws4-cloud ws4-cloud-a"></div>
+  <div class="ws4-cloud ws4-cloud-b"></div>
+  <div class="ws4-cloud ws4-cloud-c"></div>
+  <div class="v1-hud">
+    <div class="v1-hud-item">
+      <div class="v1-hud-label">SCORE</div>
+      <div class="v1-hud-value">093470</div>
+    </div>
+    <div class="v1-hud-item">
+      <div class="v1-hud-label">LIVES</div>
+      <div class="v1-hud-value">♥️</div>
+    </div>
+    <div class="v1-hud-item">
+      <div class="v1-hud-value" style="color: #fff9c4">WORLD 4</div>
+    </div>
+  </div>
+  <div class="ws4-center">
+    <div class="ws4-eyebrow">◆ LEVEL FOUR ◆</div>
+    <div class="ws4-title">SSR<br>SETUP</div>
+    <div class="ws4-sub">Steps required to enable<br>@lit-labs/ssr</div>
+    <div class="ws4-start">▶ LEVEL START! ◀</div>
+  </div>
+  <div class="ws4-ground"></div>
+</div>
 
 ---
 layout: two-cols-header
+class: world-4-1 world-4
 ---
 
 # Setting Up Lit SSR: Angular
@@ -721,6 +789,9 @@ Angular has no documented hook for transforming SSR output; the response interce
 -->
 
 ---
+layout: default
+class: world-4-2 world-4
+---
 
 # Setting Up Lit SSR: Next.js
 
@@ -749,6 +820,7 @@ Angular's equivalent hook exists but is not documented or supported for this use
 
 ---
 layout: two-cols-header
+class: world-4-3 world-4
 ---
 
 # Lit SSR: What Works · What Doesn't
@@ -792,13 +864,37 @@ The child-driven SSR limitation is a separate upstream issue, not an Angular-spe
 -->
 
 ---
-layout: section
+layout: cover
+background: '#020208'
 ---
 
-# Results Screen
+<div class="ws5-world">
+  <div class="v1-scanlines"></div>
+  <div class="v1-hud">
+    <div class="v1-hud-item">
+      <div class="v1-hud-label">SCORE</div>
+      <div class="v1-hud-value">118403</div>
+    </div>
+    <div class="v1-hud-item">
+      <div class="v1-hud-label">LIVES</div>
+      <div class="v1-hud-value"></div>
+    </div>
+    <div class="v1-hud-item">
+      <div class="ws5-badge">GAME OVER</div>
+    </div>
+  </div>
+  
+  <div class="ws5-center">
+    <div class="ws5-eyebrow">◆ CUSTOM ELEMENTS EVERYWHERE: THE LOST LEVELS ◆</div>
+    <div class="ws5-title">LEADER<br>BOARD</div>
+    <div class="ws5-sub">How does Angular rank?</div>
+    <div class="ws5-start">▶ INSERT COIN ◀</div>
+  </div>
+</div>
 
 ---
 layout: default
+class: world-5
 ---
 
 # Custom Elements Everywhere: How Does Angular Score?
@@ -825,12 +921,35 @@ The goal is alignment, not advocacy.
 -->
 
 ---
-layout: end
+layout: cover
+background: '#010108'
 ---
 
-# Thank You
+<div class="gc-screen">
+  <div class="gc-scanlines"></div>
 
-**Repo:** [https://github.com/jsmike/angular-custom-elements-lost-levels](https://github.com/jsmike/angular-custom-elements-lost-levels)
+  <div class="gc-header">★ STAFF CREDITS ★</div>
+
+  <div class="gc-block">
+    <div class="gc-role">PRESENTER</div>
+    <div class="gc-name">MICHAEL CEBRIAN</div>
+  </div>
+
+  <div class="gc-block">
+    <div class="gc-role">PRINCIPAL ENGINEER · ENTERPRISE DESIGN SYSTEM</div>
+    <div class="gc-name">SENIOR VICE PRESIDENT · M&T BANK</div>
+  </div>
+
+  <div class="gc-divider"></div>
+
+  <div class="gc-link">
+    <div><a href="https://github.com/JSMike/angular-custom-elements-lost-levels">github.com/JSMike/angular-custom-elements-lost-levels</a></div>
+    <div><a href="https://linkedin.com/in/michael-cebrian-94248378">linkedin.com/in/michael-cebrian-94248378</a></div>
+    <div>Angular Enterprise Summit · March 19, 2026</div>
+  </div>
+
+  <div class="gc-end">▶ THANKS FOR PLAYING ◀</div>
+</div>
 
 <!--
 All repros in the repo are live. Happy to walk through any of them.
