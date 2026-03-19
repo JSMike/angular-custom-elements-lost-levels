@@ -24,18 +24,19 @@
       (reset)="onComboReset($event)"
     >
       <div class="field">
-        <label for="produce-field">Produce choice</label>
+        <label for="character-field">Character class</label>
         <boxes-combobox
-          id="produce-field"
-          name="produce"
+          id="character-field"
+          name="character"
           required
-          formControlName="produce"
+          formControlName="character"
           ngDefaultControl
         >
-          <option value="" selected>Choose a produce item</option>
-          <option value="blueberry">Blueberry</option>
-          <option value="lemon">Lemon</option>
-          <option value="mango">Mango</option>
+          <option value="" selected>Choose a class</option>
+          <option value="warrior">Warrior</option>
+          <option value="mage">Mage</option>
+          <option value="rogue">Rogue</option>
+          <option value="ranger">Ranger</option>
         </boxes-combobox>
       </div>
 
@@ -78,12 +79,12 @@
       <div class="checkbox-row">
         <boxes-checkbox
           id="confirmation-field"
-          name="confirmedProduce"
-          formControlName="confirmedProduce"
+          name="acceptQuest"
+          formControlName="acceptQuest"
           ngDefaultControl
-          [value]="'confirmed'"
+          [value]="'accepted'"
         ></boxes-checkbox>
-        <label for="confirmation-field">Confirm the produce selection</label>
+        <label for="confirmation-field">Accept the quest</label>
       </div>
 
       <div class="button-row">
@@ -109,7 +110,7 @@
     <h2>Multi-Select Control</h2>
     <p class="demo-copy">
       This setup is valid because a multi-select submits a collection. The
-      native shape is repeated <code>produceTags</code> entries, not one scalar
+      native shape is repeated <code>powerUps</code> entries, not one scalar
       value. Because this control is still select-like, it keeps both
       <code>input</code> and <code>change</code> rather than forcing a
       change-only contract. The mismatch is that Angular still keeps only one
@@ -124,18 +125,18 @@
       (reset)="onMultiSelectReset($event)"
     >
       <div class="field">
-        <label for="produce-tags-field">Produce tags</label>
+        <label for="power-ups-field">Power-ups</label>
         <boxes-multi-select
-          id="produce-tags-field"
-          name="produceTags"
+          id="power-ups-field"
+          name="powerUps"
           required
-          formControlName="produceTags"
+          formControlName="powerUps"
           ngDefaultControl
         >
-          <option value="fresh">Fresh</option>
-          <option value="imported">Imported</option>
-          <option value="organic">Organic</option>
-          <option value="seasonal">Seasonal</option>
+          <option value="mushroom">Mushroom</option>
+          <option value="star">Star</option>
+          <option value="fire-flower">Fire Flower</option>
+          <option value="cape">Cape</option>
         </boxes-multi-select>
       </div>
 
@@ -176,22 +177,18 @@
       (reset)="onCalendarReset($event)"
     >
       <div class="field">
-        <label for="delivery-date-field">Delivery date</label>
+        <label for="quest-date-field">Quest date</label>
         <boxes-calendar-picker
-          id="delivery-date-field"
-          name="deliveryDate"
-          placeholder="Choose a delivery date"
+          id="quest-date-field"
+          name="questDate"
+          placeholder="Choose a quest date"
           required
-          formControlName="deliveryDate"
+          formControlName="questDate"
           ngDefaultControl
         >
-          <option value="2026-03-16">Mon 16</option>
-          <option value="2026-03-17">Tue 17</option>
-          <option value="2026-03-18">Wed 18</option>
-          <option value="2026-03-19">Thu 19</option>
-          <option value="2026-03-20">Fri 20</option>
-          <option value="2026-03-21">Sat 21</option>
-          <option value="2026-03-22">Sun 22</option>
+          @for (date of questDates; track date.value) {
+            <option [value]="date.value">{{ date.label }}</option>
+          }
         </boxes-calendar-picker>
       </div>
 

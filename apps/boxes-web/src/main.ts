@@ -3,6 +3,27 @@ import '@/boxes/checkbox';
 import '@/boxes/multi-select';
 import '@/boxes/calendar-picker';
 
+function generateQuestDates(count = 7) {
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  return Array.from({ length: count }, (_, i) => {
+    const date = new Date();
+    date.setDate(date.getDate() + i);
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return {
+      value: `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`,
+      label: `${days[date.getDay()]} ${date.getDate()}`,
+    };
+  });
+}
+
+const calendarPicker = document.querySelector('#quest-date-field');
+for (const { value, label } of generateQuestDates()) {
+  const option = document.createElement('option');
+  option.value = value;
+  option.textContent = label;
+  calendarPicker?.appendChild(option);
+}
+
 type FormDataEntryJson = string | string[];
 
 type FormDataJson = Record<string, FormDataEntryJson>;

@@ -1,14 +1,1 @@
-body {
-  background: #fbfaf5;
-  color: #1b1b18;
-  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
-  margin: 0;
-}
-
-button {
-  font: inherit;
-}
-
-h1, h2, p {
-  margin-top: 0;
-}
+@use '../../_nes-theme';

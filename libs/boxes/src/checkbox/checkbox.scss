@@ -1,8 +1,8 @@
 :host {
   align-items: center;
-  background-color: #f5f5f5;
-  border: 2px solid rgb(0 0 0 / 75%);
-  border-radius: 4px;
+  background-color: #1a1a2e;
+  border: 2px solid #5a5a8a;
+  border-radius: 0;
   cursor: pointer;
   display: inline-flex;
   height: 1.25rem;
@@ -16,25 +16,25 @@
 }
 
 :host([disabled]) {
-  background-color: #e7e7e7;
-  color: rgb(0 0 0 / 60%);
+  background-color: #0f0f1e;
+  color: #7777aa;
   cursor: not-allowed;
 }
 
 :host(:focus-visible) {
-  border-color: #0067b8;
-  box-shadow: 0 0 4px 2px #0067b8;
+  border-color: #4fc3f7;
+  box-shadow: 0 0 0 2px rgba(79, 195, 247, 0.4);
   outline: 4px solid transparent;
 }
 
 :host([checked]) {
-  background-color: #0067b8;
-  border-color: #0067b8;
+  background-color: #4fc3f7;
+  border-color: #4fc3f7;
 }
 
 :host([checked]) .checkbox-indicator::after {
-  border-bottom: 2px solid #fff;
-  border-right: 2px solid #fff;
+  border-bottom: 2px solid #050510;
+  border-right: 2px solid #050510;
   content: '';
   display: block;
   height: 0.65rem;
@@ -43,8 +43,8 @@
 }
 
 :host([disabled][checked]) {
-  background-color: rgb(0 0 0 / 55%);
-  border-color: rgb(0 0 0 / 55%);
+  background-color: #5a5a8a;
+  border-color: #5a5a8a;
 }
 
 .checkbox-indicator {

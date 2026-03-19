@@ -4,6 +4,19 @@ import { Combobox } from '@/boxes/combobox';
 import { MultiSelect } from '@/boxes/multi-select';
 import { SyntheticEvent, useCallback, useEffect, useRef, useState } from 'react';
 
+function generateQuestDates(count = 7) {
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  return Array.from({ length: count }, (_, i) => {
+    const date = new Date();
+    date.setDate(date.getDate() + i);
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return {
+      value: `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`,
+      label: `${days[date.getDay()]} ${date.getDate()}`,
+    };
+  });
+}
+
 export type FormDataEntryJson = string | string[];
 
 export type FormDataJson = Record<string, FormDataEntryJson>;
@@ -120,14 +133,15 @@ export function App() {
           onSubmit={comboPreview.handleSubmit}
         >
           <label>
-            Produce choice
-            <Combobox id="produce-field" name="produce" required>
+            Character class
+            <Combobox id="character-field" name="character" required>
               <option value="">
-                Choose a produce item
+                Choose a class
               </option>
-              <option value="blueberry">Blueberry</option>
-              <option value="lemon">Lemon</option>
-              <option value="mango">Mango</option>
+              <option value="warrior">Warrior</option>
+              <option value="mage">Mage</option>
+              <option value="rogue">Rogue</option>
+              <option value="ranger">Ranger</option>
             </Combobox>
           </label>
 
@@ -156,10 +170,10 @@ export function App() {
           <label className="checkbox-row">
             <Checkbox
               id="confirmation-field"
-              name="confirmedProduce"
-              value="confirmed"
+              name="acceptQuest"
+              value="accepted"
             ></Checkbox>
-            <span>Confirm the produce selection</span>
+            <span>Accept the quest</span>
           </label>
 
           <div className="button-row">
@@ -175,7 +189,7 @@ export function App() {
         <h2>Multi-Select Control</h2>
         <p className="demo-copy">
           This setup is valid because a multi-select submits a collection. The
-          native shape is repeated <code>produceTags</code> entries, not one
+          native shape is repeated <code>powerUps</code> entries, not one
           scalar value. Because this control is still select-like, it keeps both
           <code>input</code> and <code>change</code> rather than forcing a
           change-only contract.
@@ -186,12 +200,12 @@ export function App() {
           onSubmit={multiSelectPreview.handleSubmit}
         >
           <label>
-            Produce tags
-            <MultiSelect name="produceTags" required>
-              <option value="fresh">Fresh</option>
-              <option value="imported">Imported</option>
-              <option value="organic">Organic</option>
-              <option value="seasonal">Seasonal</option>
+            Power-ups
+            <MultiSelect name="powerUps" required>
+              <option value="mushroom">Mushroom</option>
+              <option value="star">Star</option>
+              <option value="fire-flower">Fire Flower</option>
+              <option value="cape">Cape</option>
             </MultiSelect>
           </label>
 
@@ -218,19 +232,15 @@ export function App() {
           onSubmit={calendarPreview.handleSubmit}
         >
           <label>
-            Delivery date
+            Quest date
             <CalendarPicker
-              name="deliveryDate"
-              placeholder="Choose a delivery date"
+              name="questDate"
+              placeholder="Choose a quest date"
               required
             >
-              <option value="2026-03-16">Mon 16</option>
-              <option value="2026-03-17">Tue 17</option>
-              <option value="2026-03-18">Wed 18</option>
-              <option value="2026-03-19">Thu 19</option>
-              <option value="2026-03-20">Fri 20</option>
-              <option value="2026-03-21">Sat 21</option>
-              <option value="2026-03-22">Sun 22</option>
+              {generateQuestDates().map(({ value, label }) => (
+                <option key={value} value={value}>{label}</option>
+              ))}
             </CalendarPicker>
           </label>
 

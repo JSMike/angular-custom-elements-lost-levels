@@ -17,24 +17,37 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
+function generateQuestDates(count = 7) {
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  return Array.from({ length: count }, (_, i) => {
+    const date = new Date();
+    date.setDate(date.getDate() + i);
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return {
+      value: `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`,
+      label: `${days[date.getDay()]} ${date.getDate()}`,
+    };
+  });
+}
+
 export type FormDataEntryJson = string | string[];
 
 export type FormDataJson = Record<string, FormDataEntryJson>;
 
 export type ComboDemoFormModel = {
-  produce: FormControl<string>;
+  character: FormControl<string>;
 };
 
 export type CheckboxDemoFormModel = {
-  confirmedProduce: FormControl<string>;
+  acceptQuest: FormControl<string>;
 };
 
 export type MultiSelectDemoFormModel = {
-  produceTags: FormControl<string>;
+  powerUps: FormControl<string>;
 };
 
 export type CalendarDemoFormModel = {
-  deliveryDate: FormControl<string>;
+  questDate: FormControl<string>;
 };
 
 @Component({
@@ -58,17 +71,18 @@ export class App implements AfterViewInit {
   @ViewChild('calendarDemoForm')
   private _calendarDemoFormRef?: ElementRef<HTMLFormElement>;
 
+  protected readonly questDates = generateQuestDates();
   protected readonly comboForm = new FormGroup<ComboDemoFormModel>({
-    produce: new FormControl('', { nonNullable: true }),
+    character: new FormControl('', { nonNullable: true }),
   });
   protected readonly checkboxForm = new FormGroup<CheckboxDemoFormModel>({
-    confirmedProduce: new FormControl('', { nonNullable: true }),
+    acceptQuest: new FormControl('', { nonNullable: true }),
   });
   protected readonly multiSelectForm = new FormGroup<MultiSelectDemoFormModel>({
-    produceTags: new FormControl('', { nonNullable: true }),
+    powerUps: new FormControl('', { nonNullable: true }),
   });
   protected readonly calendarForm = new FormGroup<CalendarDemoFormModel>({
-    deliveryDate: new FormControl('', { nonNullable: true }),
+    questDate: new FormControl('', { nonNullable: true }),
   });
   protected readonly comboAngularFormValueJson = signal('{}');
   protected readonly comboNativeFormDataJson = signal('{}');
@@ -149,13 +163,13 @@ export class App implements AfterViewInit {
 
     this.calendarForm.reset(
       {
-        deliveryDate: '',
+        questDate: '',
       },
       { emitEvent: false },
     );
     this._resetValueFieldElement(
       this._calendarDemoFormRef,
-      '#delivery-date-field',
+      '#quest-date-field',
     );
     this._renderAngularFormValue(
       this.calendarForm,
@@ -179,7 +193,7 @@ export class App implements AfterViewInit {
 
     this.checkboxForm.reset(
       {
-        confirmedProduce: '',
+        acceptQuest: '',
       },
       { emitEvent: false },
     );
@@ -206,11 +220,11 @@ export class App implements AfterViewInit {
 
     this.comboForm.reset(
       {
-        produce: '',
+        character: '',
       },
       { emitEvent: false },
     );
-    this._resetValueFieldElement(this._comboDemoFormRef, '#produce-field');
+    this._resetValueFieldElement(this._comboDemoFormRef, '#character-field');
     this._renderAngularFormValue(this.comboForm, this.comboAngularFormValueJson);
     this._scheduleComboNativeFormDataRender();
   }
@@ -227,13 +241,13 @@ export class App implements AfterViewInit {
 
     this.multiSelectForm.reset(
       {
-        produceTags: '',
+        powerUps: '',
       },
       { emitEvent: false },
     );
     this._resetValueFieldElement(
       this._multiSelectDemoFormRef,
-      '#produce-tags-field',
+      '#power-ups-field',
     );
     this._renderAngularFormValue(
       this.multiSelectForm,
@@ -308,7 +322,7 @@ export class App implements AfterViewInit {
     }
 
     checkboxField.checked = false;
-    checkboxField.value = 'confirmed';
+    checkboxField.value = 'accepted';
   }
 
   private _resetValueFieldElement(
@@ -335,7 +349,7 @@ export class App implements AfterViewInit {
       return;
     }
 
-    checkboxField.value = 'confirmed';
+    checkboxField.value = 'accepted';
   }
 
   private _scheduleCalendarNativeFormDataRender() {

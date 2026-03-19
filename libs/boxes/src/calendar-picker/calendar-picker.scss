@@ -1,4 +1,5 @@
 :host {
+  color: #ffffff;
   display: block;
 }
 
@@ -19,9 +20,10 @@
 
 .calendar-trigger {
   align-items: center;
-  background-color: #f5f5f5;
-  border: 2px solid rgb(0 0 0 / 75%);
-  border-radius: 0.75rem;
+  background-color: #1a1a2e;
+  border: 2px solid #5a5a8a;
+  border-radius: 0;
+  color: inherit;
   cursor: default;
   display: flex;
   font: inherit;
@@ -32,39 +34,40 @@
   width: 100%;
 }
 
+// Chevron arrow
 .calendar-trigger::after {
-  border-bottom: 2px solid rgb(0 0 0 / 75%);
-  border-right: 2px solid rgb(0 0 0 / 75%);
+  border-bottom: 2px solid #4fc3f7;
+  border-right: 2px solid #4fc3f7;
   content: '';
   display: block;
   flex: 0 0 auto;
-  height: 12px;
+  height: 10px;
   margin-left: 0.75rem;
   transform: rotate(45deg);
-  width: 12px;
+  width: 10px;
 }
 
 .calendar-trigger:focus {
-  border-color: #0067b8;
-  box-shadow: 0 0 4px 2px #0067b8;
+  border-color: #4fc3f7;
+  box-shadow: 0 0 0 2px rgba(79, 195, 247, 0.4);
   outline: 4px solid transparent;
 }
 
 .calendar-trigger:disabled {
-  background-color: #e7e7e7;
-  color: rgb(0 0 0 / 60%);
+  background-color: #0f0f1e;
+  color: #7777aa;
   cursor: not-allowed;
 }
 
 .calendar-placeholder {
-  color: rgb(0 0 0 / 55%);
+  color: #7777aa;
 }
 
 .calendar-panel {
-  background-color: #f5f5f5;
-  border: 1px solid rgb(0 0 0 / 75%);
-  border-radius: 0.75rem;
-  box-shadow: 0 18px 40px rgb(0 0 0 / 12%);
+  background-color: #0f0f1e;
+  border: 2px solid #4fc3f7;
+  border-radius: 0;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5);
   display: none;
   left: 0;
   padding: 0.9rem;
@@ -86,9 +89,10 @@
 
 .calendar-date {
   align-items: center;
-  background: #fff;
-  border: 1px solid rgb(0 0 0 / 15%);
-  border-radius: 0.5rem;
+  background: #1a1a2e;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0;
+  color: inherit;
   cursor: default;
   display: flex;
   font: inherit;
@@ -98,16 +102,16 @@
 }
 
 .calendar-date[aria-disabled='true'] {
-  color: rgb(0 0 0 / 45%);
+  color: #7777aa;
 }
 
 .calendar-date[aria-pressed='true'] {
-  background-color: rgb(0 103 184 / 10%);
-  border-color: rgb(0 103 184 / 45%);
-  color: #004578;
+  background-color: rgba(79, 195, 247, 0.15);
+  border-color: rgba(79, 195, 247, 0.5);
+  color: #4fc3f7;
 }
 
 .calendar-date.date-current {
-  outline: 3px solid #0067b8;
+  outline: 2px solid #4fc3f7;
   outline-offset: 2px;
 }

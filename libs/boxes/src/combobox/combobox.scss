@@ -1,4 +1,5 @@
 :host {
+  color: #ffffff;
   display: block;
 }
 
@@ -24,24 +25,26 @@
   position: relative;
 }
 
+// Chevron arrow
 .combo::after {
-  border-bottom: 2px solid rgb(0 0 0 / 75%);
-  border-right: 2px solid rgb(0 0 0 / 75%);
+  border-bottom: 2px solid #4fc3f7;
+  border-right: 2px solid #4fc3f7;
   content: '';
   display: block;
-  height: 12px;
+  height: 10px;
   pointer-events: none;
   position: absolute;
   right: 16px;
   top: 45%;
   transform: translate(0, -50%) rotate(45deg);
-  width: 12px;
+  width: 10px;
 }
 
 .combo-input {
-  background-color: #f5f5f5;
-  border: 2px solid rgb(0 0 0 / 75%);
-  border-radius: 4px;
+  background-color: #1a1a2e;
+  border: 2px solid #5a5a8a;
+  border-radius: 0;
+  color: inherit;
   cursor: default;
   display: block;
   font-size: 1em;
@@ -52,32 +55,26 @@
 }
 
 .combo-input[aria-disabled='true'] {
-  background-color: #e7e7e7;
-  color: rgb(0 0 0 / 60%);
+  background-color: #0f0f1e;
+  color: #7777aa;
   cursor: not-allowed;
 }
 
 .open .combo-input {
-  border-radius: 4px 4px 0 0;
+  border-color: #4fc3f7;
 }
 
 .combo-input:focus {
-  border-color: #0067b8;
-  box-shadow: 0 0 4px 2px #0067b8;
+  border-color: #4fc3f7;
+  box-shadow: 0 0 0 2px rgba(79, 195, 247, 0.4);
   outline: 4px solid transparent;
 }
 
-.combo-label {
-  display: block;
-  font-weight: 100;
-  margin-bottom: 0.25em;
-  font-size: 1.2em;
-}
-
 .combo-menu {
-  background-color: #f5f5f5;
-  border: 1px solid rgb(0 0 0 / 75%);
-  border-radius: 0 0 4px 4px;
+  background-color: #0f0f1e;
+  border: 2px solid #4fc3f7;
+  border-top: none;
+  border-radius: 0;
   display: none;
   max-height: 300px;
   overflow-y: scroll;
@@ -93,16 +90,17 @@
 }
 
 .combo-option {
+  color: inherit;
   cursor: default;
   padding: 10px 12px 12px;
 }
 
 .combo-option[aria-disabled='true'] {
-  color: rgb(0 0 0 / 45%);
+  color: #7777aa;
 }
 
 .combo-option:hover {
-  background-color: rgb(0 0 0 / 10%);
+  background-color: rgba(79, 195, 247, 0.12);
 }
 
 .combo-option[aria-disabled='true']:hover {
@@ -110,8 +108,8 @@
 }
 
 .combo-option.option-current {
-  outline: 3px solid #0067b8;
-  outline-offset: -3px;
+  outline: 2px solid #4fc3f7;
+  outline-offset: -2px;
 }
 
 .combo-option[aria-selected='true'] {
@@ -119,14 +117,15 @@
   position: relative;
 }
 
+// Checkmark for selected option
 .combo-option[aria-selected='true']::after {
-  border-bottom: 2px solid #000;
-  border-right: 2px solid #000;
+  border-bottom: 2px solid #4fc3f7;
+  border-right: 2px solid #4fc3f7;
   content: '';
-  height: 16px;
+  height: 14px;
   position: absolute;
   right: 15px;
   top: 45%;
   transform: translate(0, -50%) rotate(45deg);
-  width: 8px;
+  width: 7px;
 }

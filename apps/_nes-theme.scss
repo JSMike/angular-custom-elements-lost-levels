@@ -1,0 +1,288 @@
+// =============================================================
+// NES Pixel Art Theme — shared across all 5 demo apps
+// Aligns with the slide deck aesthetic (Press Start 2P, dark
+// navy, World 1 cyan accent, scanlines, pixel borders)
+// =============================================================
+
+@use 'sass:color';
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+// ── Tokens ───────────────────────────────────────────────────
+$bg:           #0d0d1a;
+$bg-card:      #1a1a2e;
+$bg-card-deep: #0f0f1e;
+$bg-terminal:  #020408;
+
+$cyan:         #4fc3f7;   // World 1 — Forms accent
+$cyan-dark:    #01579b;
+$gold:         #ffd700;
+$gold-dark:    #b8860b;
+$green:        #7bff7b;
+$red:          #e74c3c;
+$white:        #ffffff;
+
+// Accessible muted tone: ~8:1 contrast on $bg-card
+$muted:        #a8b0d8;
+// Accessible secondary border: visible without being garish
+$border-dim:   #5a5a8a;
+
+// ── Reset ────────────────────────────────────────────────────
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+// ── Body ─────────────────────────────────────────────────────
+body {
+  background-color: $bg;
+  // Very subtle pixel grid
+  background-image:
+    linear-gradient(rgba($cyan, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba($cyan, 0.03) 1px, transparent 1px);
+  background-size: 16px 16px;
+  color: $white;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 14px;
+  line-height: 2;
+  margin: 0;
+  min-height: 100vh;
+  padding: 2rem 1.5rem 5rem;
+
+  // Subtle scanlines — just enough to feel retro
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(0, 0, 0, 0.05) 3px,
+      rgba(0, 0, 0, 0.05) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+}
+
+// ── Typography ───────────────────────────────────────────────
+h1,
+h2,
+h3 {
+  font-family: 'Press Start 2P', monospace;
+  line-height: 1.7;
+  margin-top: 0;
+}
+
+// App title — World 1 cyan
+// #4fc3f7 on #1a1a2e ≈ 8.9:1 (AAA)
+h1 {
+  color: $cyan;
+  font-size: 1.25rem;
+  letter-spacing: 0.04em;
+  margin-bottom: 1rem;
+  text-shadow: 3px 3px 0 $cyan-dark;
+}
+
+// Section heading — gold
+// #ffd700 on #1a1a2e ≈ 12.4:1 (AAA)
+h2 {
+  color: $gold;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  margin-bottom: 1.25rem;
+  text-shadow: 2px 2px 0 $gold-dark;
+
+  &::before {
+    content: '◆ ';
+    color: $cyan;
+    position: relative;
+    bottom: 0.2rem;
+  }
+}
+
+p {
+  margin-top: 0;
+}
+
+// ── Layout ───────────────────────────────────────────────────
+.demo-stack,
+.demo-shell {
+  display: grid;
+  gap: 2rem;
+  margin: 0 auto;
+  max-width: 74rem;
+}
+
+// ── Cards ────────────────────────────────────────────────────
+.demo-card {
+  background: $bg-card;
+  border: 2px solid $cyan;
+  padding: 1.75rem 2rem 2rem;
+  position: relative;
+
+  // Pixel drop-shadow
+  box-shadow:
+    0 0 0 1px $bg,
+    0 0 0 3px $cyan-dark,
+    4px 4px 0 3px rgba(0, 0, 0, 0.5);
+}
+
+// ── Body copy ────────────────────────────────────────────────
+// $muted (#a8b0d8) on $bg-card (#1a1a2e) ≈ 8.1:1 (AAA)
+.demo-copy {
+  color: $muted;
+  font-size: 0.875rem;
+  line-height: 2.4;
+  margin: 0 0 1.75rem;
+  max-width: 52rem;
+
+  code {
+    color: $cyan;
+    background: rgba($cyan, 0.12);
+    padding: 0.1em 0.4em;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.9em;
+  }
+}
+
+// ── Forms ────────────────────────────────────────────────────
+.demo-form {
+  display: grid;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.6rem;
+
+  > label {
+    display: grid;
+    gap: 0.6rem;
+    font-size: 0.875rem;
+    color: $muted;
+    letter-spacing: 0.06em;
+  }
+}
+
+// $muted on $bg-card ≈ 8.1:1 (AAA)
+label {
+  display: grid;
+  gap: 0.6rem;
+  font-size: 0.875rem;
+  color: $muted;
+  letter-spacing: 0.06em;
+}
+
+.checkbox-row {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+  color: $muted;
+  letter-spacing: 0.05em;
+}
+
+// ── Buttons ──────────────────────────────────────────────────
+button {
+  cursor: pointer;
+  font-family: 'Press Start 2P', monospace;
+  letter-spacing: 0.05em;
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+// #050510 on #4fc3f7 ≈ 10.4:1 (AAA)
+button[type='submit'] {
+  background: $cyan;
+  border: none;
+  color: #050510;
+  font-size: 0.875rem;
+  padding: 0.75rem 1.5rem;
+  box-shadow: 0 4px 0 $cyan-dark;
+  transform: translateY(0);
+  transition:
+    transform 40ms steps(1),
+    box-shadow 40ms steps(1);
+
+  &:hover {
+    background: color.adjust($cyan, $lightness: 8%);
+  }
+
+  &:active {
+    box-shadow: 0 1px 0 $cyan-dark;
+    transform: translateY(3px);
+  }
+}
+
+// $muted on $bg-card ≈ 8.1:1 (AAA)
+button[type='reset'] {
+  background: transparent;
+  border: 2px solid $border-dim;
+  color: $muted;
+  font-size: 0.875rem;
+  padding: 0.75rem 1.5rem;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.4);
+  transform: translateY(0);
+  transition:
+    transform 40ms steps(1),
+    box-shadow 40ms steps(1);
+
+  &:hover {
+    border-color: $muted;
+    color: $white;
+  }
+
+  &:active {
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+    transform: translateY(3px);
+  }
+}
+
+// ── Result grid ───────────────────────────────────────────────
+.result-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  > div {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  // $cyan on $bg-card ≈ 8.9:1 (AAA)
+  p {
+    color: $cyan;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    margin: 0;
+    text-transform: uppercase;
+
+    &::before {
+      content: '▶ ';
+      color: $gold;
+      position: relative;
+      bottom: 0.15rem;
+    }
+  }
+}
+
+// ── Terminal — green-on-black JSON readout ───────────────────
+// #7bff7b on #020408 ≈ 12.4:1 (AAA)
+pre {
+  background: $bg-terminal;
+  border: 2px solid $cyan;
+  color: $green;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.75rem;
+  line-height: 2.4;
+  margin: 0;
+  min-height: 10rem;
+  overflow: auto;
+  padding: 1rem 1.25rem;
+}

@@ -1,10 +1,11 @@
 ---
 theme: default
-title: custom-elements-everywhere.com the lost levels
+title: custom elements everywhere - The lost levels - Angular
 titleTemplate: '%s'
 lineNumbers: false
 transition: slide-left
 drawings: false
+colorSchema: dark
 layout: cover
 ---
 
@@ -30,12 +31,12 @@ layout: cover
     <div class="v1-eyebrow">CUSTOM ELEMENTS EVERYWHERE</div>
     <div class="v1-main-title">THE LOST<br>LEVELS</div>
     <div class="v1-sub">Web Components in Angular</div>
-    <div class="v1-press">▶ PRESS START ◀</div>
+    <div class="v1-press"><span class="slide-sym">▶</span> PRESS START <span class="slide-sym">◀</span></div>
     <div class="v1-topics">
-      <span>◆ FORMS</span>
-      <span>◆ TEMPLATE-CHECKING</span>
-      <span>◆ MONOREPO SUPPORT</span>
-      <span>◆ SSR</span>
+      <span><span class="slide-sym">◆</span> FORMS</span>
+      <span><span class="slide-sym">◆</span> TEMPLATE-CHECKING</span>
+      <span><span class="slide-sym">◆</span> MONOREPO SUPPORT</span>
+      <span><span class="slide-sym">◆</span> SSR</span>
     </div>
   </div>
 
@@ -49,8 +50,8 @@ layout: cover
       </div>
     </div>
     <div class="v1-links">
+      <div><a href="https://github.com/JSMike/angular-custom-elements-lost-levels">github.com/JSMike</a></div>
       <div><a href="https://linkedin.com/in/michael-cebrian-94248378">linkedin.com/in/michael-cebrian-94248378</a></div>
-      <div><a href="https://github.com/JSMike/angular-custom-elements-lost-levels">github.com/JSMike/angular-custom-elements-lost-levels</a></div>
       <div>Angular Enterprise Summit · March 19, 2026</div>
     </div>
   </div>
@@ -87,10 +88,6 @@ The goal is a conversation, not a critique.
 
 </div>
 </div>
-
-<!--
-Set the tone early. This is a talk from someone who has used Angular for nearly 10 years and wants to see it stay great.
--->
 
 ---
 layout: default
@@ -137,10 +134,10 @@ background: '#0d1b2a'
     </div>
   </div>
   <div class="ws1-center">
-    <div class="ws1-eyebrow">◆ LEVEL ONE ◆</div>
+    <div class="ws1-eyebrow"><span class="slide-sym">◆</span> LEVEL ONE <span class="slide-sym">◆</span></div>
     <div class="ws1-title">FORM<br>INTEGRATION</div>
     <div class="ws1-sub">ngDefaultControl compatibility<br>with Form-associated Custom Elements</div>
-    <div class="ws1-start">▶ LEVEL START! ◀</div>
+    <div class="ws1-start"><span class="slide-sym">▶</span> LEVEL START! <span class="slide-sym">◀</span></div>
   </div>
   <div class="ws1-deco">
     <div class="ws1-wave"></div>
@@ -155,7 +152,7 @@ layout: default
 class: world-1-1 world-1
 ---
 
-# About-FACE 🤔🔄️
+# About-FACE <span class="slide-emoji">🤔🔄️</span>
 
 ```js
 class MyCustomEl extends HTMLElement {
@@ -177,9 +174,9 @@ form.addEventListener('submit', (e) => {
 });
 ```
 
-- `boxes-checkbox` checked → `{ "confirmedProduce": "confirmed" }`, unchecked → `{}`
-- `boxes-multi-select` with Fresh + Organic → `{ "produceTags": ["fresh", "organic"] }`
-- `boxes-calendar-picker` after selecting Thurs 19 → `{ "deliveryDate": "2026-03-19" }`
+- `boxes-checkbox` checked → `{ "acceptQuest": "accepted" }`, unchecked → `{}`
+- `boxes-multi-select` with Mushroom + Star → `{ "powerUps": ["mushroom", "star"] }`
+- `boxes-calendar-picker` after selecting Thurs 19 → `{ "questDate": "2026-03-19" }`
 
 [HTML Spec](https://html.spec.whatwg.org/dev/custom-elements.html#custom-elements-face-example) [Webkit Blog](https://webkit.org/blog/13711/elementinternals-and-form-associated-custom-elements/)
 
@@ -202,7 +199,7 @@ Angular already ships with multiple value-accessor directives, but only one expo
 
 ```html
 <boxes-combobox
-  formControlName="produce"
+  formControlName="character"
   ngDefaultControl>
 </boxes-combobox>
 ```
@@ -225,7 +222,6 @@ Angular already ships with multiple value-accessor directives, but only one expo
 
 <!--
 ngDefaultControl works for combobox because it was designed for exactly this shape.
-The next slides show the three other patterns Angular already knows about, and why they break with custom elements.
 -->
 
 ---
@@ -249,9 +245,7 @@ These value-accessor directives already exist in Angular, but unlike `DefaultVal
 The gap is that only `DefaultValueAccessor` has a custom-element opt-in path.
 
 <!--
-This is the more inclusive framing.
-Angular's forms package already knows about more than text/checkbox/select.
-But all of the extra knowledge is trapped behind native selectors.
+Angular's forms package already supports these patterns but they're trapped behind native selectors.
 -->
 
 ---
@@ -264,23 +258,22 @@ class: world-1-4 world-1
 `ngDefaultControl` is the only value-accessor path available for FACE controls today. Applying it to all four controls exposes where that assumption breaks down.
 
 ```html
-<boxes-combobox formControlName="produce" ngDefaultControl>...</boxes-combobox>
-<boxes-checkbox formControlName="confirmedProduce" ngDefaultControl></boxes-checkbox>
-<boxes-calendar-picker formControlName="deliveryDate" ngDefaultControl>...</boxes-calendar-picker>
-<boxes-multi-select formControlName="produceTags" ngDefaultControl>...</boxes-multi-select>
+<boxes-combobox formControlName="character" ngDefaultControl>...</boxes-combobox>
+<boxes-checkbox formControlName="acceptQuest" ngDefaultControl></boxes-checkbox>
+<boxes-calendar-picker formControlName="questDate" ngDefaultControl>...</boxes-calendar-picker>
+<boxes-multi-select formControlName="powerUps" ngDefaultControl>...</boxes-multi-select>
 ```
 
 | Control | Angular `formControl.value` | Native `FormData` | Result |
 |---|---|---|---|
-| `<boxes-combobox>` | `"blueberry"` | `"blueberry"` | ✅ matches |
-| `<boxes-checkbox>` after uncheck | `"confirmed"` | omitted | ❌ stale |
+| `<boxes-combobox>` | `"mage"` | `"mage"` | ✅ matches |
+| `<boxes-checkbox>` after uncheck | `"accepted"` | omitted | ❌ stale |
 | `<boxes-calendar-picker>` | `""` | `"2026-03-19"` | ❌ misses `change`-only commit |
-| `<boxes-multi-select>` | `"fresh"` | `["fresh", "organic"]` | ❌ loses multi-value state |
+| `<boxes-multi-select>` | `"mushroom"` | `["mushroom", "star"]` | ❌ loses multi-value state |
 
 <!--
 One directive path exists for custom elements today, so the right question is:
 what happens if we force all these controls through that path?
-Combobox is the baseline. The others expose the limits immediately.
 -->
 
 ---
@@ -303,11 +296,6 @@ Signal Forms is currently in development and I'm genuinely excited about it. My 
 
 [#63015](https://github.com/angular/angular/issues/63015) — open feature request for ngDefaultControl-style opt-in directives for additional value types
 
-<!--
-This is the lowest-lift ask in the talk. The directives already exist. FACE controls already implement the browser contract. The gap is just an opt-in selector that isn't there yet.
-Signal Forms is where the deeper fix lives, but that doesn't help library maintainers today.
--->
-
 ---
 layout: cover
 background: '#0a0000'
@@ -329,10 +317,10 @@ background: '#0a0000'
     </div>
   </div>
   <div class="ws2-center">
-    <div class="ws2-eyebrow">◆ LEVEL TWO ◆</div>
+    <div class="ws2-eyebrow"><span class="slide-sym">◆</span> LEVEL TWO <span class="slide-sym">◆</span></div>
     <div class="ws2-title">TEMPLATE<br>TYPE-CHECK</div>
     <div class="ws2-sub">CUSTOM_ELEMENTS_SCHEMA</div>
-    <div class="ws2-start">▶ LEVEL START! ◀</div>
+    <div class="ws2-start"><span class="slide-sym">▶</span> LEVEL START! <span class="slide-sym">◀</span></div>
   </div>
   <div class="ws2-deco">
     <div class="ws2-flame"></div>
@@ -430,11 +418,6 @@ Even if a library ships these, every new Angular major forces a new major versio
 
 </div>
 
-<!--
-I proved this works in the repo and then intentionally reverted it so the repo continues to show the real Angular integration path.
-The workaround is valid. It is not acceptable as the permanent answer.
--->
-
 ---
 layout: two-cols
 class: world-2-3 world-2
@@ -487,9 +470,7 @@ Preferable to proxy directives: one app-level `tsconfig` entry rather than impor
 
 <!--
 The key point: the extensibility is in the type system, not the framework.
-Any JSX-based framework can consume the same declaration file.
 The boxes library already generates this. Angular has no equivalent path.
-The next slide shows what the actual standard looks like: custom-elements.json.
 -->
 
 ---
@@ -538,13 +519,6 @@ This is a well-documented community ask:
 
 </div>
 
-<!--
-#12045 is P3, open since 2016; maintainers close CEM-related issues as duplicates of it.
-#36893 specifically requests language service integration with the CEM format.
-#58483 proposes a TypeScript-first approach (interface augmentation) that CEM tooling could target; most actionable recent proposal.
-None have shipped.
--->
-
 ---
 layout: cover
 background: '#080604'
@@ -567,10 +541,10 @@ background: '#080604'
     </div>
   </div>
   <div class="ws3-center">
-    <div class="ws3-eyebrow">◆ LEVEL THREE ◆</div>
+    <div class="ws3-eyebrow"><span class="slide-sym">◆</span> LEVEL THREE <span class="slide-sym">◆</span></div>
     <div class="ws3-title">MONOREPO<br>INTEGRATION</div>
     <div class="ws3-sub">Difficulties with Angular<br>in an integrated monorepo</div>
-    <div class="ws3-start">▶ LEVEL START! ◀</div>
+    <div class="ws3-start"><span class="slide-sym">▶</span> LEVEL START! <span class="slide-sym">◀</span></div>
   </div>
   <div class="ws3-floor"></div>
 </div>
@@ -635,11 +609,11 @@ libs/boxes (Vite build)
 ```
 combobox.js → JS transformer
   //# sourceMappingURL=combobox.js.map  ← original
-  //# sourceMappingURL=data:...         ← TS compiler appends
-  combobox.js.map                       ← never read
+  //# sourceMappingURL=data:...  ← TS compiler appends
+  combobox.js.map  ← never read
 
 esbuild follows last comment
-  sourcesContent: compiled JS    ← chain stops here
+  sourcesContent: compiled JS  ← chain stops here
 ```
 
 </div>
@@ -702,8 +676,6 @@ export default {
 - **Next.js**: `webpack()` and experimental `turbopack` config in `next.config.js`
 
 <!--
-Both issues were closed without resolution; the Angular team's position is that the build pipeline is an internal detail.
-custom-esbuild replaces the builder entirely, so any Angular CLI updates that change builder options or defaults require manual migration rather than ng update.
 Storybook and Next.js treat build extension as a first-class feature. Angular's lack of an equivalent makes Web Component tooling integration significantly harder.
 -->
 
@@ -731,10 +703,10 @@ background: '#0d2137'
     </div>
   </div>
   <div class="ws4-center">
-    <div class="ws4-eyebrow">◆ LEVEL FOUR ◆</div>
+    <div class="ws4-eyebrow"><span class="slide-sym">◆</span> LEVEL FOUR <span class="slide-sym">◆</span></div>
     <div class="ws4-title">SSR<br>SETUP</div>
     <div class="ws4-sub">Steps required to enable<br>@lit-labs/ssr</div>
-    <div class="ws4-start">▶ LEVEL START! ◀</div>
+    <div class="ws4-start"><span class="slide-sym">▶</span> LEVEL START! <span class="slide-sym">◀</span></div>
   </div>
   <div class="ws4-ground"></div>
 </div>
@@ -885,10 +857,10 @@ background: '#020208'
   </div>
   
   <div class="ws5-center">
-    <div class="ws5-eyebrow">◆ CUSTOM ELEMENTS EVERYWHERE: THE LOST LEVELS ◆</div>
+    <div class="ws5-eyebrow"><span class="slide-sym">◆</span> CUSTOM ELEMENTS EVERYWHERE: THE LOST LEVELS <span class="slide-sym">◆</span></div>
     <div class="ws5-title">LEADER<br>BOARD</div>
     <div class="ws5-sub">How does Angular rank?</div>
-    <div class="ws5-start">▶ INSERT COIN ◀</div>
+    <div class="ws5-start"><span class="slide-sym">▶</span> INSERT COIN <span class="slide-sym">◀</span></div>
   </div>
 </div>
 
@@ -899,20 +871,19 @@ class: world-5
 
 # Custom Elements Everywhere: How Does Angular Score?
 
-#### [custom-elements-everywhere.com](https://custom-elements-everywhere.com/#angular) — Cleared
+#### [custom-elements-everywhere.com](https://custom-elements-everywhere.com/#angular): <span class="score-label">Cleared</span>
 
-Angular has supported Web Components since 2.0, nearly 10 years ago.  
+Angular has supported Web Components since 2.0, nearly 10 years ago.
 Thank you for being an early adopter and helping establish Web Components as a viable target for design systems.
 
-#### The Lost Levels — Still in Progress
+#### The Lost Levels: <span class="score-label">Still in Progress</span>
 
 | Level | What remains | To Clear |
 |---|---|---|
 | **Forms** | FACE controls need hand-written CVAs | Opt-in selectors; FACE-first Signal Forms |
 | **Template-checking** | `CUSTOM_ELEMENTS_SCHEMA` suppresses errors | `customElementManifests` compiler option |
-| **Selectors** | Templates only accept string literal selectors | Allow imported element references as variable selectors |
-| **Build** | No esbuild extension point | Official build config hook |
-| **Debug** | Local libraries break sourcemaps | Sourcemap chaining ([PR #32788](https://github.com/angular/angular-cli/pull/32788)) |
+| **Monorepo: Build** | No esbuild extension point | Official build config hook |
+| **Monorepo: Debug** | Local libraries break sourcemaps | Sourcemap chaining ([PR #32788](https://github.com/angular/angular-cli/pull/32788)) |
 | **SSR** | Lit SSR requires a custom server pipeline | Angular + Lit teams collaborating |
 
 <!--
@@ -928,7 +899,7 @@ background: '#010108'
 <div class="gc-screen">
   <div class="gc-scanlines"></div>
 
-  <div class="gc-header">★ STAFF CREDITS ★</div>
+  <div class="gc-header"><span class="slide-sym">★</span> STAFF CREDITS <span class="slide-sym">★</span></div>
 
   <div class="gc-block">
     <div class="gc-role">PRESENTER</div>
@@ -948,7 +919,7 @@ background: '#010108'
     <div>Angular Enterprise Summit · March 19, 2026</div>
   </div>
 
-  <div class="gc-end">▶ THANKS FOR PLAYING ◀</div>
+  <div class="gc-end"><span class="slide-sym">▶</span> THANKS FOR PLAYING <span class="slide-sym">◀</span></div>
 </div>
 
 <!--

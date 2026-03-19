@@ -73,6 +73,9 @@ app.use('/**', (req, res, next) => {
         return;
       }
 
+      /**
+       * This is the entrypoint for Lit SSR
+       */
       const transformedResponse = await transformLitSsrResponse(response);
       return writeResponseToNodeResponse(transformedResponse, res);
     })
