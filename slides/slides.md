@@ -45,8 +45,8 @@ layout: cover
       <span class="v1-p1">1P</span>
       <div>
         <div class="v1-p-name">MICHAEL CEBRIAN</div>
-        <div class="v1-p-sub">PRINCIPAL ENG · ENTERPRISE DESIGN SYSTEM</div>
         <div class="v1-p-sub">Senior Vice President · M&T BANK</div>
+        <div class="v1-p-sub">PRINCIPAL ENG · ENTERPRISE DESIGN SYSTEM</div>
       </div>
     </div>
     <div class="v1-links">
@@ -907,13 +907,14 @@ background: '#010108'
   </div>
 
   <div class="gc-block">
-    <div class="gc-role">PRINCIPAL ENGINEER · ENTERPRISE DESIGN SYSTEM</div>
-    <div class="gc-name">SENIOR VICE PRESIDENT · M&T BANK</div>
+    <div class="gc-role">SENIOR VICE PRESIDENT · M&T BANK</div>
+    <div class="gc-name">PRINCIPAL ENGINEER · ENTERPRISE DESIGN SYSTEM</div>
   </div>
 
   <div class="gc-divider"></div>
 
   <div class="gc-link">
+    <div><a href="https://angular-lost-levels.box-model.dev">angular-lost-levels.box-model.dev</a></div>
     <div><a href="https://github.com/JSMike/angular-custom-elements-lost-levels">github.com/JSMike/angular-custom-elements-lost-levels</a></div>
     <div><a href="https://linkedin.com/in/michael-cebrian-94248378">linkedin.com/in/michael-cebrian-94248378</a></div>
     <div>Angular Enterprise Summit · March 19, 2026</div>
