@@ -1,6 +1,6 @@
 ---
 theme: default
-title: custom elements everywhere - The lost levels - Angular
+title: Custom Elements Everywhere - The Lost Levels - Angular
 titleTemplate: '%s'
 lineNumbers: false
 transition: slide-left
