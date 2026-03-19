@@ -80,11 +80,9 @@ The Angular team has built something genuinely impressive. Strong opinions, cons
 </div>
 <div>
 
-**A friendly nit-pick**
+**My adventure**
 
-This talk looks at a few places where Web Component integration is rougher than it needs to be. These are friction points I've run into building a design system over the past two and a half years, not complaints about Angular itself.
-
-The goal is a conversation, not a critique.
+This talk looks at a few places where Web Component integration is rougher than it needs to be. These are friction points I've run into while supporting web component design systems used by Angular application teams.
 
 </div>
 </div>
